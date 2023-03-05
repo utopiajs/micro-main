@@ -1,4 +1,5 @@
 {
+  "name": "@utopia/micro-main-core",
   "private": true,
   "author": "KuangPF <1633397286@qq.com>",
   "scripts": {
