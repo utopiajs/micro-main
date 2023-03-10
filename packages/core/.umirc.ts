@@ -16,5 +16,5 @@ export default defineConfig({
   qiankun: {
     master: {},
   },
-  npmClient: 'npm'
+  npmClient: 'npm',
 });
