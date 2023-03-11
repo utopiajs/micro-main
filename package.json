@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "lerna run dev",
+    "dev": "lerna run dev --parallel",
     "dev:core": "lerna run dev --scope=@utopia/micro-main-core"
   },
   "devDependencies": {
