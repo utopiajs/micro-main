@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "dev": "lerna run dev --parallel",
-    "dev:core": "lerna run dev --scope=@utopia/micro-main-core"
+    "dev:core": "lerna run dev --scope=@utopia/micro-main-core",
+    "dev:uc": "lerna run dev --scope=@utopia/micro-sub-user-center"
   },
   "devDependencies": {
     "lerna": "^6.0.3"
