@@ -1,6 +1,9 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
+  mfsu: {
+    exclude: ['@utopia/micro-main-utils'],
+  },
   routes: [
     {
       path: '/',

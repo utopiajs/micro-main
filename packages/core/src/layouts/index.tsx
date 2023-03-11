@@ -1,7 +1,6 @@
 import { Link, Outlet } from 'umi';
 import styles from './index.less';
-import { isDev } from '@utopia/micro-main-utils'
-console.log(isDev())
+
 export default function Layout() {
   return (
     <div className={styles.navs}>
