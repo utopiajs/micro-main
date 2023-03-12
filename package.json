@@ -7,9 +7,13 @@
   "scripts": {
     "dev": "lerna run dev --parallel",
     "dev:core": "lerna run dev --scope=@utopia/micro-main-core",
-    "dev:uc": "lerna run dev --scope=@utopia/micro-sub-user-center"
+    "dev:uc": "lerna run dev --scope=@utopia/micro-sub-user-center",
+    "lint:es": "eslint \"packages/**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
+    "@utopia/eslint-config-react": "^0.0.8",
+    "@utopia/prettier-config-base": "^0.0.8",
+    "eslint-import-resolver-typescript": "^3.5.3",
     "lerna": "^6.0.3"
   }
 }

@@ -12,7 +12,7 @@ export default function Layout() {
           <Link to="/docs">Docs</Link>
         </li>
         <li>
-        <Link to="/user-center/base-info">user center base info</Link>
+          <Link to="/user-center/base-info">user center base info</Link>
         </li>
       </ul>
       <Outlet />
