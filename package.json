@@ -11,8 +11,8 @@
     "lint:es": "eslint \"packages/**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
-    "@utopia/eslint-config-react": "^0.0.8",
-    "@utopia/prettier-config-base": "^0.0.8",
+    "@utopia/eslint-config-react": "^0.0.9",
+    "@utopia/prettier-config-base": "^0.0.9",
     "eslint-import-resolver-typescript": "^3.5.3",
     "lerna": "^6.0.3"
   }
