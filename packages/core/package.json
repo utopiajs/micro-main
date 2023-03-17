@@ -3,14 +3,16 @@
   "private": true,
   "author": "KuangPF <1633397286@qq.com>",
   "scripts": {
-    "dev": "umi dev",
     "build": "umi build",
+    "dev": "umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {
+    "@umijs/max": "^4.0.57",
     "@utopia/micro-main-utils": "^0.0.1",
+    "antd": "^5.3.1",
     "umi": "^4.0.55"
   },
   "devDependencies": {
