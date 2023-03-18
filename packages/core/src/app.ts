@@ -12,6 +12,29 @@ export const qiankun = {
 export const layout: RunTimeLayoutConfig = () => {
   return {
     title: '微前端主平台',
-    layout: 'mix'
+    layout: 'mix',
+    siderWidth: 208,
+    token: {
+      header: {
+        heightLayoutHeader: 48
+      }
+    },
+    menu: {
+      request: () =>
+        new Promise((resolve) => {
+          resolve([
+            {
+              name: '用户管理',
+              path: '/user-center/',
+              children: [
+                {
+                  name: '用户信息',
+                  path: '/user-center/base-info'
+                }
+              ]
+            }
+          ]);
+        })
+    }
   };
 };
