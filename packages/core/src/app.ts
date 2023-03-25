@@ -14,6 +14,7 @@ export const layout: RunTimeLayoutConfig = () => {
     title: '微前端主平台',
     layout: 'mix',
     siderWidth: 208,
+    breakpoint: 'xs',
     token: {
       header: {
         heightLayoutHeader: 48
@@ -25,7 +26,7 @@ export const layout: RunTimeLayoutConfig = () => {
           resolve([
             {
               name: '用户管理',
-              path: '/user-center/',
+              path: '/user-center',
               children: [
                 {
                   name: '用户信息',
