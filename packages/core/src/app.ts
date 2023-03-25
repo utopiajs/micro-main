@@ -1,41 +1,16 @@
-import { type RunTimeLayoutConfig } from '@umijs/max';
+// 运行时配置
 
-export const qiankun = {
-  apps: [
-    {
-      name: 'user-center',
-      entry: '//localhost:9001'
-    }
-  ]
-};
+// 全局初始化数据配置，用于 Layout 用户信息和权限初始化
+// 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
+export async function getInitialState(): Promise<{ name: string }> {
+  return { name: '@umijs/max' };
+}
 
-export const layout: RunTimeLayoutConfig = () => {
+export const layout = () => {
   return {
-    title: '微前端主平台',
-    layout: 'mix',
-    siderWidth: 208,
-    breakpoint: 'xs',
-    token: {
-      header: {
-        heightLayoutHeader: 48
-      }
-    },
+    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     menu: {
-      request: () =>
-        new Promise((resolve) => {
-          resolve([
-            {
-              name: '用户管理',
-              path: '/user-center',
-              children: [
-                {
-                  name: '用户信息',
-                  path: '/user-center/base-info'
-                }
-              ]
-            }
-          ]);
-        })
-    }
+      locale: false,
+    },
   };
 };

@@ -1,11 +1,3 @@
-# `core`
+# @utopia/micro-main-core
 
-> TODO: description
-
-## Usage
-
-```
-const core = require('core');
-
-// TODO: DEMONSTRATE API
-```
+微前端主平台
