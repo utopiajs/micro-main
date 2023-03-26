@@ -4,29 +4,26 @@ import { getToken } from './auth';
 
 const TIME_OUT = 1 * 60 * 1000;
 
-const request = () => {
-  const requestInstance = axios.create({
-    baseURL: '',
-    timeout: TIME_OUT
-  });
+const request = axios.create({
+  baseURL: '',
+  timeout: TIME_OUT
+});
 
-  requestInstance.interceptors.request.use(
-    (config) => {
-      if (getToken()) {
-        config.headers.Authorization = getToken();
-      }
-      return config;
-    },
-    (error) => {
-      // do something with request error
-      return Promise.reject(error);
+request.interceptors.request.use(
+  (config) => {
+    if (getToken()) {
+      config.headers.Authorization = getToken();
     }
-  );
+    return config;
+  },
+  (error) => {
+    // do something with request error
+    return Promise.reject(error);
+  }
+);
 
-  requestInstance.interceptors.response.use((response) => {
-    console.log(response);
-    return response;
-  });
-};
-
+request.interceptors.response.use((response) => {
+  console.log(response);
+  return response;
+});
 export default request;
