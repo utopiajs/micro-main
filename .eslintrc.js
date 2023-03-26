@@ -1,7 +1,8 @@
 module.exports = {
   extends: ['@utopia/eslint-config-react', '@utopia/eslint-config-react/hooks'],
   rules: {
-    'import/no-extraneous-dependencies': 0
+    'import/no-extraneous-dependencies': 0,
+    'no-param-reassign': 0
   },
   settings: {
     'import/resolver': {
