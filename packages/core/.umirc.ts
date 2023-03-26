@@ -10,7 +10,6 @@ export default defineConfig({
       path: '/',
       component: 'index'
     },
-    { path: '/docs', component: 'docs' },
     {
       path: '/user-center/*',
       microApp: 'user-center'
@@ -19,6 +18,9 @@ export default defineConfig({
   antd: {},
   access: {},
   model: {},
+  qiankun: {
+    master: {}
+  },
   initialState: {},
   request: {},
   layout: {},
