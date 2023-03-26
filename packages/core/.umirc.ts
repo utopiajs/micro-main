@@ -1,34 +1,26 @@
 import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
+  mfsu: {
+    strategy: 'normal'
+  },
+  monorepoRedirect: {},
+  routes: [
+    {
+      path: '/',
+      component: 'index'
+    },
+    { path: '/docs', component: 'docs' },
+    {
+      path: '/user-center/*',
+      microApp: 'user-center'
+    }
+  ],
   antd: {},
   access: {},
   model: {},
   initialState: {},
   request: {},
-  layout: {
-    title: '@umijs/max'
-  },
-  routes: [
-    {
-      path: '/',
-      redirect: '/home'
-    },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home'
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access'
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table'
-    }
-  ],
+  layout: {},
   npmClient: 'npm'
 });
