@@ -30,6 +30,10 @@ export const layout: RunTimeLayoutConfig = () => {
                 {
                   name: '用户信息',
                   path: '/user-center/base-info'
+                },
+                {
+                  name: '用户登录',
+                  path: '/user-center/login'
                 }
               ]
             }
