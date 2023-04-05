@@ -8,12 +8,14 @@
     "dev": "lerna run dev --parallel",
     "dev:core": "lerna run dev --scope=@utopia/micro-main-core",
     "dev:uc": "lerna run dev --scope=@utopia/micro-sub-user-center",
+    "api:core": "node scripts/gen-core-services",
     "lint:es": "eslint \"packages/**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
     "@utopia/eslint-config-react": "^0.0.9",
     "@utopia/prettier-config-base": "^0.0.9",
     "eslint-import-resolver-typescript": "^3.5.3",
-    "lerna": "^6.0.3"
+    "lerna": "^6.0.3",
+    "swagger-typescript-api": "^12.0.4"
   }
 }
