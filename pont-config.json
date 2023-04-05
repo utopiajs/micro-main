@@ -1,7 +1,0 @@
-{
-  "name": "core-service",
-  "originUrl": "http://localhost:3000/api/micro-main/v1/docs/swagger.json",
-  "outDir": "./packages/core/src/services",
-  "templatePath": "./microMainService",
-  "pollingTime": 6000
-}
