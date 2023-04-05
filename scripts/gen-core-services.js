@@ -12,7 +12,7 @@ apis?.forEach((api, index) => {
   setTimeout(() => {
     generateApi({
       output: api.output,
-      templates: path.resolve(process.cwd(), './templates'),
+      templates: path.resolve(process.cwd(), './templates/core'),
       url: api.url,
       httpClientType: 'axios',
       modular: true,

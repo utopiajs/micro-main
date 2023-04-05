@@ -2,6 +2,9 @@
 const { apiConfig, generateResponses, config } = it;
 %>
 
+<% 
+const microMainServicePrefix = '/api/micro-main/v1';
+%>
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType, HeadersDefaults } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -44,7 +47,7 @@ export class HttpClient<SecurityDataType = unknown> {
     private format?: ResponseType;
 
     constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-        this.instance = axios.create({ ...axiosConfig, baseURL: "" })
+        this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "<%~ microMainServicePrefix %>" })
         this.secure = secure;
         this.format = format;
         this.securityWorker = securityWorker;
