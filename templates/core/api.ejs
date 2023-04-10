@@ -13,11 +13,11 @@ import { HttpClient, RequestParams, ContentType, HttpResponse } from "./<%~ conf
 import { <%~ dataContracts.join(", ") %> } from "./<%~ config.fileNames.dataContracts %>"
 <% } %>
 
-export class <%= apiClassName %><SecurityDataType = unknown><% if (!config.singleHttpClient) { %> extends HttpClient<SecurityDataType> <% } %> {
+export class <%= apiClassName %><% if (!config.singleHttpClient) { %> extends HttpClient <% } %> {
 <% if(config.singleHttpClient) { %>
-  http: HttpClient<SecurityDataType>;
+  http: HttpClient;
 
-  constructor (http: HttpClient<SecurityDataType>) {
+  constructor (http: HttpClient) {
     this.http = http;
   }
 <% } %>
