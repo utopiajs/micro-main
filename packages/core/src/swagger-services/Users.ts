@@ -10,19 +10,19 @@
  */
 
 import { Error, User } from './data-contracts';
-import { ContentType, HttpClient, RequestParams } from './http-client';
+import { HttpClient, RequestParams } from './http-client';
 
-export class Users<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class Users extends HttpClient {
   /**
    * @description Logged in users can fetch only their own user information. Only admins can fetch other users.
    *
    * @tags Users
-   * @name InfoList
+   * @name UsersInfoWithGet
    * @summary Get a user
    * @request GET:/users/info
    * @secure
    */
-  infoList = (
+  usersInfoWithGet = (
     query: {
       /** User id */
       userId: string;
@@ -30,23 +30,21 @@ export class Users<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
     params: RequestParams = {}
   ) =>
     this.request<User, any>({
-      path: `/users/info`,
+      url: `/api/micro-main/v1/users/info`,
       method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
+      params: query,
       ...params
     });
   /**
    * @description Only admins can create other users.
    *
    * @tags Users
-   * @name CreateCreate
+   * @name UsersCreateWithPost
    * @summary Create a user
    * @request POST:/users/create
    * @secure
    */
-  createCreate = (
+  usersCreateWithPost = (
     data: {
       name: string;
       /**
@@ -65,24 +63,21 @@ export class Users<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
     params: RequestParams = {}
   ) =>
     this.request<void, Error>({
-      path: `/users/create`,
+      url: `/api/micro-main/v1/users/create`,
       method: 'POST',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
+      data: data,
       ...params
     });
   /**
    * @description Only admins can retrieve all users.
    *
    * @tags Users
-   * @name ListList
+   * @name UsersListWithGet
    * @summary Get all users
    * @request GET:/users/list
    * @secure
    */
-  listList = (
+  usersListWithGet = (
     query?: {
       /** User name */
       name?: string;
@@ -119,23 +114,21 @@ export class Users<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
       },
       Error
     >({
-      path: `/users/list`,
+      url: `/api/micro-main/v1/users/list`,
       method: 'GET',
-      query: query,
-      secure: true,
-      format: 'json',
+      params: query,
       ...params
     });
   /**
    * @description Logged in users can only update their own information. Only admins can update other users.
    *
    * @tags Users
-   * @name UpdatePartialUpdate
+   * @name UsersUpdateWithPatch
    * @summary Update a user
    * @request PATCH:/users/update
    * @secure
    */
-  updatePartialUpdate = (
+  usersUpdateWithPatch = (
     data: {
       /** User id */
       userId?: string;
@@ -155,24 +148,21 @@ export class Users<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
     params: RequestParams = {}
   ) =>
     this.request<User, Error>({
-      path: `/users/update`,
+      url: `/api/micro-main/v1/users/update`,
       method: 'PATCH',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: 'json',
+      data: data,
       ...params
     });
   /**
    * @description Logged in users can delete only themselves. Only admins can delete other users.
    *
    * @tags Users
-   * @name DeleteDelete
+   * @name UsersDeleteWithDelete
    * @summary Delete a user
    * @request DELETE:/users/delete
    * @secure
    */
-  deleteDelete = (
+  usersDeleteWithDelete = (
     data: {
       /** User id */
       userId?: string;
@@ -180,11 +170,9 @@ export class Users<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
     params: RequestParams = {}
   ) =>
     this.request<void, Error>({
-      path: `/users/delete`,
+      url: `/api/micro-main/v1/users/delete`,
       method: 'DELETE',
-      body: data,
-      secure: true,
-      type: ContentType.Json,
+      data: data,
       ...params
     });
 }

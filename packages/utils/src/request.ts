@@ -15,6 +15,10 @@ interface IRawResponseData {
 }
 export interface FullRequestParams extends AxiosRequestConfig {}
 export interface ApiConfig extends AxiosRequestConfig {}
+export type RequestParams = Omit<
+  FullRequestParams,
+  'data' | 'method' | 'params' | 'url'
+>;
 
 const defaultAxiosConfig: Pick<AxiosRequestConfig, 'timeout'> = {
   timeout: 1000 * 60
@@ -50,7 +54,10 @@ class HttpClient {
     );
   }
 
-  public request = (requestParams: FullRequestParams) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  public request = <T = any, _E = any>(
+    requestParams: FullRequestParams
+  ): Promise<AxiosResponse<T>> => {
     return this.instance
       .request(requestParams)
       .then((response) => response.data);

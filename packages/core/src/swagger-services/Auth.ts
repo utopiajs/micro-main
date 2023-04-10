@@ -10,18 +10,18 @@
  */
 
 import { AuthTokens, Error, User } from './data-contracts';
-import { ContentType, HttpClient, RequestParams } from './http-client';
+import { HttpClient, RequestParams } from './http-client';
 
-export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class Auth extends HttpClient {
   /**
    * No description
    *
    * @tags Auth
-   * @name RegisterCreate
+   * @name AuthRegisterWithPost
    * @summary Register as user
    * @request POST:/auth/register
    */
-  registerCreate = (
+  authRegisterWithPost = (
     data: {
       name: string;
       /**
@@ -45,22 +45,20 @@ export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
       },
       Error
     >({
-      path: `/auth/register`,
+      url: `/api/micro-main/v1/auth/register`,
       method: 'POST',
-      body: data,
-      type: ContentType.Json,
-      format: 'json',
+      data: data,
       ...params
     });
   /**
    * No description
    *
    * @tags Auth
-   * @name LoginCreate
+   * @name AuthLoginWithPost
    * @summary Login
    * @request POST:/auth/login
    */
-  loginCreate = (
+  authLoginWithPost = (
     data: {
       /** @format email */
       email: string;
@@ -76,65 +74,60 @@ export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
       },
       Error
     >({
-      path: `/auth/login`,
+      url: `/api/micro-main/v1/auth/login`,
       method: 'POST',
-      body: data,
-      type: ContentType.Json,
-      format: 'json',
+      data: data,
       ...params
     });
   /**
    * No description
    *
    * @tags Auth
-   * @name LogoutCreate
+   * @name AuthLogoutWithPost
    * @summary Logout
    * @request POST:/auth/logout
    */
-  logoutCreate = (
+  authLogoutWithPost = (
     data: {
       refreshToken: string;
     },
     params: RequestParams = {}
   ) =>
     this.request<void, Error>({
-      path: `/auth/logout`,
+      url: `/api/micro-main/v1/auth/logout`,
       method: 'POST',
-      body: data,
-      type: ContentType.Json,
+      data: data,
       ...params
     });
   /**
    * No description
    *
    * @tags Auth
-   * @name RefreshTokensCreate
+   * @name AuthRefreshTokensWithPost
    * @summary Refresh auth tokens
    * @request POST:/auth/refresh-tokens
    */
-  refreshTokensCreate = (
+  authRefreshTokensWithPost = (
     data: {
       refreshToken: string;
     },
     params: RequestParams = {}
   ) =>
     this.request<AuthTokens, Error>({
-      path: `/auth/refresh-tokens`,
+      url: `/api/micro-main/v1/auth/refresh-tokens`,
       method: 'POST',
-      body: data,
-      type: ContentType.Json,
-      format: 'json',
+      data: data,
       ...params
     });
   /**
    * @description An email will be sent to reset password.
    *
    * @tags Auth
-   * @name ForgotPasswordCreate
+   * @name AuthForgotPasswordWithPost
    * @summary Forgot password
    * @request POST:/auth/forgot-password
    */
-  forgotPasswordCreate = (
+  authForgotPasswordWithPost = (
     data: {
       /** @format email */
       email: string;
@@ -142,21 +135,20 @@ export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
     params: RequestParams = {}
   ) =>
     this.request<void, Error>({
-      path: `/auth/forgot-password`,
+      url: `/api/micro-main/v1/auth/forgot-password`,
       method: 'POST',
-      body: data,
-      type: ContentType.Json,
+      data: data,
       ...params
     });
   /**
    * No description
    *
    * @tags Auth
-   * @name ResetPasswordCreate
+   * @name AuthResetPasswordWithPost
    * @summary Reset password
    * @request POST:/auth/reset-password
    */
-  resetPasswordCreate = (
+  authResetPasswordWithPost = (
     query: {
       /** The reset password token */
       token: string;
@@ -172,38 +164,36 @@ export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
     params: RequestParams = {}
   ) =>
     this.request<void, Error>({
-      path: `/auth/reset-password`,
+      url: `/api/micro-main/v1/auth/reset-password`,
       method: 'POST',
-      query: query,
-      body: data,
-      type: ContentType.Json,
+      params: query,
+      data: data,
       ...params
     });
   /**
    * @description An email will be sent to verify email.
    *
    * @tags Auth
-   * @name SendVerificationEmailCreate
+   * @name AuthSendVerificationEmailWithPost
    * @summary Send verification email
    * @request POST:/auth/send-verification-email
    * @secure
    */
-  sendVerificationEmailCreate = (params: RequestParams = {}) =>
+  authSendVerificationEmailWithPost = (params: RequestParams = {}) =>
     this.request<void, Error>({
-      path: `/auth/send-verification-email`,
+      url: `/api/micro-main/v1/auth/send-verification-email`,
       method: 'POST',
-      secure: true,
       ...params
     });
   /**
    * No description
    *
    * @tags Auth
-   * @name VerifyEmailCreate
+   * @name AuthVerifyEmailWithPost
    * @summary verify email
    * @request POST:/auth/verify-email
    */
-  verifyEmailCreate = (
+  authVerifyEmailWithPost = (
     query: {
       /** The verify email token */
       token: string;
@@ -211,9 +201,9 @@ export class Auth<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
     params: RequestParams = {}
   ) =>
     this.request<void, Error>({
-      path: `/auth/verify-email`,
+      url: `/api/micro-main/v1/auth/verify-email`,
       method: 'POST',
-      query: query,
+      params: query,
       ...params
     });
 }
