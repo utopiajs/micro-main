@@ -57,7 +57,7 @@ class HttpClient {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   public request = <T = any, _E = any>(
     requestParams: FullRequestParams
-  ): Promise<AxiosResponse<T>> => {
+  ): Promise<T> => {
     return this.instance
       .request(requestParams)
       .then((response) => response.data);
