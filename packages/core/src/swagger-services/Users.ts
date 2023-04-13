@@ -29,7 +29,7 @@ export class Users extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<User, any>({
+    this.request<User, Error>({
       url: `/api/micro-main/v1/users/info`,
       method: 'GET',
       params: query,
@@ -62,7 +62,7 @@ export class Users extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<User, Error>({
       url: `/api/micro-main/v1/users/create`,
       method: 'POST',
       data: data,

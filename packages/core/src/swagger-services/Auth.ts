@@ -55,7 +55,7 @@ export class Auth extends HttpClient {
    *
    * @tags Auth
    * @name AuthLoginWithPost
-   * @summary Login
+   * @summary User Login
    * @request POST:/auth/login
    */
   authLoginWithPost = (
@@ -84,7 +84,7 @@ export class Auth extends HttpClient {
    *
    * @tags Auth
    * @name AuthLogoutWithPost
-   * @summary Logout
+   * @summary User Logout
    * @request POST:/auth/logout
    */
   authLogoutWithPost = (
@@ -113,7 +113,7 @@ export class Auth extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<AuthTokens, Error>({
+    this.request<void, Error>({
       url: `/api/micro-main/v1/auth/refresh-tokens`,
       method: 'POST',
       data: data,
