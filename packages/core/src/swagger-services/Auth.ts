@@ -10,7 +10,7 @@
  */
 
 import { AuthTokens, Error, User } from './data-contracts';
-import { HttpClient, RequestParams } from './http-client';
+import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class Auth extends HttpClient {
   /**
@@ -39,10 +39,10 @@ export class Auth extends HttpClient {
     params: RequestParams = {}
   ) =>
     this.request<
-      {
+      ResponseCommonType<{
         user?: User;
         tokens?: AuthTokens;
-      },
+      }>,
       Error
     >({
       url: `/api/micro-main/v1/auth/register`,
@@ -68,10 +68,10 @@ export class Auth extends HttpClient {
     params: RequestParams = {}
   ) =>
     this.request<
-      {
+      ResponseCommonType<{
         user?: User;
         tokens?: AuthTokens;
-      },
+      }>,
       Error
     >({
       url: `/api/micro-main/v1/auth/login`,
@@ -93,7 +93,7 @@ export class Auth extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/logout`,
       method: 'POST',
       data: data,
@@ -113,7 +113,7 @@ export class Auth extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/refresh-tokens`,
       method: 'POST',
       data: data,
@@ -134,7 +134,7 @@ export class Auth extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/forgot-password`,
       method: 'POST',
       data: data,
@@ -163,7 +163,7 @@ export class Auth extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/reset-password`,
       method: 'POST',
       params: query,
@@ -180,7 +180,7 @@ export class Auth extends HttpClient {
    * @secure
    */
   authSendVerificationEmailWithPost = (params: RequestParams = {}) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/send-verification-email`,
       method: 'POST',
       ...params
@@ -200,7 +200,7 @@ export class Auth extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/verify-email`,
       method: 'POST',
       params: query,

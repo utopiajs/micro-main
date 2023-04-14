@@ -11,4 +11,10 @@
 
 import { HttpClient, RequestParams } from '@utopia/micro-main-utils';
 
-export { HttpClient, RequestParams };
+interface ResponseCommonType<T> {
+  message: string;
+  errorCode: string;
+  data: T;
+}
+
+export { HttpClient, RequestParams, ResponseCommonType };

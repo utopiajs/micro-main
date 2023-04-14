@@ -10,7 +10,7 @@
  */
 
 import { Error, User } from './data-contracts';
-import { HttpClient, RequestParams } from './http-client';
+import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class Users extends HttpClient {
   /**
@@ -29,7 +29,7 @@ export class Users extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<User, Error>({
+    this.request<ResponseCommonType<User>, Error>({
       url: `/api/micro-main/v1/users/info`,
       method: 'GET',
       params: query,
@@ -62,7 +62,7 @@ export class Users extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<User, Error>({
+    this.request<ResponseCommonType<User>, Error>({
       url: `/api/micro-main/v1/users/create`,
       method: 'POST',
       data: data,
@@ -101,7 +101,7 @@ export class Users extends HttpClient {
     params: RequestParams = {}
   ) =>
     this.request<
-      {
+      ResponseCommonType<{
         results?: User[];
         /** @example 1 */
         page?: number;
@@ -111,7 +111,7 @@ export class Users extends HttpClient {
         totalPages?: number;
         /** @example 1 */
         totalResults?: number;
-      },
+      }>,
       Error
     >({
       url: `/api/micro-main/v1/users/list`,
@@ -147,7 +147,7 @@ export class Users extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<User, Error>({
+    this.request<ResponseCommonType<User>, Error>({
       url: `/api/micro-main/v1/users/update`,
       method: 'PATCH',
       data: data,
@@ -169,7 +169,7 @@ export class Users extends HttpClient {
     },
     params: RequestParams = {}
   ) =>
-    this.request<void, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/users/delete`,
       method: 'DELETE',
       data: data,
