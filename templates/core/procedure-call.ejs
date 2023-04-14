@@ -86,7 +86,7 @@ const describeReturnType = () => {
 
  */
 <%~ route.routeName.usage %> = (<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> =>
-    <%~ config.singleHttpClient ? 'this.http.request' : 'this.request' %><<%~ type %>, <%~ errorType %>>({
+    <%~ config.singleHttpClient ? 'this.http.request' : 'this.request' %><ResponseCommonType<<%~ type %>>, <%~ errorType %>>({
         url: `<%~ `${apiConfig.basePath}${path}` %>`,
         method: '<%~ _.upperCase(method) %>',
         <%~ queryTmpl ? `params: ${queryTmpl},` : '' %>
