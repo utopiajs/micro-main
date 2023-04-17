@@ -10,6 +10,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "@utopia/micro-main-utils": "^0.0.1",
     "antd": "^5.4.2",
     "umi": "^4.0.55"
   },
