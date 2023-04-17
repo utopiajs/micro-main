@@ -1,3 +1,6 @@
-const isDev = () => process.env.NODE_ENV?.trim() !== 'production';
+import Cookies from 'js-cookie';
 
-export { isDev };
+const isDev = () => process.env.NODE_ENV?.trim() !== 'production';
+const _Cookies = Cookies;
+
+export { isDev, _Cookies };

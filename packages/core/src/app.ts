@@ -1,5 +1,9 @@
-import { type RunTimeLayoutConfig } from '@umijs/max';
+import { coreUserApi } from '@/services';
+import { type User } from '@/types';
+import { history, type RunTimeLayoutConfig } from '@umijs/max';
+import { _Cookies } from '@utopia/micro-main-utils';
 
+const loginPath = '/user-center/login';
 export const qiankun = {
   apps: [
     {
@@ -38,3 +42,30 @@ export const layout: RunTimeLayoutConfig = () => {
     }
   };
 };
+
+export async function getInitialState(): Promise<{
+  currentUser: User;
+}> {
+  const fetchUserInfo = async () => {
+    const userId = _Cookies.get('id');
+    try {
+      const result = await coreUserApi.usersInfoWithGet({ userId });
+      return result.data;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return {};
+  };
+
+  const { location } = history;
+  if (location.pathname !== loginPath) {
+    const currentUser = await fetchUserInfo();
+    return {
+      currentUser
+    };
+  }
+
+  return {
+    currentUser: {}
+  };
+}
