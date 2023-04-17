@@ -30,6 +30,18 @@ export interface AuthTokens {
   refresh?: Token;
 }
 
+export interface BingImg {
+  startdate?: string;
+  fullstartdate?: string;
+  enddate?: string;
+  url?: string;
+  urlbase?: string;
+  copyright?: string;
+  copyrightlink?: string;
+  quiz?: string;
+  wp?: string;
+}
+
 export interface Error {
   code?: number;
   message?: string;

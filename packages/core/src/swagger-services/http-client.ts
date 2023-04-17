@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { HttpClient, RequestParams } from '@utopia/micro-main-utils';
+import { HttpClient, type RequestParams } from '@utopia/micro-main-utils';
 
 interface ResponseCommonType<T> {
   message: string;
