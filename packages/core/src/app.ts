@@ -1,6 +1,7 @@
+import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
-import { type User } from '@/types';
-import { history, type RunTimeLayoutConfig } from '@umijs/max';
+import { type IClientConstantProps, type User } from '@/types';
+import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
 import { _Cookies } from '@utopia/micro-main-utils';
 
 const loginPath = '/user-center/login';
@@ -14,10 +15,13 @@ export const qiankun = {
 };
 
 export const layout: RunTimeLayoutConfig = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { initialState } = useModel('@@initialState');
   return {
-    title: '微前端主平台',
+    title: initialState?.client.clientName,
     layout: 'mix',
     siderWidth: 208,
+    pure: Boolean(!initialState?.currentUser.id),
     token: {
       header: {
         heightLayoutHeader: 48
@@ -45,6 +49,7 @@ export const layout: RunTimeLayoutConfig = () => {
 
 export async function getInitialState(): Promise<{
   currentUser: User;
+  client: Partial<IClientConstantProps>;
 }> {
   const fetchUserInfo = async () => {
     const userId = _Cookies.get('id');
@@ -61,11 +66,13 @@ export async function getInitialState(): Promise<{
   if (location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
     return {
-      currentUser
+      currentUser,
+      client: clientConstantProps
     };
   }
 
   return {
-    currentUser: {}
+    currentUser: {},
+    client: {}
   };
 }
