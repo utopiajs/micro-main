@@ -2,7 +2,7 @@ import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
 import { type IClientConstantProps, type User } from '@/types';
 import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
-import { _Cookies } from '@utopia/micro-main-utils';
+import { isApiSuccess, _Cookies } from '@utopia/micro-main-utils';
 
 const loginPath = '/user-center/login';
 export const qiankun = {
@@ -53,12 +53,14 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     const userId = _Cookies.get('id');
-    try {
-      const result = await coreUserApi.usersInfoWithGet({ userId });
-      return result.data;
-    } catch (error) {
-      history.push(loginPath);
+    const { errorCode, data } = await coreUserApi.usersInfoWithGet(
+      { userId },
+      { showErrorMessage: false }
+    );
+    if (isApiSuccess(errorCode)) {
+      return data;
     }
+    history.push(loginPath);
     return {};
   };
 
