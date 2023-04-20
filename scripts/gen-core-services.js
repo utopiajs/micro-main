@@ -5,6 +5,10 @@ const apis = [
   {
     output: path.resolve(process.cwd(), './packages/core/src/swagger-services/'),
     url: 'http://localhost:3000/api/micro-main/v1/docs/swagger.json'
+  },
+  {
+    output: path.resolve(process.cwd(), './packages/user-center/src/swagger-services/'),
+    url: 'http://localhost:3000/api/micro-main/v1/docs/swagger.json'
   }
 ];
 
