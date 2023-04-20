@@ -81,6 +81,7 @@ class HttpClient {
         if (showErrorMessage) {
           _message.error(error?.message);
         }
+        return error;
       });
   };
 }

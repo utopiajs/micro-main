@@ -1,3 +1,3 @@
-const ERROR_CODE = '000000';
+const ERROR_CODE = '0000000000';
 
 export { ERROR_CODE };
