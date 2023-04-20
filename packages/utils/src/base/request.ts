@@ -1,3 +1,4 @@
+import { message as _message } from 'antd';
 import axios, {
   type AxiosInstance,
   type AxiosRequestConfig,
@@ -13,16 +14,30 @@ interface IRawResponseData {
   message: string;
   [key: string]: unknown;
 }
-export interface FullRequestParams extends AxiosRequestConfig {}
+export interface RestRequestConfig {
+  /** 是否显示错误信息 */
+  showErrorMessage?: boolean;
+  /** 是否显示成功提示信息 */
+  showSuccessMessage?: boolean;
+}
+export interface FullRequestParams
+  extends AxiosRequestConfig,
+    RestRequestConfig {}
+
 export interface ApiConfig extends AxiosRequestConfig {}
 export type RequestParams = Omit<
   FullRequestParams,
   'data' | 'method' | 'params' | 'url'
 >;
 
-const defaultAxiosConfig: Pick<AxiosRequestConfig, 'timeout'> = {
-  timeout: 1000 * 60
+const defaultAxiosConfig: Pick<
+  AxiosRequestConfig,
+  'timeout' | 'validateStatus'
+> = {
+  timeout: 1000 * 60,
+  validateStatus: (status) => status >= 200 && status < 600 // for better message tip
 };
+
 const SUCCESS_ERROR_CODE = '0000000000';
 
 class HttpClient {
@@ -58,9 +73,15 @@ class HttpClient {
   public request = <T = any, _E = any>(
     requestParams: FullRequestParams
   ): Promise<T> => {
+    const { showErrorMessage } = requestParams;
     return this.instance
       .request(requestParams)
-      .then((response) => response.data);
+      .then((response) => response.data)
+      .catch((error) => {
+        if (showErrorMessage) {
+          _message.error(error?.message);
+        }
+      });
   };
 }
 
