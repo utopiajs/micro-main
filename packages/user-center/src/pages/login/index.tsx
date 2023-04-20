@@ -1,15 +1,30 @@
 // login page
+import { coreAuthApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { useSiteToken } from '@utopia/micro-main-utils';
+import {
+  getQueryParams,
+  isApiSuccess,
+  useSiteToken
+} from '@utopia/micro-main-utils';
 import { Button, Form, Input, Typography } from 'antd';
+import { useCallback } from 'react';
 import styles from './index.less';
 
 const { Title, Text } = Typography;
+const { redirectUrl = '/' } = getQueryParams();
 
 const LoginPage = () => {
   const {
     token: { colorBgContainer, padding, boxShadow }
   } = useSiteToken();
+
+  const handleLoginFormFinish = useCallback(async (value: any) => {
+    const { errorCode } = await coreAuthApi.authLoginWithPost(value);
+    if (isApiSuccess(errorCode)) {
+      window.location.href = redirectUrl;
+    }
+  }, []);
+
   return (
     <div className={styles['login-page-content']}>
       <div
@@ -21,9 +36,13 @@ const LoginPage = () => {
         }}
       >
         <Title level={4}>微前端主平台</Title>
-        <Form name="user-center-login" className="login-form">
+        <Form
+          name="user-center-login"
+          className="login-form"
+          onFinish={handleLoginFormFinish}
+        >
           <Form.Item
-            name="username"
+            name="email"
             rules={[{ required: true, message: '用户名是必填项' }]}
           >
             <Input

@@ -2,9 +2,14 @@ import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
 import { type IClientConstantProps, type User } from '@/types';
 import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
-import { isApiSuccess, _Cookies } from '@utopia/micro-main-utils';
+import {
+  getQueryParams,
+  isApiSuccess,
+  _Cookies
+} from '@utopia/micro-main-utils';
 
 const loginPath = '/user-center/login';
+const { redirectUrl = '/' } = getQueryParams();
 export const qiankun = {
   apps: [
     {
@@ -51,6 +56,7 @@ export async function getInitialState(): Promise<{
   currentUser: User;
   client: Partial<IClientConstantProps>;
 }> {
+  const { location } = history;
   const fetchUserInfo = async () => {
     const userId = _Cookies.get('id');
     const { errorCode, data } = await coreUserApi.usersInfoWithGet(
@@ -58,23 +64,18 @@ export async function getInitialState(): Promise<{
       { showErrorMessage: false }
     );
     if (isApiSuccess(errorCode)) {
+      if (location.pathname === loginPath) {
+        window.location.href = redirectUrl;
+      }
       return data;
     }
     history.push(loginPath);
     return {};
   };
 
-  const { location } = history;
-  if (location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      currentUser,
-      client: clientConstantProps
-    };
-  }
-
+  const currentUser = await fetchUserInfo();
   return {
-    currentUser: {},
-    client: {}
+    currentUser,
+    client: clientConstantProps
   };
 }
