@@ -79,3 +79,12 @@ export async function getInitialState(): Promise<{
     client: clientConstantProps
   };
 }
+
+// qiankun global data
+export const useQiankunStateForSlavea: any = () => {
+  const { initialState } = useModel('@@initialState');
+
+  return {
+    initialState
+  };
+};
