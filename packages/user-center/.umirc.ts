@@ -4,14 +4,17 @@ export default defineConfig({
   mfsu: {
     strategy: 'normal'
   },
-  monorepoRedirect: {},
+  monorepoRedirect: {
+    srcDir: ['dist/esm']
+  },
   publicPath: '/', //https://github.com/umijs/qiankun/issues/1953
   base: '/user-center/',
   routes: [
     { path: '/base-info', component: 'base-info' },
     { path: '/login', component: 'login' }
   ],
-  plugins: ['@umijs/plugins/dist/qiankun'],
+  plugins: ['@umijs/plugins/dist/qiankun', '@umijs/plugins/dist/model'],
+  model: {},
   qiankun: {
     slave: {}
   },

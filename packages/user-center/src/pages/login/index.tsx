@@ -1,5 +1,6 @@
 // login page
 import { coreAuthApi } from '@/services';
+import { type IClientConstantProps, type User } from '@/types';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {
   getQueryParams,
@@ -8,12 +9,22 @@ import {
 } from '@utopia/micro-main-utils';
 import { Button, Form, Input, Typography } from 'antd';
 import { useCallback } from 'react';
+import { useModel } from 'umi';
 import styles from './index.less';
+
+interface IInitialState {
+  currentUser: User;
+  client: Partial<IClientConstantProps>;
+}
 
 const { Title, Text } = Typography;
 const { redirectUrl = '/' } = getQueryParams();
 
 const LoginPage = () => {
+  const { initialState }: { initialState: IInitialState } = useModel(
+    '@@qiankunStateFromMaster'
+  );
+
   const {
     token: { colorBgContainer, padding, boxShadow }
   } = useSiteToken();
@@ -35,7 +46,7 @@ const LoginPage = () => {
           boxShadow
         }}
       >
-        <Title level={4}>微前端主平台</Title>
+        <Title level={4}>{initialState?.client.clientName}</Title>
         <Form
           name="user-center-login"
           className="login-form"
