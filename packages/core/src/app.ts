@@ -8,6 +8,11 @@ import {
   _Cookies
 } from '@utopia/micro-main-utils';
 
+interface IInitialState {
+  currentUser: User;
+  client: Partial<IClientConstantProps>;
+}
+
 const loginPath = '/user-center/login';
 const { redirectUrl = '/' } = getQueryParams();
 export const qiankun = {
@@ -52,10 +57,7 @@ export const layout: RunTimeLayoutConfig = () => {
   };
 };
 
-export async function getInitialState(): Promise<{
-  currentUser: User;
-  client: Partial<IClientConstantProps>;
-}> {
+export async function getInitialState(): Promise<IInitialState> {
   const { location } = history;
   const fetchUserInfo = async () => {
     const userId = _Cookies.get('id');
@@ -81,10 +83,13 @@ export async function getInitialState(): Promise<{
 }
 
 // qiankun global data
-export const useQiankunStateForSlavea: any = () => {
+export const useQiankunStateForSlave = (): { initialState: IInitialState } => {
   const { initialState } = useModel('@@initialState');
 
   return {
-    initialState
+    initialState: {
+      currentUser: initialState?.currentUser || {},
+      client: initialState?.client || {}
+    }
   };
 };
