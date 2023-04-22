@@ -1,0 +1,29 @@
+{
+  "name": "@utopia/micro-types",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "KuangPF <1633397286@qq.com>",
+  "homepage": "https://github.com/utopiajs/micro-main#readme",
+  "license": "ISC",
+  "main": "lib/types.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmmirror.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/utopiajs/micro-main.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/types.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/utopiajs/micro-main/issues"
+  }
+}
