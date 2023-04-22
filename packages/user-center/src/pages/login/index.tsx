@@ -1,21 +1,16 @@
 // login page
 import { coreAuthApi } from '@/services';
-import { type IClientConstantProps, type User } from '@/types';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {
   getQueryParams,
   isApiSuccess,
   useSiteToken
 } from '@utopia/micro-main-utils';
+import { type IInitialState } from '@utopia/micro-types';
 import { Button, Form, Input, Typography } from 'antd';
 import { useCallback } from 'react';
 import { useModel } from 'umi';
 import styles from './index.less';
-
-interface IInitialState {
-  currentUser: User;
-  client: Partial<IClientConstantProps>;
-}
 
 const { Title, Text } = Typography;
 const { redirectUrl = '/' } = getQueryParams();

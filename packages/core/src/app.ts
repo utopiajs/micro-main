@@ -1,17 +1,12 @@
 import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
-import { type IClientConstantProps, type User } from '@/types';
+import { type IInitialState } from '@utopia/micro-types';
 import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
 import {
   getQueryParams,
   isApiSuccess,
   _Cookies
 } from '@utopia/micro-main-utils';
-
-interface IInitialState {
-  currentUser: User;
-  client: Partial<IClientConstantProps>;
-}
 
 const loginPath = '/user-center/login';
 const { redirectUrl = '/' } = getQueryParams();
