@@ -15,6 +15,7 @@
     "@ant-design/pro-components": "^2.0.1",
     "@umijs/max": "^4.0.63",
     "@utopia/micro-main-utils": "^0.0.1",
+    "@utopia/micro-types": "^0.0.0",
     "antd": "^5.0.0"
   },
   "devDependencies": {
