@@ -2,7 +2,17 @@ import { defineConfig } from 'umi';
 
 export default defineConfig({
   mfsu: {
-    strategy: 'normal'
+    strategy: 'normal',
+    shared: {
+      react: {
+        singleton: true,
+        eager: true
+      },
+      'react-dom': {
+        singleton: true,
+        eager: true
+      }
+    }
   },
   monorepoRedirect: {
     srcDir: ['dist/esm']
