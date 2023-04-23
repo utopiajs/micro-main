@@ -16,12 +16,13 @@ const { Title, Text } = Typography;
 const { redirectUrl = '/' } = getQueryParams();
 
 const LoginPage = () => {
-  const { initialState }: { initialState: IInitialState } = useModel(
-    '@@qiankunStateFromMaster'
-  );
+  const {
+    initialState = { currentUser: {}, client: {} }
+  }: { initialState: IInitialState } =
+    useModel('@@qiankunStateFromMaster') || {};
 
   const {
-    token: { colorBgContainer, padding, boxShadow }
+    token: { colorBgContainer, padding, boxShadow, fontSizeSM }
   } = useSiteToken();
 
   const handleLoginFormFinish = useCallback(async (value: any) => {
@@ -77,7 +78,9 @@ const LoginPage = () => {
           </Form.Item>
         </Form>
         <p>
-          <Text type="secondary">KuangPF | Copyright © 2022-present</Text>
+          <Text type="secondary" style={{ fontSize: fontSizeSM }}>
+            {initialState.client.copyRight}
+          </Text>
         </p>
       </div>
     </div>

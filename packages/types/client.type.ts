@@ -5,6 +5,8 @@ interface IClientConstantProps {
   clientName: string;
   /** 平台版本号 */
   clientVersion: string;
+  /** copyright */
+  copyRight: string
 }
 
 interface IInitialState {
