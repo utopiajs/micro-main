@@ -1,12 +1,12 @@
 import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
-import { type IInitialState } from '@utopia/micro-types';
 import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
 import {
   getQueryParams,
   isApiSuccess,
   _Cookies
 } from '@utopia/micro-main-utils';
+import { type IInitialState } from '@utopia/micro-types';
 
 const loginPath = '/user-center/login';
 const { redirectUrl = '/' } = getQueryParams();
@@ -27,6 +27,7 @@ export const layout: RunTimeLayoutConfig = () => {
     layout: 'mix',
     siderWidth: 208,
     pure: Boolean(!initialState?.currentUser.id),
+    rightContentRender: false,
     token: {
       header: {
         heightLayoutHeader: 48
