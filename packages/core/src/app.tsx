@@ -1,3 +1,4 @@
+import { HeaderRightContent } from '@/components';
 import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
 import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
@@ -27,7 +28,9 @@ export const layout: RunTimeLayoutConfig = () => {
     layout: 'mix',
     siderWidth: 208,
     pure: Boolean(!initialState?.currentUser.id),
-    rightContentRender: false,
+    rightContentRender: () => {
+      return <HeaderRightContent />;
+    },
     token: {
       header: {
         heightLayoutHeader: 48
