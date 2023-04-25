@@ -1,13 +1,20 @@
 import { HeaderRightContent } from '@/components';
 import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
-import { history, useModel, type RunTimeLayoutConfig } from '@umijs/max';
+import {
+  history,
+  useModel,
+  type AntdConfig,
+  type RuntimeAntdConfig,
+  type RunTimeLayoutConfig
+} from '@umijs/max';
 import {
   getQueryParams,
   isApiSuccess,
   _Cookies
 } from '@utopia/micro-main-utils';
 import { type IInitialState } from '@utopia/micro-types';
+import { theme, type ThemeConfig } from 'antd';
 
 const loginPath = '/user-center/login';
 const { redirectUrl = '/' } = getQueryParams();
@@ -18,6 +25,14 @@ export const qiankun = {
       entry: '//localhost:9001'
     }
   ]
+};
+
+export const antd: RuntimeAntdConfig = (memo: AntdConfig) => {
+  const nextTheme: ThemeConfig = {
+    algorithm: theme.defaultAlgorithm
+  };
+  memo.theme = nextTheme;
+  return memo;
 };
 
 export const layout: RunTimeLayoutConfig = () => {

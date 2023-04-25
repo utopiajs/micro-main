@@ -15,7 +15,9 @@ export default defineConfig({
       microApp: 'user-center'
     }
   ],
-  antd: {},
+  antd: {
+    configProvider:{}
+  },
   access: {},
   model: {},
   qiankun: {
