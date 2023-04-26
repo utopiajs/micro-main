@@ -1,12 +1,10 @@
-import { HeaderRightContent } from '@/components';
 import { clientConstantProps } from '@/constants';
 import { coreUserApi } from '@/services';
 import {
   history,
   useModel,
   type AntdConfig,
-  type RuntimeAntdConfig,
-  type RunTimeLayoutConfig
+  type RuntimeAntdConfig
 } from '@umijs/max';
 import {
   getQueryParams,
@@ -33,42 +31,6 @@ export const antd: RuntimeAntdConfig = (memo: AntdConfig) => {
   };
   memo.theme = nextTheme;
   return memo;
-};
-
-export const layout: RunTimeLayoutConfig = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { initialState } = useModel('@@initialState');
-  return {
-    title: initialState?.client.clientName,
-    layout: 'mix',
-    siderWidth: 208,
-    pure: Boolean(!initialState?.currentUser.id),
-    rightContentRender: () => {
-      return <HeaderRightContent />;
-    },
-    token: {
-      header: {
-        heightLayoutHeader: 48
-      }
-    },
-    menu: {
-      request: () =>
-        new Promise((resolve) => {
-          resolve([
-            {
-              name: '用户管理',
-              path: '/user-center/',
-              children: [
-                {
-                  name: '用户信息',
-                  path: '/user-center/base-info'
-                }
-              ]
-            }
-          ]);
-        })
-    }
-  };
 };
 
 export async function getInitialState(): Promise<IInitialState> {

@@ -25,7 +25,6 @@ export default defineConfig({
   },
   initialState: {},
   request: {},
-  layout: {},
   npmClient: 'npm',
   proxy: {
     '/api/micro-main/v1': {
