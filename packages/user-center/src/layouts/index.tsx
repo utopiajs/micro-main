@@ -1,5 +1,5 @@
 import { ConfigProvider, theme } from 'antd';
-import { Outlet } from 'umi';
+import { Outlet } from '@umijs/max';
 import styles from './index.less';
 
 export default function Layout() {

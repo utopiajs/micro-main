@@ -9,7 +9,7 @@ import {
 import { type IInitialState } from '@utopia/micro-types';
 import { Button, Form, Input, Typography } from 'antd';
 import { useCallback } from 'react';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 import styles from './index.less';
 
 const { Title, Text } = Typography;

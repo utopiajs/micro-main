@@ -1,4 +1,4 @@
-import { defineConfig } from 'umi';
+import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
   mfsu: {
@@ -23,7 +23,6 @@ export default defineConfig({
     { path: '/base-info', component: 'base-info' },
     { path: '/login', component: 'login' }
   ],
-  plugins: ['@umijs/plugins/dist/qiankun', '@umijs/plugins/dist/model'],
   model: {},
   qiankun: {
     slave: {}

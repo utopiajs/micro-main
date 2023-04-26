@@ -3,23 +3,22 @@
   "private": true,
   "author": "KuangPF <1633397286@qq.com>",
   "scripts": {
-    "dev": "umi dev",
-    "build": "umi build",
-    "postinstall": "umi setup",
-    "setup": "umi setup",
-    "start": "npm run dev"
+    "build": "max build",
+    "dev": "max dev",
+    "postinstall": "max setup",
+    "setup": "max setup",
+    "start": "max run dev"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@umijs/max": "^4.0.63",
     "@utopia/micro-main-utils": "^0.0.1",
     "@utopia/micro-types": "^0.0.0",
-    "antd": "^5.4.2",
-    "umi": "^4.0.55"
+    "antd": "^5.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "@umijs/plugins": "^4.0.55",
     "typescript": "4.9.5"
   }
 }
