@@ -44,6 +44,7 @@ export default function Layout() {
         title={initialState?.client.clientName}
         layout="mix"
         siderWidth={208}
+        logo={initialState?.client.logo}
         pure={Boolean(!initialState?.currentUser.id)}
         onMenuHeaderClick={(e) => {
           e.stopPropagation();
