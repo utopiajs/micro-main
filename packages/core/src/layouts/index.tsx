@@ -1,6 +1,6 @@
 import { HeaderRightContent } from '@/components';
 import { ProLayout, type MenuDataItem } from '@ant-design/pro-components';
-import { Link, Outlet, useLocation, useModel } from '@umijs/max';
+import { Link, Outlet, useLocation, useModel, useNavigate } from '@umijs/max';
 import { ConfigProvider, theme } from 'antd';
 import { useCallback, useMemo, type ReactNode } from 'react';
 
@@ -12,6 +12,7 @@ type MenuItemProps = MenuDataItem & {
 export default function Layout() {
   const { initialState } = useModel('@@initialState');
   const location = useLocation();
+  const navigate = useNavigate();
   const headerContentJSX = useMemo(() => <HeaderRightContent />, []);
   const menuItemRender = useCallback(
     (menuItemProps: MenuItemProps, defaultDom: ReactNode) => {
@@ -44,6 +45,11 @@ export default function Layout() {
         layout="mix"
         siderWidth={208}
         pure={Boolean(!initialState?.currentUser.id)}
+        onMenuHeaderClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          navigate('/');
+        }}
         rightContentRender={() => headerContentJSX}
         menuItemRender={menuItemRender}
         menu={{
