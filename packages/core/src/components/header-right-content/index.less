@@ -1,0 +1,26 @@
+.header-right-content-wrap {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  line-height: 1;
+}
+
+.user-info-content-wrap {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  :global {
+    .user-base-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 5px;
+      .user-name {
+        margin-bottom: 5px;
+      }
+    }
+    .user-avatar {
+      width: 30px;
+    }
+  }
+}
