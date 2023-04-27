@@ -7,6 +7,8 @@ interface IClientConstantProps {
   clientVersion: string;
   /** copyright */
   copyRight: string
+  /** logo */
+  logo: string
 }
 
 interface IInitialState {
