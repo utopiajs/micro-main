@@ -39,6 +39,7 @@ const defaultAxiosConfig: Pick<
 };
 
 const SUCCESS_ERROR_CODE = '0000000000';
+const DEFAULT_ERROR_MESSAGE = '网络错误，请稍后重试';
 
 class HttpClient {
   private instance: AxiosInstance;
@@ -79,7 +80,7 @@ class HttpClient {
       .then((response) => response.data)
       .catch((error) => {
         if (showErrorMessage) {
-          _message.error(error?.message);
+          _message.error(error?.message || DEFAULT_ERROR_MESSAGE);
         }
         return error;
       });
