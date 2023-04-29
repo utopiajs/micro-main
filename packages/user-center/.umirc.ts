@@ -21,6 +21,7 @@ export default defineConfig({
   base: '/user-center/',
   routes: [
     { path: '/base-info', component: 'base-info' },
+    { path: '/preference-setting', component: 'preference-setting' },
     { path: '/login', component: 'login' }
   ],
   model: {},

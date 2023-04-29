@@ -64,6 +64,10 @@ export default function Layout() {
                     {
                       name: '用户信息',
                       path: '/user-center/base-info'
+                    },
+                    {
+                      name: '偏好设置',
+                      path: '/user-center/preference-setting'
                     }
                   ]
                 }
