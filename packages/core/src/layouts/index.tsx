@@ -70,6 +70,12 @@ export default function Layout() {
               ]);
             })
         }}
+        token={{
+          pageContainer: {
+            paddingBlockPageContainerContent: 12,
+            paddingInlinePageContainerContent: 12
+          }
+        }}
       >
         <Outlet />
       </ProLayout>
