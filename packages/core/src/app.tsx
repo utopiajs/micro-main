@@ -9,6 +9,7 @@ import {
 import {
   getQueryParams,
   isApiSuccess,
+  PublishSubscribe,
   _Cookies
 } from '@utopia/micro-main-utils';
 import { type IInitialState } from '@utopia/micro-types';
@@ -16,6 +17,8 @@ import { theme, type ThemeConfig } from 'antd';
 
 const loginPath = '/user-center/login';
 const { redirectUrl = '/' } = getQueryParams();
+const _MICRO_MAIN_CORE_PUB_SUB_ = new PublishSubscribe();
+
 export const qiankun = {
   apps: [
     {
@@ -69,3 +72,6 @@ export const useQiankunStateForSlave = (): { initialState: IInitialState } => {
     }
   };
 };
+
+// registe PublishSubscribe
+window._MICRO_MAIN_CORE_PUB_SUB_ = _MICRO_MAIN_CORE_PUB_SUB_;
