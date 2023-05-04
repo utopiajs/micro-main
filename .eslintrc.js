@@ -4,6 +4,10 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'no-param-reassign': 0
   },
+  globals: {
+    jsdom: true,
+    JSX: true
+  },
   settings: {
     'import/resolver': {
       typescript: {
