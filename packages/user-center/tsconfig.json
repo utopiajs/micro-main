@@ -1,6 +1,7 @@
 {
   "extends": "./src/.umi/tsconfig.json",
   "compilerOptions": {
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true
   }
 }
