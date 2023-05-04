@@ -1,5 +1,5 @@
 /** 偏好设置 */
-import { Form, type MenuTheme } from 'antd';
+import { Button, Form, type MenuTheme } from 'antd';
 import { useCallback, useRef, useState, type FC } from 'react';
 import BlockCheckbox from './block-check-box';
 import Styles from './index.less';
@@ -12,6 +12,9 @@ export interface IPreferenceSettings {
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 }
+};
+const tailLayout = {
+  wrapperCol: { offset: 4, span: 20 }
 };
 
 const themeList = [
@@ -46,6 +49,7 @@ const PreferenceSetting: FC = () => {
   });
 
   const preStateRef = useRef(settingState);
+  const [preferenceSettingForm] = Form.useForm();
 
   const handleSetSettingState = useCallback((key: string, value: string) => {
     const nextState = { ...preStateRef.current };
@@ -54,29 +58,45 @@ const PreferenceSetting: FC = () => {
     setSettingState(nextState);
   }, []);
 
-  const { navTheme, primaryColor } = settingState;
+  const handleReset = useCallback(() => {
+    preferenceSettingForm.resetFields();
+  }, [preferenceSettingForm]);
+
   return (
     <div className={Styles['preference-setting-wrap']}>
-      <Form name="preference-strring" {...formItemLayout}>
-        <Form.Item label="主题风格">
+      <Form
+        name="preference-setting"
+        initialValues={settingState}
+        form={preferenceSettingForm}
+        {...formItemLayout}
+      >
+        <Form.Item label="主题风格" name="navTheme">
           <BlockCheckbox
             list={themeList}
-            value={navTheme}
+            // value={navTheme}
             key="navTheme"
             onChange={(value) => {
               handleSetSettingState('navTheme', value);
             }}
           />
         </Form.Item>
-        <Form.Item label="主题色">
+        <Form.Item label="主题色" name="primaryColor">
           <ThemeColor
             colorList={colorList}
-            value={primaryColor}
+            // value={primaryColor}
             key="primaryColor"
             onChange={(value) => {
               handleSetSettingState('primaryColor', value);
             }}
           />
+        </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            保存
+          </Button>
+          <Button onClick={handleReset}>
+            重置
+          </Button>
         </Form.Item>
       </Form>
     </div>

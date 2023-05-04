@@ -23,7 +23,7 @@ export type ThemeColorProps = {
     color: string;
     title?: string;
   }[];
-  value: string;
+  value?: string;
   onChange: (color: string) => void;
 };
 

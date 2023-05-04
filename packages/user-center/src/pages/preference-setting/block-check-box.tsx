@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 export interface BlockCheckboxProps {
-  value: string;
+  value?: string;
   onChange: (key: string) => void;
   list?: {
     title: string;
