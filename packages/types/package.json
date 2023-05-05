@@ -25,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/utopiajs/micro-main/issues"
+  },
+  "dependencies": {
+    "antd": "^5.0.0"
   }
 }
