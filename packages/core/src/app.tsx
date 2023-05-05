@@ -1,4 +1,4 @@
-import { clientConstantProps } from '@/constants';
+import { clientConstantProps, siteThemeConfig } from '@/constants';
 import { coreUserApi } from '@/services';
 import {
   history,
@@ -57,6 +57,7 @@ export async function getInitialState(): Promise<IInitialState> {
   const currentUser = await fetchUserInfo();
   return {
     currentUser,
+    siteThemeConfig,
     client: clientConstantProps
   };
 }
@@ -68,7 +69,8 @@ export const useQiankunStateForSlave = (): { initialState: IInitialState } => {
   return {
     initialState: {
       currentUser: initialState?.currentUser || {},
-      client: initialState?.client || {}
+      client: initialState?.client || {},
+      siteThemeConfig: initialState?.siteThemeConfig || {}
     }
   };
 };
