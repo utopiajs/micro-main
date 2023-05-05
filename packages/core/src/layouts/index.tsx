@@ -67,10 +67,11 @@ export default function Layout() {
     window._MICRO_MAIN_CORE_PUB_SUB_.subscribe(
       PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
       (payload) => {
-        setSiteThemeConfig(payload);
-        window._MICRO_MAIN_CORE_PUB_SUB_.publis(
+        const _siteThemeConfig = getSiteThemeConfig(payload);
+        setSiteThemeConfig(_siteThemeConfig);
+        window._MICRO_MAIN_CORE_PUB_SUB_.publish(
           PUB_SUB_TYPES.UPDATE_SITE_THEME_CONFIG,
-          getSiteThemeConfig(payload)
+          _siteThemeConfig
         );
       }
     );
