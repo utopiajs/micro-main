@@ -1,19 +1,21 @@
 /** 偏好设置 */
-import { Button, Form, type MenuTheme } from 'antd';
-import { useCallback, useRef, useState, type FC } from 'react';
+import { PUB_SUB_TYPES } from '@utopia/micro-types';
+import { Button, Form, Radio, type MenuTheme } from 'antd';
+import { useCallback, useState, type FC } from 'react';
 import BlockCheckbox from './block-check-box';
 import Styles from './index.less';
 import ThemeColor from './ThemeColor';
 
 export interface IPreferenceSettings {
-  navTheme: MenuTheme;
-  primaryColor: string;
+  theme: MenuTheme;
+  colorPrimary: string;
+  borderRadius: number;
 }
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 }
 };
-const tailLayout = {
+const formTailLayout = {
   wrapperCol: { offset: 4, span: 20 }
 };
 
@@ -41,26 +43,40 @@ const colorList = [
   { key: 'geekblue', color: '#2F54EB', title: '极客蓝' },
   { key: 'purple', color: '#722ED1', title: '酱紫' }
 ];
+const borderRadiusList = [
+  {
+    label: '小',
+    value: 4
+  },
+  {
+    label: '中',
+    value: 6
+  },
+  {
+    label: '大',
+    value: 8
+  }
+];
 
 const PreferenceSetting: FC = () => {
-  const [settingState, setSettingState] = useState<IPreferenceSettings>({
-    navTheme: 'dark',
-    primaryColor: '#1677FF'
+  const [settingState] = useState<IPreferenceSettings>({
+    theme: 'dark',
+    colorPrimary: '#1677FF',
+    borderRadius: 6
   });
 
-  const preStateRef = useRef(settingState);
   const [preferenceSettingForm] = Form.useForm();
-
-  const handleSetSettingState = useCallback((key: string, value: string) => {
-    const nextState = { ...preStateRef.current };
-    nextState[key] = value;
-    preStateRef.current = nextState;
-    setSettingState(nextState);
-  }, []);
 
   const handleReset = useCallback(() => {
     preferenceSettingForm.resetFields();
   }, [preferenceSettingForm]);
+
+  const handleValueChange = useCallback((_, allFields) => {
+    window._MICRO_MAIN_CORE_PUB_SUB_?.publish(
+      PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
+      allFields
+    );
+  }, []);
 
   return (
     <div className={Styles['preference-setting-wrap']}>
@@ -68,35 +84,27 @@ const PreferenceSetting: FC = () => {
         name="preference-setting"
         initialValues={settingState}
         form={preferenceSettingForm}
+        onValuesChange={handleValueChange}
         {...formItemLayout}
       >
-        <Form.Item label="主题风格" name="navTheme">
-          <BlockCheckbox
-            list={themeList}
-            // value={navTheme}
-            key="navTheme"
-            onChange={(value) => {
-              handleSetSettingState('navTheme', value);
-            }}
+        <Form.Item label="主题风格" name="theme">
+          <BlockCheckbox list={themeList} key="theme" />
+        </Form.Item>
+        <Form.Item label="主题色" name="colorPrimary">
+          <ThemeColor colorList={colorList} key="colorPrimary" />
+        </Form.Item>
+        <Form.Item label="圆角大小" name="borderRadius">
+          <Radio.Group
+            options={borderRadiusList}
+            optionType="button"
+            buttonStyle="solid"
           />
         </Form.Item>
-        <Form.Item label="主题色" name="primaryColor">
-          <ThemeColor
-            colorList={colorList}
-            // value={primaryColor}
-            key="primaryColor"
-            onChange={(value) => {
-              handleSetSettingState('primaryColor', value);
-            }}
-          />
-        </Form.Item>
-        <Form.Item {...tailLayout}>
+        <Form.Item {...formTailLayout}>
           <Button type="primary" htmlType="submit">
             保存
           </Button>
-          <Button onClick={handleReset}>
-            重置
-          </Button>
+          <Button onClick={handleReset}>重置</Button>
         </Form.Item>
       </Form>
     </div>

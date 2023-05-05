@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 export interface BlockCheckboxProps {
   value?: string;
-  onChange: (key: string) => void;
+  onChange?: (key: string) => void;
   list?: {
     title: string;
     key: string;
@@ -25,7 +25,7 @@ const BlockCheckbox: React.FC<BlockCheckboxProps> = ({
       <div
         key={item.key}
         className={`${baseClassName}-item`}
-        onClick={() => onChange(item.key)}
+        onClick={() => onChange && onChange(item.key)}
       >
         <Tooltip title={item.title} key={item.key}>
           <img src={item.url} alt={item.key} />

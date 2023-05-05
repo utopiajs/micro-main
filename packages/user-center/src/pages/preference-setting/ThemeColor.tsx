@@ -24,7 +24,7 @@ export type ThemeColorProps = {
     title?: string;
   }[];
   value?: string;
-  onChange: (color: string) => void;
+  onChange?: (color: string) => void;
 };
 
 const ThemeColor: React.ForwardRefRenderFunction<
