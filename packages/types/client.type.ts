@@ -1,3 +1,4 @@
+import { type ThemeConfig } from 'antd';
 import { type User } from './micro-main-service/data-contracts';
 
 interface IClientConstantProps {
@@ -6,14 +7,15 @@ interface IClientConstantProps {
   /** 平台版本号 */
   clientVersion: string;
   /** copyright */
-  copyRight: string
+  copyRight: string;
   /** logo */
-  logo: string
+  logo: string;
 }
 
 interface IInitialState {
   currentUser: User;
   client: Partial<IClientConstantProps>;
+  siteThemeConfig: ThemeConfig;
 }
 
 export { IClientConstantProps, IInitialState };
