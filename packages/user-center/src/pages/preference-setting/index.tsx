@@ -60,7 +60,7 @@ const borderRadiusList = [
 
 const PreferenceSetting: FC = () => {
   const [settingState] = useState<IPreferenceSettings>({
-    theme: 'dark',
+    theme: 'light',
     colorPrimary: '#1677FF',
     borderRadius: 6
   });
