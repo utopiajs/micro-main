@@ -1,6 +1,7 @@
 import { HeaderRightContent } from '@/components';
 import { ProLayout, type MenuDataItem } from '@ant-design/pro-components';
 import { Link, Outlet, useLocation, useModel, useNavigate } from '@umijs/max';
+import { useSiteToken } from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { ConfigProvider, theme as antdTheme, type ThemeConfig } from 'antd';
 import {
@@ -10,6 +11,7 @@ import {
   useState,
   type ReactNode
 } from 'react';
+import './index.less';
 
 type MenuItemProps = MenuDataItem & {
   isUrl: boolean;
@@ -24,6 +26,9 @@ export default function Layout() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const {
+    token: { colorBgLayout, colorBgContainer }
+  } = useSiteToken();
   const headerContentJSX = useMemo(() => <HeaderRightContent />, []);
 
   const menuItemRender = useCallback(
@@ -115,12 +120,18 @@ export default function Layout() {
         }}
         token={{
           pageContainer: {
-            paddingBlockPageContainerContent: 12,
-            paddingInlinePageContainerContent: 12
+            paddingBlockPageContainerContent: 6,
+            paddingInlinePageContainerContent: 6,
+            colorBgPageContainer: colorBgLayout
           }
         }}
       >
-        <Outlet />
+        <div
+          className="micro-main-core-content"
+          style={{ backgroundColor: colorBgContainer }}
+        >
+          <Outlet />
+        </div>
       </ProLayout>
     </ConfigProvider>
   );
