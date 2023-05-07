@@ -1,4 +1,5 @@
 /** 偏好设置 */
+import { useModel } from '@umijs/max';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { Button, Form, Radio, type MenuTheme } from 'antd';
 import { useCallback, useState, type FC } from 'react';
@@ -59,11 +60,10 @@ const borderRadiusList = [
 ];
 
 const PreferenceSetting: FC = () => {
-  const [settingState] = useState<IPreferenceSettings>({
-    theme: 'light',
-    colorPrimary: '#1677FF',
-    borderRadius: 6
-  });
+  const { initialState } = useModel('@@qiankunStateFromMaster');
+  const [settingState] = useState<IPreferenceSettings>(
+    initialState?.siteThemeConfig
+  );
 
   const [preferenceSettingForm] = Form.useForm();
 
