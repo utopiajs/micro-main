@@ -60,7 +60,7 @@ const borderRadiusList = [
 ];
 
 const PreferenceSetting: FC = () => {
-  const { initialState } = useModel('@@qiankunStateFromMaster');
+  const { initialState } = useModel('@@qiankunStateFromMaster') || {};
   const [settingState] = useState<IPreferenceSettings>(
     initialState?.siteThemeConfig
   );
