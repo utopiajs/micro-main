@@ -1,7 +1,10 @@
 import { HeaderRightContent } from '@/components';
 import { ProLayout, type MenuDataItem } from '@ant-design/pro-components';
 import { Link, Outlet, useLocation, useModel, useNavigate } from '@umijs/max';
-import { useSiteToken } from '@utopia/micro-main-utils';
+import {
+  getAntdConfigProviderTheme,
+  useSiteToken
+} from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { ConfigProvider, theme as antdTheme, type ThemeConfig } from 'antd';
 import {
@@ -20,8 +23,8 @@ type MenuItemProps = MenuDataItem & {
 
 export default function Layout() {
   const { initialState } = useModel('@@initialState');
-  const [siteThemeConfig, setSiteThemeConfig] = useState(
-    initialState?.siteThemeConfig
+  const [siteAntdThemeConfig, setAntdSiteThemeConfig] = useState(
+    getAntdConfigProviderTheme(initialState?.siteThemeConfig)
   );
 
   const location = useLocation();
@@ -73,7 +76,7 @@ export default function Layout() {
       PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
       (payload) => {
         const _siteThemeConfig = getSiteThemeConfig(payload);
-        setSiteThemeConfig(_siteThemeConfig);
+        setAntdSiteThemeConfig(_siteThemeConfig);
         window._MICRO_MAIN_CORE_PUB_SUB_.publish(
           PUB_SUB_TYPES.UPDATE_SITE_THEME_CONFIG,
           _siteThemeConfig
@@ -83,7 +86,7 @@ export default function Layout() {
   }, [getSiteThemeConfig]);
 
   return (
-    <ConfigProvider theme={siteThemeConfig}>
+    <ConfigProvider theme={siteAntdThemeConfig}>
       <ProLayout
         title={initialState?.client.clientName}
         layout="mix"

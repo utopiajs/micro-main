@@ -1,4 +1,4 @@
-import { type ThemeConfig } from 'antd';
+import { type MenuTheme } from 'antd';
 import { type User } from './micro-main-service/data-contracts';
 
 interface IClientConstantProps {
@@ -12,10 +12,16 @@ interface IClientConstantProps {
   logo: string;
 }
 
+interface ISiteThemeConfig {
+  theme: MenuTheme;
+  colorPrimary: string;
+  borderRadius: number;
+}
+
 interface IInitialState {
   currentUser: User;
   client: Partial<IClientConstantProps>;
-  siteThemeConfig: ThemeConfig;
+  siteThemeConfig: Partial<ISiteThemeConfig>;
 }
 
-export { IClientConstantProps, IInitialState };
+export { IClientConstantProps, IInitialState, ISiteThemeConfig };
