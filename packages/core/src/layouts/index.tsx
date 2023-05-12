@@ -30,7 +30,7 @@ export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const {
-    token: { colorBgLayout, colorBgContainer }
+    token
   } = useSiteToken();
   const headerContentJSX = useMemo(() => <HeaderRightContent />, []);
 
@@ -125,13 +125,13 @@ export default function Layout() {
           pageContainer: {
             paddingBlockPageContainerContent: 6,
             paddingInlinePageContainerContent: 6,
-            colorBgPageContainer: colorBgLayout
+            colorBgPageContainer: token.colorBgLayout
           }
         }}
       >
         <div
           className="micro-main-core-content"
-          style={{ backgroundColor: colorBgContainer }}
+          style={{ backgroundColor: token.colorBgContainer }}
         >
           <Outlet />
         </div>
