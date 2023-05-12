@@ -1,3 +1,4 @@
+import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { message as _message } from 'antd';
 import axios, {
   type AxiosInstance,
@@ -19,6 +20,8 @@ export interface RestRequestConfig {
   showErrorMessage?: boolean;
   /** 是否显示成功提示信息 */
   showSuccessMessage?: boolean;
+  /** 是否显示 api loading */
+  showApiLoadingStatus?: boolean;
 }
 export interface FullRequestParams
   extends AxiosRequestConfig,
@@ -30,6 +33,7 @@ export type RequestParams = Omit<
   'data' | 'method' | 'params' | 'url'
 >;
 
+type TUpdateApiLoadingStatus = 'increase' | 'decrease';
 const defaultAxiosConfig: Pick<
   AxiosRequestConfig,
   'timeout' | 'validateStatus'
@@ -40,6 +44,29 @@ const defaultAxiosConfig: Pick<
 
 const SUCCESS_ERROR_CODE = '0000000000';
 const DEFAULT_ERROR_MESSAGE = '网络错误，请稍后重试';
+const apiLoadingInfo = {
+  count: 0
+};
+const handleUpdateApiLoadingStatus = (type: TUpdateApiLoadingStatus) => {
+  switch (type) {
+    case 'increase':
+      apiLoadingInfo.count += 1;
+      break;
+    case 'decrease':
+      apiLoadingInfo.count += 1;
+      break;
+    default:
+      apiLoadingInfo.count = 0;
+      break;
+  }
+
+  window._MICRO_MAIN_CORE_PUB_SUB_?.publish(
+    PUB_SUB_TYPES.UPDATE_API_LOADING_STATUS,
+    {
+      loading: Boolean(apiLoadingInfo.count > 0)
+    }
+  );
+};
 
 class HttpClient {
   private instance: AxiosInstance;
@@ -48,7 +75,12 @@ class HttpClient {
     this.instance = axios.create({ ...defaultAxiosConfig, ...axiosConfig });
     // interceptor
     this.instance.interceptors.request.use(
-      (config: InternalAxiosRequestConfig) => {
+      (config: InternalAxiosRequestConfig & RestRequestConfig) => {
+        if (config.showApiLoadingStatus) {
+          // add global loading
+          handleUpdateApiLoadingStatus('increase');
+        }
+
         // token
         config.headers.Authorization = `Bearer ${getToken()}`;
         return config;
@@ -56,7 +88,15 @@ class HttpClient {
     );
     // handle response data
     this.instance.interceptors.response.use(
-      (response: AxiosResponse) => {
+      (
+        response: Omit<AxiosResponse, 'config'> & {
+          config: InternalAxiosRequestConfig & RestRequestConfig;
+        }
+      ) => {
+        if (response.config.showApiLoadingStatus) {
+          // remove global loading
+          handleUpdateApiLoadingStatus('decrease');
+        }
         const rawResponseData: IRawResponseData = response.data;
         const { errorCode, message } = rawResponseData;
         if (errorCode !== SUCCESS_ERROR_CODE) {
@@ -65,6 +105,7 @@ class HttpClient {
         return response;
       },
       (error) => {
+        handleUpdateApiLoadingStatus('decrease');
         return Promise.reject(error);
       }
     );
