@@ -1,5 +1,5 @@
-import ApiLoadingStatus from './network-status';
 import Styles from './index.less';
+import ApiLoadingStatus from './network-status';
 import UserInfoContent from './user-info-content';
 
 const HeaderRightContent = () => {
