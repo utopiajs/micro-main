@@ -1,8 +1,14 @@
 import { useSiteToken } from '@utopia/micro-main-utils';
+import { type IInitialState } from '@utopia/micro-types';
 import { Avatar } from 'antd';
 import Styles from './index.less';
 
-const UserInfoContent = () => {
+interface IProps {
+  initialState?: IInitialState;
+}
+
+const UserInfoContent = (props: IProps) => {
+  const { initialState } = props;
   const {
     token: { fontSizeSM, colorText, colorTextTertiary }
   } = useSiteToken();
@@ -13,7 +19,7 @@ const UserInfoContent = () => {
     >
       <div className="user-base-info">
         <div style={{ color: colorText }} className="user-name">
-          KuangPF
+          {initialState?.currentUser.name}
         </div>
         <div style={{ color: colorTextTertiary }}>主账号</div>
       </div>
