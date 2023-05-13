@@ -42,7 +42,7 @@ export async function getInitialState(): Promise<IInitialState> {
     const userId = _Cookies.get('id');
     const { errorCode, data } = await coreUserApi.usersInfoWithGet(
       { userId },
-      { showErrorMessage: false }
+      { showErrorMessage: false, showApiLoadingStatus: false }
     );
     if (isApiSuccess(errorCode)) {
       if (location.pathname === loginPath) {

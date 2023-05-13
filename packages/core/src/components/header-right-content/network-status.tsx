@@ -11,7 +11,6 @@ const NetworkStatus = () => {
     window._MICRO_MAIN_CORE_PUB_SUB_.subscribe(
       PUB_SUB_TYPES.UPDATE_API_LOADING_STATUS,
       (paylod) => {
-        console.log('s')
         setApiLoading(paylod.loading);
       }
     );
