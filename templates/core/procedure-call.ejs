@@ -14,7 +14,7 @@ const requestConfigParam = {
     name: specificArgNameResolver.resolve(RESERVED_REQ_PARAMS_ARG_NAMES),
     optional: true,
     type: "RequestParams",
-    defaultValue: "{showErrorMessage: true,showSuccessMessage: false}",
+    defaultValue: "{showErrorMessage: true,showSuccessMessage: false,showApiLoadingStatus: true}",
 }
 
 const argToTmpl = ({ name, optional, type, defaultValue }) => `${name}${!defaultValue && optional ? '?' : ''}: ${type}${defaultValue ? ` = ${defaultValue}` : ''}`;
