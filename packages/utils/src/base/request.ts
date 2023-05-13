@@ -53,7 +53,7 @@ const handleUpdateApiLoadingStatus = (type: TUpdateApiLoadingStatus) => {
       apiLoadingInfo.count += 1;
       break;
     case 'decrease':
-      apiLoadingInfo.count += 1;
+      apiLoadingInfo.count -= 1;
       break;
     default:
       apiLoadingInfo.count = 0;
