@@ -29,7 +29,7 @@ export class Commons extends HttpClient {
       /** 请求的天数数量，默认为1，范围1-8 */
       days?: number;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<BingImg[]>, Error>({
       url: `/api/micro-main/v1/common/static/bing-img`,

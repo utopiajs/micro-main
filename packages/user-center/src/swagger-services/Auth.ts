@@ -36,7 +36,7 @@ export class Auth extends HttpClient {
        */
       password: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<
       ResponseCommonType<{
@@ -65,7 +65,7 @@ export class Auth extends HttpClient {
       /** @format password */
       password: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<
       ResponseCommonType<{
@@ -91,7 +91,7 @@ export class Auth extends HttpClient {
     data: {
       refreshToken: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/logout`,
@@ -111,7 +111,7 @@ export class Auth extends HttpClient {
     data: {
       refreshToken: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/refresh-tokens`,
@@ -132,7 +132,7 @@ export class Auth extends HttpClient {
       /** @format email */
       email: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/forgot-password`,
@@ -161,7 +161,7 @@ export class Auth extends HttpClient {
        */
       password: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/reset-password`,
@@ -179,7 +179,9 @@ export class Auth extends HttpClient {
    * @request POST:/auth/send-verification-email
    * @secure
    */
-  authSendVerificationEmailWithPost = (params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }) =>
+  authSendVerificationEmailWithPost = (
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/send-verification-email`,
       method: 'POST',
@@ -198,7 +200,7 @@ export class Auth extends HttpClient {
       /** The verify email token */
       token: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/auth/verify-email`,

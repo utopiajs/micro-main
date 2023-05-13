@@ -27,7 +27,7 @@ export class Users extends HttpClient {
       /** User id */
       userId: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<User>, Error>({
       url: `/api/micro-main/v1/users/info`,
@@ -60,7 +60,7 @@ export class Users extends HttpClient {
       password: string;
       role: 'user' | 'admin';
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<User>, Error>({
       url: `/api/micro-main/v1/users/create`,
@@ -98,7 +98,7 @@ export class Users extends HttpClient {
        */
       page?: number;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<
       ResponseCommonType<{
@@ -145,7 +145,7 @@ export class Users extends HttpClient {
        */
       password?: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<User>, Error>({
       url: `/api/micro-main/v1/users/update`,
@@ -167,7 +167,7 @@ export class Users extends HttpClient {
       /** User id */
       userId?: string;
     },
-    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false }
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/users/delete`,
