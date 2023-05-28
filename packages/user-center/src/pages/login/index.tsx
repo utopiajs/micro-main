@@ -1,29 +1,40 @@
 // login page
-import { coreAuthApi } from '@/services';
+import { coreAuthApi, coreCommonsApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import {
   getQueryParams,
   isApiSuccess,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import { type IInitialState } from '@utopia/micro-types';
+import { type BingImg, type IInitialState } from '@utopia/micro-types';
 import { Button, Form, Input, Typography } from 'antd';
-import { useCallback } from 'react';
-import { useModel } from '@umijs/max';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
 
 const { Title, Text } = Typography;
 const { redirectUrl = '/' } = getQueryParams();
 
 const LoginPage = () => {
+  const [bingImgInfo, setBingImgInfo] = useState<BingImg>({});
   const {
     initialState = { currentUser: {}, client: {} }
-  }: { initialState: IInitialState } =
+  }: { initialState: Partial<IInitialState> } =
     useModel('@@qiankunStateFromMaster') || {};
 
   const {
     token: { colorBgContainer, padding, boxShadow, fontSizeSM }
   } = useSiteToken();
+
+  useEffect(() => {
+    (async () => {
+      const { data, errorCode } =
+        await coreCommonsApi.commonStaticBingImgWithGet();
+      if (isApiSuccess(errorCode)) {
+        setBingImgInfo(data[0]);
+      }
+    })();
+  }, []);
 
   const handleLoginFormFinish = useCallback(async (value: any) => {
     const { errorCode } = await coreAuthApi.authLoginWithPost(value);
@@ -42,7 +53,7 @@ const LoginPage = () => {
           boxShadow
         }}
       >
-        <Title level={4}>{initialState?.client.clientName}</Title>
+        <Title level={4}>{initialState?.client?.clientName}</Title>
         <Form
           name="user-center-login"
           className="login-form"
@@ -79,10 +90,16 @@ const LoginPage = () => {
         </Form>
         <p>
           <Text type="secondary" style={{ fontSize: fontSizeSM }}>
-            {initialState.client.copyRight}
+            {initialState?.client?.copyRight}
           </Text>
         </p>
       </div>
+      <div
+        className="bg-wrap"
+        style={{
+          backgroundImage: `url(https://www.bing.com${bingImgInfo.url})`
+        }}
+      />
     </div>
   );
 };
