@@ -14,6 +14,14 @@ import styles from './index.less';
 
 const { Title, Text } = Typography;
 const { redirectUrl = '/' } = getQueryParams();
+const bingImgInfoCacheKey = 'utopia-uc-bing-img-cache';
+
+const getCurrentDate = () => {
+  const currentDate = new Date();
+  return `${currentDate.getFullYear()}${String(
+    currentDate.getMonth() + 1
+  ).padStart(2, '0')}${String(currentDate.getDate()).padStart(2, '0')}`;
+};
 
 const LoginPage = () => {
   const [bingImgInfo, setBingImgInfo] = useState<BingImg>({});
@@ -28,10 +36,25 @@ const LoginPage = () => {
 
   useEffect(() => {
     (async () => {
-      const { data, errorCode } =
-        await coreCommonsApi.commonStaticBingImgWithGet();
-      if (isApiSuccess(errorCode)) {
-        setBingImgInfo(data[0]);
+      try {
+        const bingImgInfoCache: BingImg = JSON.parse(
+          localStorage.getItem(bingImgInfoCacheKey) || '{}'
+        );
+
+        if (bingImgInfoCache.enddate === getCurrentDate()) {
+          setBingImgInfo(bingImgInfoCache);
+          return;
+        }
+        const { data, errorCode } =
+          await coreCommonsApi.commonStaticBingImgWithGet();
+        if (isApiSuccess(errorCode)) {
+          setBingImgInfo(data[0]);
+          // 同一天避免重复请求
+          localStorage.setItem(bingImgInfoCacheKey, JSON.stringify(data[0]));
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
       }
     })();
   }, []);
