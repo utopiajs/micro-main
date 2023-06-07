@@ -1,3 +1,4 @@
+/* stylelint-disable rule-empty-line-before */
 .header-right-content-wrap {
   display: flex;
   align-items: center;
@@ -6,6 +7,7 @@
 }
 
 .user-info-content-wrap {
+  position: relative;
   display: flex;
   align-items: center;
   height: 100%;
@@ -20,7 +22,37 @@
       }
     }
     .user-avatar {
-      width: 30px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 5px;
+      cursor: pointer;
+      .drop-content-arrow {
+        margin-left: 5px;
+        transition: all 0.3s ease-in;
+        transform: rotate(0deg);
+        &-active {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .drop-content-panel {
+      position: absolute;
+      top: 55px;
+      right: -20px;
+      width: 200px;
+      padding: 10px 0;
+      border: 1px solid;
+      border-top: none;
+      border-right: none;
+      .operation-item {
+        padding: 8px 18px;
+        font-size: 14px;
+        cursor: pointer;
+        span + span {
+          margin-left: 12px;
+        }
+      }
     }
   }
 }
