@@ -9,6 +9,8 @@ import {
 import { useSiteToken } from '@utopia/micro-main-utils';
 import React, { useCallback, useMemo } from 'react';
 import HeaderRightContent from '../header-right-content';
+import Styles from './index.less';
+import OutletWrap from './outlet-wrap';
 
 type MenuItemProps = MenuDataItem & {
   isUrl: boolean;
@@ -62,6 +64,7 @@ const CoreProLayout: React.FC = () => {
       rightContentRender={() => headerContentJSX}
       menuItemRender={menuItemRender}
       collapsedButtonRender={false}
+      className={Styles['micro-main-core-layout']}
       menu={{
         request: () =>
           new Promise((resolve) => {
@@ -98,7 +101,7 @@ const CoreProLayout: React.FC = () => {
         }
       }}
     >
-      {outlet}
+      <OutletWrap>{outlet}</OutletWrap>
     </ProLayout>
   );
 };

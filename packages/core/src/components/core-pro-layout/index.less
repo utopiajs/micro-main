@@ -1,0 +1,27 @@
+.micro-main-core-layout {
+  :global {
+    .ant-layout {
+      .ant-layout-sider {
+        position: fixed;
+      }
+    }
+
+    .ant-pro-layout-container {
+      flex: 1;
+    }
+
+    .micro-main-core-content {
+      height: 100%;
+    }
+
+    .micro-main-core-outlet-wrap {
+      height: calc(100vh - 55px - 1px);
+      padding: 5px;
+      overflow: auto;
+
+      &-children {
+        height: 100%;
+      }
+    }
+  }
+}
