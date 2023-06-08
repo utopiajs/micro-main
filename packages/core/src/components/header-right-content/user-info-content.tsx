@@ -32,10 +32,11 @@ const UserInfoContent = (props: IProps) => {
     }
   } = useSiteToken();
 
-  useHoverStyle('.operation-item-hover', {
-    backgroundColor: '',
-    backgroundColorHover: colorBgTextHover
-  });
+  useHoverStyle(
+    '.operation-item-hover',
+    {},
+    { backgroundColor: colorBgTextHover }
+  );
   const handleShowDropContent = useCallback(() => {
     setShowDropContent(!showDropContent);
   }, [showDropContent]);

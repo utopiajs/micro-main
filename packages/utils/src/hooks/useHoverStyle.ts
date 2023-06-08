@@ -1,38 +1,45 @@
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
-const useHoverStyle = (
-  elClassName: string,
-  { backgroundColor, backgroundColorHover }
-) => {
-  const handleMouseEnter = useCallback((el: HTMLElement) => {
-    el.style.background = backgroundColorHover;
-  }, []);
+function useHoverStyle(
+  selector: string,
+  cssPropertiescss: React.CSSProperties,
+  hoverCssProperties: React.CSSProperties
+) {
+  const handleMouseEnter = useCallback(
+    (el: HTMLElement) => {
+      Object.keys(hoverCssProperties).forEach((key) => {
+        el.style[key] = hoverCssProperties[key];
+      });
+    },
+    [hoverCssProperties]
+  );
 
-  const handleMouseLeave = useCallback((el: HTMLElement) => {
-    el.style.background = backgroundColor;
-  }, []);
+  const handleMouseLeave = useCallback(
+    (el: HTMLElement) => {
+      Object.keys(hoverCssProperties).forEach((key) => {
+        el.style[key] = cssPropertiescss[key] || '';
+      });
+    },
+    [cssPropertiescss, hoverCssProperties]
+  );
 
   useEffect(() => {
     const allTargetElementList = [].slice.call(
-      document.querySelectorAll(elClassName)
+      document.querySelectorAll(selector)
     );
     if (allTargetElementList.length > 0) {
       allTargetElementList.forEach((el: HTMLElement) => {
-        el.addEventListener('mouseenter', handleMouseEnter.bind(this, el));
-        el.addEventListener('mouseleave', handleMouseLeave.bind(this, el));
+        el.addEventListener('mouseenter', handleMouseEnter.bind(null, el));
+        el.addEventListener('mouseleave', handleMouseLeave.bind(null, el));
       });
     }
     return () => {
       allTargetElementList.forEach((el: HTMLElement) => {
-        el.removeEventListener('mouseenter', handleMouseEnter.bind(this, el));
-        el.removeEventListener('mouseleave', handleMouseLeave.bind(this, el));
+        el.removeEventListener('mouseenter', handleMouseEnter.bind(null, el));
+        el.removeEventListener('mouseleave', handleMouseLeave.bind(null, el));
       });
     };
-  }, [
-    document.querySelectorAll(elClassName),
-    backgroundColor,
-    backgroundColorHover
-  ]);
-};
+  }, [handleMouseEnter, handleMouseLeave, selector]);
+}
 
 export default useHoverStyle;
