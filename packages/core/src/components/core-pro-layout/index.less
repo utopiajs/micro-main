@@ -3,6 +3,37 @@
     .ant-layout {
       .ant-layout-sider {
         position: fixed;
+        .ant-menu-inline {
+          .ant-menu-item {
+            margin: 0;
+            width: 100%;
+            border-radius: 0;
+            &::after {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              border-right: 3px solid rgb(24, 144, 255);
+              opacity: 0;
+              transform: scaleY(0.00001);
+              transition: transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1),
+                opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1);
+              content: '';
+            }
+            &-selected {
+              &::after {
+                transform: scaleY(1);
+                opacity: 1;
+              }
+            }
+          }
+        }
+        .ant-pro-sider-links {
+          border-top: 1px solid rgba(5, 5, 5, 0.06);
+          [data-prefers-color='dark'] & {
+            border-color: rgba(253, 253, 253, 0.12);
+          }
+        }
       }
     }
 
