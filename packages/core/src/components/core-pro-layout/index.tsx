@@ -7,9 +7,10 @@ import {
   useOutlet
 } from '@umijs/max';
 import { useSiteToken } from '@utopia/micro-main-utils';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import HeaderRightContent from '../header-right-content';
 import Styles from './index.less';
+import MenuCollapseButton from './menu-collapse-button';
 import OutletWrap from './outlet-wrap';
 
 type MenuItemProps = MenuDataItem & {
@@ -18,6 +19,7 @@ type MenuItemProps = MenuDataItem & {
 };
 
 const CoreProLayout: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const { initialState } = useModel('@@initialState');
   const {
     token: { colorPrimary, controlItemBgActive, colorBgElevated }
@@ -64,6 +66,11 @@ const CoreProLayout: React.FC = () => {
       rightContentRender={() => headerContentJSX}
       menuItemRender={menuItemRender}
       collapsedButtonRender={false}
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      links={[
+        <MenuCollapseButton collapsed={collapsed} onCollapse={setCollapsed} />
+      ]}
       className={Styles['micro-main-core-layout']}
       menu={{
         request: () =>
