@@ -1,7 +1,9 @@
 import { CoreProLayout } from '@/components';
-import { type MenuDataItem } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
-import { getAntdConfigProviderTheme } from '@utopia/micro-main-utils';
+import {
+  getAntdConfigProviderTheme,
+  usePrefersColor
+} from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { ConfigProvider, theme as antdTheme, type ThemeConfig } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
@@ -12,6 +14,7 @@ export default function Layout() {
   const [siteAntdThemeConfig, setAntdSiteThemeConfig] = useState(
     getAntdConfigProviderTheme(initialState?.siteThemeConfig)
   );
+  const [, , setPrefersColor] = usePrefersColor();
 
   const getSiteThemeConfig = useCallback((siteTheme) => {
     const { theme, colorPrimary, borderRadius } = siteTheme;
@@ -30,6 +33,7 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
+    setPrefersColor('light');
     window._MICRO_MAIN_CORE_PUB_SUB_.subscribe(
       PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
       (payload) => {
@@ -39,9 +43,10 @@ export default function Layout() {
           PUB_SUB_TYPES.UPDATE_SITE_THEME_CONFIG,
           _siteThemeConfig
         );
+        setPrefersColor(payload.theme);
       }
     );
-  }, [getSiteThemeConfig]);
+  }, [getSiteThemeConfig, setPrefersColor]);
 
   return (
     <ConfigProvider theme={siteAntdThemeConfig}>
