@@ -33,7 +33,7 @@ const UserInfoContent = (props: IProps) => {
   } = useSiteToken();
 
   useHoverStyle(
-    '.operation-item-hover',
+    '.operation-item-hover,.user-avatar-hover',
     {},
     { backgroundColor: colorBgTextHover }
   );
@@ -60,7 +60,10 @@ const UserInfoContent = (props: IProps) => {
         </div>
         <div style={{ color: colorTextTertiary }}>主账号</div>
       </div>
-      <div className="user-avatar" onClick={handleShowDropContent}>
+      <div
+        className="user-avatar user-avatar-hover"
+        onClick={handleShowDropContent}
+      >
         <Avatar
           shape="circle"
           src="https://avatars.githubusercontent.com/u/20694238?s=40&v=4"
@@ -76,35 +79,35 @@ const UserInfoContent = (props: IProps) => {
           <ArrowDownIcon />
         </div>
       </div>
-      {showDropContent && (
-        <div
-          className="drop-content-panel"
-          style={{
-            borderColor: colorBorder,
-            backgroundColor: colorBgContainer,
-            borderTopColor: colorBgContainer
-          }}
-        >
-          <ul>
-            <Link to="/user-center/preference-setting">
-              <li
-                className="operation-item operation-item-hover"
-                style={{ color: colorText }}
-              >
-                <BgColorsOutlined />
-                <span>主题设置</span>
-              </li>
-            </Link>
+
+      <div
+        className="drop-content-panel"
+        style={{
+          display: `${showDropContent ? 'block' : 'none'}`,
+          borderColor: colorBorder,
+          backgroundColor: colorBgContainer,
+          borderTopColor: colorBgContainer
+        }}
+      >
+        <ul>
+          <Link to="/user-center/preference-setting">
             <li
               className="operation-item operation-item-hover"
-              onClick={handleLogout}
+              style={{ color: colorText }}
             >
-              <LogoutOutlined />
-              <span>退出登陆</span>
+              <BgColorsOutlined />
+              <span>主题设置</span>
             </li>
-          </ul>
-        </div>
-      )}
+          </Link>
+          <li
+            className="operation-item operation-item-hover"
+            onClick={handleLogout}
+          >
+            <LogoutOutlined />
+            <span>退出登陆</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
