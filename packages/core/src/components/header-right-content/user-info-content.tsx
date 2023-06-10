@@ -11,7 +11,7 @@ import {
 import { type IInitialState } from '@utopia/micro-types';
 import { Avatar } from 'antd';
 import classNames from 'classnames';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Styles from './index.less';
 
 interface IProps {
@@ -31,15 +31,21 @@ const UserInfoContent = (props: IProps) => {
       colorBgTextHover
     }
   } = useSiteToken();
-
+  const showDropContentRef = useRef(false);
   useHoverStyle(
     '.operation-item-hover,.user-avatar-hover',
     {},
     { backgroundColor: colorBgTextHover }
   );
-  const handleShowDropContent = useCallback(() => {
-    setShowDropContent(!showDropContent);
-  }, [showDropContent]);
+
+  const handleShowDropContent = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setShowDropContent(!showDropContent);
+      showDropContentRef.current = !showDropContent;
+    },
+    [showDropContent]
+  );
 
   const handleLogout = useCallback(async () => {
     const { errorCode } = await coreAuthApi.authLogoutWithPost({
@@ -49,6 +55,20 @@ const UserInfoContent = (props: IProps) => {
       window.location.reload();
     }
   }, []);
+
+  const handleDocumentClick = useCallback(() => {
+    if (showDropContentRef.current) {
+      setShowDropContent(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('click', handleDocumentClick);
+    return () => {
+      document.addEventListener('click', handleDocumentClick);
+    };
+  }, [handleDocumentClick]);
+
   return (
     <div
       style={{ fontSize: fontSizeSM }}
