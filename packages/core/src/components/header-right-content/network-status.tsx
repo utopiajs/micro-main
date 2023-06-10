@@ -1,7 +1,7 @@
 // api laoding status
+import CommonLoading from '@/icons/CommonLoading';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { useEffect, useState } from 'react';
-import loadingSvg from './api-loading.svg';
 import Styles from './index.less';
 
 const NetworkStatus = () => {
@@ -17,7 +17,7 @@ const NetworkStatus = () => {
   }, []);
   return (
     <div className={Styles['network-status-wrap']}>
-      {apiLoading && <img className="loading" src={loadingSvg} alt="" />}
+      {apiLoading && <CommonLoading className="loading" />}
     </div>
   );
 };
