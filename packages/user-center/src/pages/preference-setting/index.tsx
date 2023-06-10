@@ -24,7 +24,7 @@ const themeList = [
   {
     key: 'light',
     url: 'https://gw.alipayobjects.com/zos/antfincdn/NQ%24zoisaD2/jpRkZQMyYRryryPNtyIC.svg',
-    title: '亮色菜单风格'
+    title: '亮色风格'
   },
   {
     key: 'dark',
@@ -67,16 +67,18 @@ const PreferenceSetting: FC = () => {
 
   const [preferenceSettingForm] = Form.useForm();
 
-  const handleReset = useCallback(() => {
-    preferenceSettingForm.resetFields();
-  }, [preferenceSettingForm]);
-
   const handleValueChange = useCallback((_, allFields) => {
+    // return
     window._MICRO_MAIN_CORE_PUB_SUB_?.publish(
       PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
       allFields
     );
   }, []);
+
+  const handleReset = useCallback(() => {
+    preferenceSettingForm.resetFields();
+    handleValueChange('', settingState);
+  }, [preferenceSettingForm, handleValueChange, settingState]);
 
   return (
     <div className={Styles['preference-setting-wrap']}>
