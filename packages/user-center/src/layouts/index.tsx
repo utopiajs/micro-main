@@ -10,7 +10,7 @@ export default function Layout() {
   const { initialState }: { initialState: IInitialState } =
     useModel('@@qiankunStateFromMaster') || {};
   const [siteAntdThemeConfig, setSiteAntdThemeConfig] = useState(
-    getAntdConfigProviderTheme(initialState?.siteThemeConfig)
+    getAntdConfigProviderTheme(initialState.siteThemeConfig)
   );
 
   useEffect(() => {
