@@ -24,7 +24,10 @@ export default function Layout() {
 
   return (
     <ConfigProvider theme={siteAntdThemeConfig}>
-      <div className={styles['user-center-main-content']}>
+      <div
+        className={styles['user-center-main-content']}
+        style={{ padding: `${initialState.currentUser.id ? '15px' : ''}` }}
+      >
         <Outlet />
       </div>
     </ConfigProvider>
