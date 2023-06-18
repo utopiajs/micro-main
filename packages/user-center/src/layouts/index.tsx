@@ -1,6 +1,7 @@
 import { Outlet, useModel } from '@umijs/max';
 import { getAntdConfigProviderTheme } from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES, type IInitialState } from '@utopia/micro-types';
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
 
@@ -8,9 +9,9 @@ import styles from './index.less';
 
 export default function Layout() {
   const { initialState }: { initialState: IInitialState } =
-    useModel('@@qiankunStateFromMaster') || {};
+    useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
   const [siteAntdThemeConfig, setSiteAntdThemeConfig] = useState(
-    getAntdConfigProviderTheme(initialState.siteThemeConfig)
+    getAntdConfigProviderTheme(initialState?.siteThemeConfig)
   );
 
   useEffect(() => {
