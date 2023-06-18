@@ -86,7 +86,7 @@ const UserInfoContent = (props: IProps) => {
       >
         <Avatar
           shape="circle"
-          src="https://avatars.githubusercontent.com/u/20694238?s=40&v=4"
+          src={initialState?.currentUser.avatar}
         >
           U
         </Avatar>
