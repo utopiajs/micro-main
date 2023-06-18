@@ -3,7 +3,10 @@ import { type IInitialState } from '@utopia/micro-types';
 const qiankunStateFromMaster: { initialState: IInitialState } = {
   initialState: {
     currentUser: {
-      id: '123456789'
+      id: '645f959388c7f418bad30d07',
+      avatar: 'https://avatars.githubusercontent.com/u/53040934?s=200&v=4',
+      name: 'KuangPF',
+      email: 'me@kuangpf.com'
     },
     client: {
       clientName: '微前端主平台',
