@@ -28,5 +28,10 @@ export default defineConfig({
   qiankun: {
     slave: {}
   },
-  npmClient: 'npm'
+  npmClient: 'npm',
+  proxy: {
+    '/api/micro-main/v1': {
+      target: 'http://localhost:3000/'
+    }
+  }
 });
