@@ -1,9 +1,14 @@
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { useModel } from '@umijs/max';
-import { useSiteToken } from '@utopia/micro-main-utils';
+import {
+  getToken,
+  isApiSuccess,
+  useSiteToken,
+  _Cookies
+} from '@utopia/micro-main-utils';
 import { type IInitialState } from '@utopia/micro-types';
 import { Form, Upload } from 'antd';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Styles from './index.less';
 
 const formItemLayout = {
@@ -20,11 +25,36 @@ const BaseInfo: React.FC = () => {
     token: { colorBgLayout, borderRadius }
   } = useSiteToken();
 
+  const handleAvatarUploadChange = useCallback(
+    ({ file }) => {
+      const { response } = file;
+      // 处理上传成功
+      if (response) {
+        const { errorCode, data } = response;
+        if (isApiSuccess(errorCode)) {
+          setUserInfo({
+            ...userInfo,
+            avatar: data.url
+          });
+        }
+      }
+    },
+    [userInfo]
+  );
+
   return (
     <div className={Styles['base-info-wrap']}>
       <Form name="base-info" {...formItemLayout} className="base-info-from">
         <Form.Item label="用户头像">
-          <Upload>
+          <Upload
+            action="/api/micro-main/v1/common/upload/avatar"
+            showUploadList={false}
+            onChange={handleAvatarUploadChange}
+            headers={{
+              User: `usercode:${_Cookies.get('id')}`,
+              Authorization: `Bearer ${getToken()}`
+            }}
+          >
             {userInfo.avatar ? (
               <img
                 src={userInfo.avatar}
