@@ -8,7 +8,7 @@ import {
   _Cookies
 } from '@utopia/micro-main-utils';
 import { type IInitialState } from '@utopia/micro-types';
-import { Form, Upload } from 'antd';
+import { Form, message, Upload } from 'antd';
 import React, { useCallback, useState } from 'react';
 import Styles from './index.less';
 
@@ -41,12 +41,14 @@ const BaseInfo: React.FC = () => {
       // 处理上传成功
       if (response) {
         setUploadLoading(false);
-        const { errorCode, data } = response;
+        const { errorCode, data, _message } = response;
         if (isApiSuccess(errorCode)) {
           setUserInfo({
             ...userInfo,
             avatar: data.url
           });
+        } else {
+          message.error(_message);
         }
       }
     },
@@ -55,7 +57,7 @@ const BaseInfo: React.FC = () => {
 
   return (
     <div className={Styles['base-info-wrap']}>
-      <Form name="base-info" {...formItemLayout} className="base-info-from">
+      <Form name="base-info" {...formItemLayout} className="base-info-from ant-form-text">
         <Form.Item label="用户头像">
           <Upload
             action="/api/micro-main/v1/common/upload/avatar"
