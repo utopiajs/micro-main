@@ -1,4 +1,5 @@
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
+import { EditOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import {
   getToken,
@@ -21,15 +22,25 @@ const BaseInfo: React.FC = () => {
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
 
   const [userInfo, setUserInfo] = useState(initialState.currentUser);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const {
-    token: { colorBgLayout, borderRadius }
+    token: {
+      colorBgLayout,
+      borderRadius,
+      colorBgTextHover,
+      colorBorder,
+      fontSizeSM,
+      marginXS
+    }
   } = useSiteToken();
 
   const handleAvatarUploadChange = useCallback(
     ({ file }) => {
+      setUploadLoading(true);
       const { response } = file;
       // 处理上传成功
       if (response) {
+        setUploadLoading(false);
         const { errorCode, data } = response;
         if (isApiSuccess(errorCode)) {
           setUserInfo({
@@ -50,21 +61,50 @@ const BaseInfo: React.FC = () => {
             action="/api/micro-main/v1/common/upload/avatar"
             showUploadList={false}
             onChange={handleAvatarUploadChange}
+            disabled={uploadLoading}
             headers={{
               User: `usercode:${_Cookies.get('id')}`,
               Authorization: `Bearer ${getToken()}`
             }}
           >
-            {userInfo.avatar ? (
-              <img
-                src={userInfo.avatar}
-                alt="avatar"
-                style={{ background: colorBgLayout, borderRadius }}
-                className="avatar"
-              />
-            ) : (
-              'ss'
-            )}
+            <div
+              className="avatar-wrap"
+              style={{
+                background: colorBgLayout,
+                borderColor: colorBorder,
+                borderRadius
+              }}
+            >
+              {userInfo.avatar ? (
+                <img
+                  src={userInfo.avatar}
+                  style={{ borderRadius }}
+                  alt="avatar"
+                  className="avatar"
+                />
+              ) : (
+                'ss'
+              )}
+              <div
+                className="avatar-edit"
+                style={{
+                  backgroundColor: colorBgTextHover,
+                  fontSize: fontSizeSM
+                }}
+              >
+                {uploadLoading ? (
+                  <>
+                    <LoadingOutlined />
+                    <span style={{ marginLeft: marginXS }}>上传中</span>
+                  </>
+                ) : (
+                  <>
+                    <EditOutlined />
+                    <span style={{ marginLeft: marginXS }}>编辑头像</span>
+                  </>
+                )}
+              </div>
+            </div>
           </Upload>
         </Form.Item>
         <Form.Item label="用户名">{userInfo.name}</Form.Item>

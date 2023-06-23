@@ -1,12 +1,28 @@
 .base-info-wrap {
   :global {
     .base-info-from {
-      .avatar {
-        min-width: 115px;
-        min-height: 115px;
+      .avatar-wrap {
+        position: relative;
         width: 115px;
-        cursor: pointer;
+        height: 115px;
+        border: 1px solid;
+        .avatar {
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+        }
+        .avatar-edit {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 20px;
+          text-align: center;
+          line-height: 20px;
+          cursor: pointer;
+        }
       }
+      
     }
   }
 }
