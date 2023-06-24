@@ -27,7 +27,7 @@ const BaseInfo: React.FC = () => {
     token: {
       colorBgLayout,
       borderRadius,
-      colorBgTextHover,
+      colorBorderBg,
       colorBorder,
       fontSizeSM,
       marginXS
@@ -57,7 +57,11 @@ const BaseInfo: React.FC = () => {
 
   return (
     <div className={Styles['base-info-wrap']}>
-      <Form name="base-info" {...formItemLayout} className="base-info-from ant-form-text">
+      <Form
+        name="base-info"
+        {...formItemLayout}
+        className="base-info-from ant-form-text"
+      >
         <Form.Item label="用户头像">
           <Upload
             action="/api/micro-main/v1/common/upload/avatar"
@@ -90,8 +94,10 @@ const BaseInfo: React.FC = () => {
               <div
                 className="avatar-edit"
                 style={{
-                  backgroundColor: colorBgTextHover,
-                  fontSize: fontSizeSM
+                  backgroundColor: colorBorderBg,
+                  fontSize: fontSizeSM,
+                  borderBottomLeftRadius: borderRadius,
+                  borderBottomRightRadius: borderRadius
                 }}
               >
                 {uploadLoading ? (
