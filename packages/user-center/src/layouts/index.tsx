@@ -1,11 +1,10 @@
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { Outlet, useModel } from '@umijs/max';
 import { getAntdConfigProviderTheme } from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES, type IInitialState } from '@utopia/micro-types';
-import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
-
-import styles from './index.less';
+import OutletWrap from './outlet-wrap';
 
 export default function Layout() {
   const { initialState }: { initialState: IInitialState } =
@@ -25,12 +24,9 @@ export default function Layout() {
 
   return (
     <ConfigProvider theme={siteAntdThemeConfig}>
-      <div
-        className={styles['user-center-main-content']}
-        style={{ padding: `${initialState.currentUser.id ? '15px' : ''}` }}
-      >
+      <OutletWrap>
         <Outlet />
-      </div>
+      </OutletWrap>
     </ConfigProvider>
   );
 }
