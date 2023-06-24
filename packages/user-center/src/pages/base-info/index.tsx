@@ -8,10 +8,11 @@ import {
   _Cookies
 } from '@utopia/micro-main-utils';
 import { type IInitialState } from '@utopia/micro-types';
-import { Form, message, Upload } from 'antd';
+import { Form, message, Upload, Typography } from 'antd';
 import React, { useCallback, useState } from 'react';
 import Styles from './index.less';
 
+const { Title } = Typography;
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 }
@@ -57,6 +58,7 @@ const BaseInfo: React.FC = () => {
 
   return (
     <div className={Styles['base-info-wrap']}>
+      <Title level={5}>基础信息</Title>
       <Form
         name="base-info"
         {...formItemLayout}
