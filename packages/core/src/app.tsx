@@ -1,4 +1,4 @@
-import { clientConstantProps } from '@/constants';
+import { clientConstantProps, siteThemeConfig } from '@/constants';
 import { coreUserApi } from '@/services';
 import {
   history,
@@ -52,7 +52,7 @@ export async function getInitialState(): Promise<IInitialState> {
     }
     history.push(loginPath);
     return {
-      preferenceSetting: {}
+      preferenceSetting: siteThemeConfig
     };
   };
 

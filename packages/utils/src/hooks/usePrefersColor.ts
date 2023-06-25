@@ -39,7 +39,7 @@ class ColorChanger {
     // listen prefers color change
     (['light', 'dark'] as IColorValue[]).forEach((color) => {
       const mediaQueryList = this.getColorMedia(color);
-      const handler = (ev: any) => {
+      const handler = (ev) => {
         // only apply media prefers color in auto mode
         if (ev.matches && this.prefersColor === 'auto') {
           this.color = color;
