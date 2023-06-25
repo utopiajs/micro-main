@@ -7,7 +7,7 @@ import { isApiSuccess } from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import type { MenuTheme } from 'antd';
 import { Button, Form, Radio, Tooltip } from 'antd';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import BlockCheckbox from './block-check-box';
 import Styles from './index.less';
 import ThemeColor from './ThemeColor';
@@ -94,6 +94,16 @@ const PreferenceSetting: React.FC = () => {
       window.location.reload();
     }
   }, []);
+
+  useEffect(() => {
+    // 全局样式保持一致，防止预览后不保存而导致表单值与样式不一致
+    return () => {
+      window._MICRO_MAIN_CORE_PUB_SUB_?.publish(
+        PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
+        settingState
+      );
+    };
+  }, [settingState]);
 
   return (
     <div className={Styles['preference-setting-wrap']}>
