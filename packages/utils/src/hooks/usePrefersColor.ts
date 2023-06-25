@@ -4,7 +4,7 @@ export type IColorValue = 'light' | 'dark';
 export type IPrefersColorValue = IColorValue | 'auto';
 
 const PREFERS_COLOR_ATTR = 'data-prefers-color';
-const PREFERS_COLOR_LS_KEY = 'micro-main:prefers-color';
+const PREFERS_LS_KEY = 'micro-main:user-prefers';
 
 class ColorChanger {
   /**
@@ -28,9 +28,11 @@ class ColorChanger {
   }) => void)[] = [];
 
   constructor(opts: { default: string }) {
-    this.prefersColor = ((navigator.cookieEnabled &&
+    this.prefersColor = ((
+      navigator.cookieEnabled &&
       // read from localStorage first, because `auto` will not be set to attr
-      localStorage.getItem(PREFERS_COLOR_LS_KEY)) ||
+      JSON.parse(localStorage.getItem(PREFERS_LS_KEY) || '{}')
+    )?.theme ||
       // then use default value from themeConfig
       opts.default) as IPrefersColorValue;
     this.color = document.documentElement.getAttribute(
@@ -105,7 +107,11 @@ class ColorChanger {
    */
   tryPrefersColor(color: IPrefersColorValue) {
     if (navigator.cookieEnabled) {
-      localStorage.setItem(PREFERS_COLOR_LS_KEY, color);
+      const currentUserPrefers = JSON.parse(
+        localStorage.getItem(PREFERS_LS_KEY) || '{}'
+      );
+      currentUserPrefers.theme = color;
+      localStorage.setItem(PREFERS_LS_KEY, JSON.stringify(currentUserPrefers));
     }
     this.prefersColor = color;
     this.color =
