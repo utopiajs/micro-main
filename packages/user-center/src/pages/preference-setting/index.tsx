@@ -5,6 +5,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { isApiSuccess } from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import type { MenuTheme } from 'antd';
 import { Button, Form, Radio, Tooltip } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -65,7 +66,7 @@ const borderRadiusList = [
 ];
 
 const PreferenceSetting: React.FC = () => {
-  const { initialState } = useModel('@@qiankunStateFromMaster') || {};
+  const { initialState } = useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
   const [settingState] = useState<IPreferenceSettings>(
     initialState?.siteThemeConfig
   );

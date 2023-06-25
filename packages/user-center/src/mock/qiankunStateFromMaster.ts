@@ -4,9 +4,11 @@ const qiankunStateFromMaster: { initialState: IInitialState } = {
   initialState: {
     currentUser: {
       id: '645f959388c7f418bad30d07',
-      avatar: 'http://qiniu-cdn.utopiajs.space/avatar/7c8d2d1c-eb9e-49b9-a6c2-efdb37615f29',
+      avatar:
+        'http://qiniu-cdn.utopiajs.space/avatar/7c8d2d1c-eb9e-49b9-a6c2-efdb37615f29',
       name: 'KuangPF',
-      email: 'me@kuangpf.com'
+      email: 'me@kuangpf.com',
+      preferenceSetting: {}
     },
     client: {
       clientName: '微前端主平台',
@@ -16,7 +18,7 @@ const qiankunStateFromMaster: { initialState: IInitialState } = {
     },
     siteThemeConfig: {
       theme: 'light',
-      colorPrimary: '#49cc90',
+      colorPrimary: '#1890ff',
       borderRadius: 6
     }
   }
