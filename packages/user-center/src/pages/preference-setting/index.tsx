@@ -1,9 +1,12 @@
 /** 偏好设置 */
 import { TitleLabel } from '@/components';
+import { coreUserApi } from '@/services';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
+import { isApiSuccess } from '@utopia/micro-main-utils';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import type { MenuTheme } from 'antd';
-import { Button, Form, Radio } from 'antd';
+import { Button, Form, Radio, Tooltip } from 'antd';
 import React, { useCallback, useState } from 'react';
 import BlockCheckbox from './block-check-box';
 import Styles from './index.less';
@@ -82,6 +85,16 @@ const PreferenceSetting: React.FC = () => {
     handleValueChange('', settingState);
   }, [preferenceSettingForm, handleValueChange, settingState]);
 
+  // handle finish
+  const handleFinish = useCallback(async (values) => {
+    const { errorCode } = await coreUserApi.usersUpdateWithPatch({
+      preferenceSetting: values
+    });
+    if (isApiSuccess(errorCode)) {
+      window.location.reload();
+    }
+  }, []);
+
   return (
     <div className={Styles['preference-setting-wrap']}>
       <TitleLabel level={5}>系统主题</TitleLabel>
@@ -90,6 +103,7 @@ const PreferenceSetting: React.FC = () => {
         initialValues={settingState}
         form={preferenceSettingForm}
         onValuesChange={handleValueChange}
+        onFinish={handleFinish}
         {...formItemLayout}
       >
         <Form.Item label="主题风格" name="theme">
@@ -110,6 +124,9 @@ const PreferenceSetting: React.FC = () => {
             保存
           </Button>
           <Button onClick={handleReset}>重置</Button>
+          <Tooltip title="点击保存按钮存储系统主题设置值，而非临时预览">
+            <QuestionCircleOutlined style={{ marginLeft: '20px' }} />
+          </Tooltip>
         </Form.Item>
       </Form>
     </div>
