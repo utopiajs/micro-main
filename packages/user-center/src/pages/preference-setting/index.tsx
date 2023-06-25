@@ -1,8 +1,10 @@
 /** 偏好设置 */
+import { TitleLabel } from '@/components';
 import { useModel } from '@umijs/max';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
-import { Button, Form, Radio, type MenuTheme } from 'antd';
-import { useCallback, useState, type FC } from 'react';
+import type { MenuTheme } from 'antd';
+import { Button, Form, Radio } from 'antd';
+import React, { useCallback, useState } from 'react';
 import BlockCheckbox from './block-check-box';
 import Styles from './index.less';
 import ThemeColor from './ThemeColor';
@@ -59,7 +61,7 @@ const borderRadiusList = [
   }
 ];
 
-const PreferenceSetting: FC = () => {
+const PreferenceSetting: React.FC = () => {
   const { initialState } = useModel('@@qiankunStateFromMaster') || {};
   const [settingState] = useState<IPreferenceSettings>(
     initialState?.siteThemeConfig
@@ -82,6 +84,7 @@ const PreferenceSetting: FC = () => {
 
   return (
     <div className={Styles['preference-setting-wrap']}>
+      <TitleLabel level={5}>系统主题</TitleLabel>
       <Form
         name="preference-setting"
         initialValues={settingState}

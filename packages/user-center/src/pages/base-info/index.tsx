@@ -1,3 +1,4 @@
+import { TitleLabel } from '@/components';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { EditOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
@@ -7,12 +8,11 @@ import {
   useSiteToken,
   _Cookies
 } from '@utopia/micro-main-utils';
-import { type IInitialState } from '@utopia/micro-types';
-import { Form, message, Upload, Typography } from 'antd';
+import type { IInitialState } from '@utopia/micro-types';
+import { Form, message, Upload } from 'antd';
 import React, { useCallback, useState } from 'react';
 import Styles from './index.less';
 
-const { Title } = Typography;
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 }
@@ -58,7 +58,7 @@ const BaseInfo: React.FC = () => {
 
   return (
     <div className={Styles['base-info-wrap']}>
-      <Title level={5}>基础信息</Title>
+      <TitleLabel level={5}>基础信息</TitleLabel>
       <Form
         name="base-info"
         {...formItemLayout}
