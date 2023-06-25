@@ -130,8 +130,6 @@ export class Users extends HttpClient {
    */
   usersUpdateWithPatch = (
     data: {
-      /** User id */
-      userId?: string;
       name?: string;
       /**
        * must be unique
@@ -144,6 +142,11 @@ export class Users extends HttpClient {
        * @minLength 8
        */
       password?: string;
+      preferenceSetting?: {
+        theme?: 'light' | 'dark';
+        colorPrimary?: string;
+        borderRadius?: number;
+      };
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>

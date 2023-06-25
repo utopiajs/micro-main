@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { BingImg, Error } from './data-contracts';
+import { BingImg, Error, UploadRes } from './data-contracts';
 import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class Commons extends HttpClient {
@@ -35,6 +35,28 @@ export class Commons extends HttpClient {
       url: `/api/micro-main/v1/common/static/bing-img`,
       method: 'GET',
       params: query,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags Commons
+   * @name CommonUploadAvatarWithPost
+   * @summary 头像上传接口
+   * @request POST:/common/upload/avatar
+   * @secure
+   */
+  commonUploadAvatarWithPost = (
+    data: {
+      /** @format binary */
+      file: File;
+    },
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<ResponseCommonType<UploadRes>, void>({
+      url: `/api/micro-main/v1/common/upload/avatar`,
+      method: 'POST',
+      data: data,
       ...params
     });
 }
