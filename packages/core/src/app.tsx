@@ -12,10 +12,11 @@ import {
   PublishSubscribe,
   _Cookies
 } from '@utopia/micro-main-utils';
-import { type IInitialState } from '@utopia/micro-types';
+import { User, type IInitialState } from '@utopia/micro-types';
 import { theme, type ThemeConfig } from 'antd';
 
 const loginPath = '/user-center/login';
+const PREFERS_LS_KEY = 'micro-main:user-prefers';
 const { redirectUrl = '/' } = getQueryParams();
 const _MICRO_MAIN_CORE_PUB_SUB_ = new PublishSubscribe();
 
@@ -45,18 +46,30 @@ export async function getInitialState(): Promise<IInitialState> {
       { showErrorMessage: false, showApiLoadingStatus: false }
     );
     if (isApiSuccess(errorCode)) {
+      // 保留用于值，使全局样式跟随用户设置
+      localStorage.setItem(
+        PREFERS_LS_KEY,
+        JSON.stringify(data.preferenceSetting)
+      );
       if (location.pathname === loginPath) {
         window.location.href = redirectUrl;
       }
       return data;
     }
+
+    const userPrefers: User['preferenceSetting'] = JSON.parse(
+      localStorage.getItem(PREFERS_LS_KEY) || '{}'
+    );
     history.push(loginPath);
     return {
-      preferenceSetting: siteThemeConfig
+      preferenceSetting: userPrefers.colorPrimary
+        ? siteThemeConfig
+        : siteThemeConfig
     };
   };
 
   const currentUser = await fetchUserInfo();
+
   return {
     currentUser,
     siteThemeConfig: currentUser.preferenceSetting,

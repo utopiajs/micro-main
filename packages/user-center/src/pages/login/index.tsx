@@ -1,4 +1,5 @@
 // login page
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreCommonsApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
@@ -26,9 +27,9 @@ const getCurrentDate = () => {
 const LoginPage = () => {
   const [bingImgInfo, setBingImgInfo] = useState<BingImg>({});
   const {
-    initialState = { currentUser: {}, client: {} }
+    initialState = { currentUser: { preferenceSetting: {} }, client: {} }
   }: { initialState: Partial<IInitialState> } =
-    useModel('@@qiankunStateFromMaster') || {};
+    useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
 
   const {
     token: { colorBgContainer, padding, boxShadow, fontSizeSM }
@@ -59,7 +60,7 @@ const LoginPage = () => {
     })();
   }, []);
 
-  const handleLoginFormFinish = useCallback(async (value: any) => {
+  const handleLoginFormFinish = useCallback(async (value) => {
     const { errorCode } = await coreAuthApi.authLoginWithPost(value);
     if (isApiSuccess(errorCode)) {
       window.location.href = redirectUrl;

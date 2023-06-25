@@ -4,10 +4,13 @@ import {
   getAntdConfigProviderTheme,
   usePrefersColor
 } from '@utopia/micro-main-utils';
+import type { User } from '@utopia/micro-types';
 import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { ConfigProvider, theme as antdTheme, type ThemeConfig } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import './index.less';
+
+const PREFERS_LS_KEY = 'micro-main:user-prefers';
 
 export default function Layout() {
   const { initialState } = useModel('@@initialState');
@@ -33,7 +36,12 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    setPrefersColor('light');
+    const userPrefers: User['preferenceSetting'] = JSON.parse(
+      localStorage.getItem(PREFERS_LS_KEY) || '{}'
+    );
+    setPrefersColor(
+      initialState?.siteThemeConfig?.theme || userPrefers.theme || 'light'
+    );
     window._MICRO_MAIN_CORE_PUB_SUB_.subscribe(
       PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
       (payload) => {
@@ -46,7 +54,7 @@ export default function Layout() {
         setPrefersColor(payload.theme);
       }
     );
-  }, [getSiteThemeConfig, setPrefersColor]);
+  }, [getSiteThemeConfig, setPrefersColor, initialState]);
 
   return (
     <ConfigProvider theme={siteAntdThemeConfig}>
