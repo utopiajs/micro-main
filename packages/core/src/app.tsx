@@ -63,7 +63,7 @@ export async function getInitialState(): Promise<IInitialState> {
     history.push(loginPath);
     return {
       preferenceSetting: userPrefers.colorPrimary
-        ? siteThemeConfig
+        ? userPrefers
         : siteThemeConfig
     };
   };
