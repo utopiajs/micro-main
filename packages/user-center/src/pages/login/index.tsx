@@ -47,7 +47,10 @@ const LoginPage = () => {
           return;
         }
         const { data, errorCode } =
-          await coreCommonsApi.commonStaticBingImgWithGet();
+          await coreCommonsApi.commonStaticBingImgWithGet(
+            {},
+            { showErrorMessage: false }
+          );
         if (isApiSuccess(errorCode)) {
           setBingImgInfo(data[0]);
           // 同一天避免重复请求
