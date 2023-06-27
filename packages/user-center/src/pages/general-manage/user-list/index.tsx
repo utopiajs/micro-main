@@ -1,8 +1,13 @@
 // 用户管理
+import { CoreTable } from '@/components';
 import React from 'react';
 
 const UserList: React.FC = () => {
-  return <div>sss</div>;
+  return (
+    <div>
+      <CoreTable />
+    </div>
+  );
 };
 
 export default UserList;
