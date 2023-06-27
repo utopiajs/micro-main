@@ -77,7 +77,7 @@ const CoreProLayout: React.FC = () => {
           new Promise((resolve) => {
             resolve([
               {
-                name: '用户管理',
+                name: '个人中心',
                 path: '/user-center/',
                 children: [
                   {
@@ -87,6 +87,15 @@ const CoreProLayout: React.FC = () => {
                   {
                     name: '偏好设置',
                     path: '/user-center/preference-setting'
+                  }
+                ]
+              },
+              {
+                name: '综合管理',
+                children: [
+                  {
+                    name: '用户管理',
+                    path: '/user-center/general-manage/user-list'
                   }
                 ]
               }

@@ -10,6 +10,7 @@ export default defineConfig({
   routes: [
     { path: '/base-info', component: 'base-info' },
     { path: '/preference-setting', component: 'preference-setting' },
+    { path: '/general-manage/user-list', component: 'general-manage/user-list' },
     { path: '/login', component: 'login' }
   ],
   model: {},
