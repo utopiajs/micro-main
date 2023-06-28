@@ -16,7 +16,7 @@ type CreateDataSourceType<RecordType> = {
 
 export interface CoreTableProps<RecordType>
   extends Omit<TableProps<RecordType>, 'dataSource'> {
-  createDataSource?: () => Promise<CreateDataSourceType<RecordType>>;
+  createDataSource: () => Promise<CreateDataSourceType<RecordType>>;
   /* 是否展示序列号 */
   showSerialNumber?: boolean;
 }
