@@ -1,7 +1,11 @@
 // 用户管理
 import { CoreTable } from '@/components';
-import type { CoreTableProps } from '@/components/core-table';
+import type {
+  CoreTableProps,
+  CreateDataSourceType
+} from '@/components/core-table';
 import type { User } from '@utopia/micro-types';
+import { Button } from 'antd';
 import React, { useCallback } from 'react';
 
 import Styles from './index.less';
@@ -9,22 +13,32 @@ import Styles from './index.less';
 type RecordType = Omit<User, 'preferenceSetting'>;
 
 const UserList: React.FC = () => {
-  const userDataSourcePromise: CoreTableProps<RecordType>['createDataSource'] =
-    useCallback(() => {
-      return new Promise((resolve) => {
-        resolve({
-          data: [{ name: 'KuangPF' }],
-          pagination: {
-            total: 1,
-            pageSize: 10
-          }
-        });
+  const userDataSourcePromise = useCallback((): Promise<
+    CreateDataSourceType<RecordType>
+  > => {
+    return new Promise((resolve) => {
+      resolve({
+        data: new Array(15).fill({}).map((item, index) => ({
+          name: 'KuangPF',
+          id: String(index),
+          email: 'me@kuangpf.com',
+          role: 'admin',
+          avatar: 'https://avatars.githubusercontent.com/u/53040934?s=200&v=4'
+        })),
+        pagination: {
+          total: 15,
+          pageSize: 10,
+          current: 1
+        }
       });
-    }, []);
+    });
+  }, []);
 
   const colums: CoreTableProps<RecordType>['columns'] = [
     { title: '用户名', dataIndex: 'name', width: 200 }
   ];
+
+  const headerOperationbar = [<Button>新建</Button>];
 
   return (
     <div className={Styles['user-list-manage-wrap']}>
@@ -33,6 +47,7 @@ const UserList: React.FC = () => {
           createDataSource={userDataSourcePromise}
           columns={colums}
           rowKey="id"
+          headerOperationbar={headerOperationbar}
           showSerialNumber
         />
       </div>
