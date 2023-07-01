@@ -49,6 +49,7 @@ const UserList: React.FC = () => {
           rowKey="id"
           headerOperationBar={headerOperationBar}
           showSerialNumber
+          rowSelection={{}}
         />
       </div>
     </div>

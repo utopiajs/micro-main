@@ -25,5 +25,24 @@
     align-items: center;
     justify-content: space-between;
     height: 48px;
+    z-index: 1;
+  }
+  /* override antd table style */
+  .ant-table {
+    &-header {
+      border-radius: 0 !important;
+      thead {
+        tr {
+          &:first-of-type {
+            *:first-of-type {
+              border-start-start-radius: 0 !important;
+            }
+            *:last-of-type {
+              border-start-end-radius: 0 !important;
+            }
+          }
+        }
+      }
+    }
   }
 }

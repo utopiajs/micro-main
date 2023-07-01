@@ -87,7 +87,7 @@ function CoreTable<RecordType extends object = any>(
     const coreTableContent = document.getElementById(coreTableEleId);
     if (coreTableContent) {
       setCoreTableScroll({
-        y: coreTableContent.getBoundingClientRect().height - 47
+        y: coreTableContent.getBoundingClientRect().height - 47 - 8
       });
     }
   }, []);
@@ -100,7 +100,11 @@ function CoreTable<RecordType extends object = any>(
   return (
     <div
       className={`${prefixCls}-core-table`}
-      style={{ backgroundColor: colorBgLayout }}
+      style={{
+        backgroundColor: colorBgLayout,
+        borderRadius,
+        border: `1px solid ${colorBorderSecondary}`
+      }}
     >
       <div
         className={`${prefixCls}-core-table-header`}
@@ -108,8 +112,7 @@ function CoreTable<RecordType extends object = any>(
           padding: `${paddingXS}px`,
           backgroundColor: colorBgElevated,
           borderTopLeftRadius: borderRadius,
-          borderTopRightRadius: borderRadius,
-          border: `1px solid ${colorBorderSecondary}`
+          borderTopRightRadius: borderRadius
         }}
       >
         <div className={`${prefixCls}-core-table-header-options`}>
@@ -148,8 +151,7 @@ function CoreTable<RecordType extends object = any>(
           padding: `${paddingXS}px`,
           backgroundColor: colorBgElevated,
           borderBottomLeftRadius: borderRadius,
-          borderBottomRightRadius: borderRadius,
-          border: `1px solid ${colorBorderSecondary}`
+          borderBottomRightRadius: borderRadius
         }}
       >
         <div style={{ fontSize, color: colorText }}>
