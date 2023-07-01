@@ -87,7 +87,7 @@ function CoreTable<RecordType extends object = any>(
     const coreTableContent = document.getElementById(coreTableEleId);
     if (coreTableContent) {
       setCoreTableScroll({
-        y: coreTableContent.getBoundingClientRect().height - 47 - 8
+        y: coreTableContent.getBoundingClientRect().height - 55
       });
     }
   }, []);
