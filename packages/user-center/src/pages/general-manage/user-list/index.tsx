@@ -38,7 +38,7 @@ const UserList: React.FC = () => {
     { title: '用户名', dataIndex: 'name', width: 200 }
   ];
 
-  const headerOperationbar = [<Button>新建</Button>];
+  const headerOperationBar = [<Button>新建</Button>];
 
   return (
     <div className={Styles['user-list-manage-wrap']}>
@@ -47,7 +47,7 @@ const UserList: React.FC = () => {
           createDataSource={userDataSourcePromise}
           columns={colums}
           rowKey="id"
-          headerOperationbar={headerOperationbar}
+          headerOperationBar={headerOperationBar}
           showSerialNumber
         />
       </div>

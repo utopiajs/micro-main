@@ -22,7 +22,7 @@ export interface CoreTableProps<RecordType>
   /* 是否展示序列号 */
   showSerialNumber?: boolean;
   /** 头部操作栏配置 */
-  headerOperationbar?: React.ReactNode[];
+  headerOperationBar?: React.ReactNode[];
 }
 
 function CoreTable<RecordType extends object = any>(
@@ -32,7 +32,7 @@ function CoreTable<RecordType extends object = any>(
     createDataSource,
     columns,
     showSerialNumber,
-    headerOperationbar,
+    headerOperationBar,
     ...restProps
   } = props;
 
@@ -113,7 +113,7 @@ function CoreTable<RecordType extends object = any>(
         }}
       >
         <div className={`${prefixCls}-core-table-header-options`}>
-          {headerOperationbar?.map((item, index) => (
+          {headerOperationBar?.map((item, index) => (
             <div
               className="header-operation-item"
               key={index}
