@@ -48,6 +48,7 @@ function CoreTable<RecordType extends object = any>(
 
   const [dataSource, setDataSource] = useState<RecordType[]>([]);
   const [pagination, setPagination] = useState<PaginationProps>({});
+  const [dataLoading, setDataLoading] = useState<boolean>(false);
   const [coreTableScroll, setCoreTableScroll] = useState<
     TableProps<RecordType>['scroll']
   >({});
@@ -71,6 +72,7 @@ function CoreTable<RecordType extends object = any>(
     let nextDataSource = EMPTY_LIST;
     let nextPagination = EMPTY_PAGINATION;
     if (createDataSource) {
+      setDataLoading(true);
       const { data, pagination: _pagination } = await createDataSource(
         formFieldsTransform?.(tableFormFieldsRef.current)
       );
@@ -79,6 +81,7 @@ function CoreTable<RecordType extends object = any>(
     }
     setDataSource(nextDataSource);
     setPagination(nextPagination);
+    setDataLoading(false);
   }, [createDataSource, formFieldsTransform]);
 
   const getNextColums = useCallback(() => {
@@ -167,6 +170,7 @@ function CoreTable<RecordType extends object = any>(
         <Table<RecordType>
           {...restProps}
           pagination={false}
+          loading={dataLoading}
           dataSource={dataSource}
           columns={nextColums}
           scroll={coreTableScroll}
