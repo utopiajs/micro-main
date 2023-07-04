@@ -4,6 +4,8 @@ import type {
   CoreTableProps,
   CreateDataSourceType
 } from '@/components/core-table';
+import { coreUserApi } from '@/services';
+import { isApiSuccess } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
 import { Button } from 'antd';
 import React, { useCallback } from 'react';
@@ -12,26 +14,27 @@ import Styles from './index.less';
 
 type RecordType = Omit<User, 'preferenceSetting'>;
 
+const EMPTY_USER_LIST: CreateDataSourceType<RecordType> = {
+  data: [],
+  pagination: {}
+};
+
 const UserList: React.FC = () => {
-  const userDataSourcePromise = useCallback((): Promise<
+  const userDataSourcePromise = useCallback(async (): Promise<
     CreateDataSourceType<RecordType>
   > => {
-    return new Promise((resolve) => {
-      resolve({
-        data: new Array(15).fill({}).map((item, index) => ({
-          name: 'KuangPF',
-          id: String(`5ebac534954b54139806c112${index}`),
-          email: 'me@kuangpf.com',
-          role: 'admin',
-          avatar: 'https://avatars.githubusercontent.com/u/53040934?s=200&v=4'
-        })),
+    const { data, errorCode } = await coreUserApi.usersListWithGet();
+    if (isApiSuccess(errorCode)) {
+      return {
+        data: data.data || [],
         pagination: {
-          total: 15,
-          pageSize: 10,
-          current: 1
+          ...data.paging,
+          current: data.paging?.pageNum
         }
-      });
-    });
+      };
+    }
+
+    return EMPTY_USER_LIST;
   }, []);
 
   const colums: CoreTableProps<RecordType>['columns'] = [
