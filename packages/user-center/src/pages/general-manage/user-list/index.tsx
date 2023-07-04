@@ -83,6 +83,7 @@ const UserList: React.FC = () => {
           columns={colums}
           rowKey="id"
           headerOperationBar={headerOperationBar}
+          headerSearchBar={{ placeholder: '请输入用户名、邮箱' }}
           showSerialNumber
           rowSelection={{}}
         />

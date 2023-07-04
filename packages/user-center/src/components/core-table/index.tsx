@@ -10,7 +10,11 @@ const prefixCls = COMPONENT_CLASSNAME_PREFIX;
 const EMPTY_LIST: any[] = [];
 const EMPTY_PAGINATION: PaginationProps = {};
 const coreTableEleId = 'core-table-id';
+const DEFAULT_PLACEHOLDER = '请输入...';
 
+interface HeaderSearchBarProps {
+  placeholder?: string;
+}
 export type CreateDataSourceType<RecordType> = {
   data: RecordType[];
   pagination: PaginationProps;
@@ -23,6 +27,8 @@ export interface CoreTableProps<RecordType>
   showSerialNumber?: boolean;
   /** 头部操作栏配置 */
   headerOperationBar?: React.ReactNode[];
+  /** 头部搜索栏配置 */
+  headerSearchBar?: HeaderSearchBarProps;
 }
 
 function CoreTable<RecordType extends object = any>(
@@ -33,6 +39,7 @@ function CoreTable<RecordType extends object = any>(
     columns,
     showSerialNumber,
     headerOperationBar,
+    headerSearchBar,
     ...restProps
   } = props;
 
@@ -129,7 +136,10 @@ function CoreTable<RecordType extends object = any>(
           ))}
         </div>
         <div className={`${prefixCls}-core-table-header-search`}>
-          <Input.Search placeholder="请输入用户名、邮箱" allowClear />
+          <Input.Search
+            placeholder={headerSearchBar?.placeholder ?? DEFAULT_PLACEHOLDER}
+            allowClear
+          />
         </div>
       </div>
       <div
