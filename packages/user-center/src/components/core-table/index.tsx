@@ -129,13 +129,13 @@ function CoreTable<RecordType extends object = any>(
           ))}
         </div>
         <div className={`${prefixCls}-core-table-header-search`}>
-          <Input.Search placeholder="请输入用户名称、邮箱等" allowClear />
+          <Input.Search placeholder="请输入用户名、邮箱" allowClear />
         </div>
       </div>
       <div
         className={`${prefixCls}-core-table-content`}
         id={coreTableEleId}
-        style={{ margin: `${marginXXS}px 0` }}
+        style={{ margin: `${marginXXS}px 0`, backgroundColor: colorBgElevated }}
       >
         <Table<RecordType>
           {...restProps}
