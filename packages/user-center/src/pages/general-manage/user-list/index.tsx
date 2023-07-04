@@ -35,7 +35,7 @@ const UserList: React.FC = () => {
   }, []);
 
   const colums: CoreTableProps<RecordType>['columns'] = [
-    { title: '用户名', dataIndex: 'name', width: 200 },
+    { title: '用户名', dataIndex: 'name', width: 150 },
     {
       title: 'id',
       dataIndex: 'id',
