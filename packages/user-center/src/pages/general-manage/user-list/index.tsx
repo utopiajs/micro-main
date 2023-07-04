@@ -5,7 +5,7 @@ import type {
   CreateDataSourceType
 } from '@/components/core-table';
 import { coreUserApi } from '@/services';
-import { isApiSuccess } from '@utopia/micro-main-utils';
+import { isApiSuccess, removeEmptyFields } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
 import { Button } from 'antd';
 import React, { useCallback } from 'react';
@@ -20,21 +20,28 @@ const EMPTY_USER_LIST: CreateDataSourceType<RecordType> = {
 };
 
 const UserList: React.FC = () => {
-  const userDataSourcePromise = useCallback(async (): Promise<
-    CreateDataSourceType<RecordType>
-  > => {
-    const { data, errorCode } = await coreUserApi.usersListWithGet();
-    if (isApiSuccess(errorCode)) {
-      return {
-        data: data.data || [],
-        pagination: {
-          ...data.paging,
-          current: data.paging?.pageNum
-        }
-      };
-    }
+  const userDataSourcePromise = useCallback(
+    async (tableFormFields): Promise<CreateDataSourceType<RecordType>> => {
+      const { data, errorCode } = await coreUserApi.usersListWithGet(
+        tableFormFields
+      );
+      if (isApiSuccess(errorCode)) {
+        return {
+          data: data.data || [],
+          pagination: {
+            ...data.paging,
+            current: data.paging?.pageNum
+          }
+        };
+      }
 
-    return EMPTY_USER_LIST;
+      return EMPTY_USER_LIST;
+    },
+    []
+  );
+
+  const handleFormFieldsTransform = useCallback((rawFormFields) => {
+    return removeEmptyFields(rawFormFields);
   }, []);
 
   const colums: CoreTableProps<RecordType>['columns'] = [
@@ -80,6 +87,7 @@ const UserList: React.FC = () => {
       <div className="user-list-table">
         <CoreTable<RecordType>
           createDataSource={userDataSourcePromise}
+          formFieldsTransform={handleFormFieldsTransform}
           columns={colums}
           rowKey="id"
           headerOperationBar={headerOperationBar}

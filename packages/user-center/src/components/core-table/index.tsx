@@ -2,7 +2,7 @@
 import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
 import { useSiteToken } from '@utopia/micro-main-utils';
 import { Input, Pagination, PaginationProps, Table, TableProps } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.less';
 
@@ -22,7 +22,9 @@ export type CreateDataSourceType<RecordType> = {
 
 export interface CoreTableProps<RecordType>
   extends Omit<TableProps<RecordType>, 'dataSource'> {
-  createDataSource?: () => Promise<CreateDataSourceType<RecordType>>;
+  createDataSource?: (any) => Promise<CreateDataSourceType<RecordType>>;
+  /** 过滤参数转换 */
+  formFieldsTransform?: (any) => any;
   /* 是否展示序列号 */
   showSerialNumber?: boolean;
   /** 头部操作栏配置 */
@@ -40,6 +42,7 @@ function CoreTable<RecordType extends object = any>(
     showSerialNumber,
     headerOperationBar,
     headerSearchBar,
+    formFieldsTransform,
     ...restProps
   } = props;
 
@@ -48,6 +51,7 @@ function CoreTable<RecordType extends object = any>(
   const [coreTableScroll, setCoreTableScroll] = useState<
     TableProps<RecordType>['scroll']
   >({});
+  const tableFormFieldsRef = useRef({}); // 表格筛选字段，结合 createDataSource 使用
   const {
     token: {
       paddingXS,
@@ -67,13 +71,15 @@ function CoreTable<RecordType extends object = any>(
     let nextDataSource = EMPTY_LIST;
     let nextPagination = EMPTY_PAGINATION;
     if (createDataSource) {
-      const { data, pagination: _pagination } = await createDataSource();
+      const { data, pagination: _pagination } = await createDataSource(
+        formFieldsTransform?.(tableFormFieldsRef.current)
+      );
       nextDataSource = data;
       nextPagination = _pagination;
     }
     setDataSource(nextDataSource);
     setPagination(nextPagination);
-  }, [createDataSource]);
+  }, [createDataSource, formFieldsTransform]);
 
   const getNextColums = useCallback(() => {
     return showSerialNumber && columns
@@ -98,6 +104,16 @@ function CoreTable<RecordType extends object = any>(
       });
     }
   }, []);
+
+  const handleSearchBarSearch = useCallback(
+    (value) => {
+      tableFormFieldsRef.current = {
+        search: value ?? ''
+      };
+      getTableDataSource();
+    },
+    [getTableDataSource]
+  );
 
   useEffect(() => {
     getTableDataSource();
@@ -138,6 +154,7 @@ function CoreTable<RecordType extends object = any>(
         <div className={`${prefixCls}-core-table-header-search`}>
           <Input.Search
             placeholder={headerSearchBar?.placeholder ?? DEFAULT_PLACEHOLDER}
+            onSearch={handleSearchBarSearch}
             allowClear
           />
         </div>
