@@ -17,6 +17,14 @@ const getQueryParams = (url: string = window.location.search) => {
 };
 
 const isApiSuccess = (errCode: string) => errCode === ERROR_CODE;
+
+const removeEmptyFields = (obj) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(
+      ([, v]) => v !== null && v !== undefined && v !== ''
+    )
+  );
+};
 const _Cookies = Cookies;
 
-export { isDev, getQueryParams, isApiSuccess, _Cookies };
+export { isDev, getQueryParams, isApiSuccess, _Cookies, removeEmptyFields };
