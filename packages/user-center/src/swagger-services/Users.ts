@@ -79,38 +79,38 @@ export class Users extends HttpClient {
    */
   usersListWithGet = (
     query?: {
-      /** User name */
-      name?: string;
+      /** User name or email */
+      search?: string;
       /** User role */
       role?: string;
       /** sort by query in the form of field:desc/asc (ex. name:asc) */
       sortBy?: string;
       /**
-       * Maximum number of users
+       * page size
        * @min 1
        * @default 10
        */
-      limit?: number;
+      pageSize?: number;
       /**
        * Page number
        * @min 1
        * @default 1
        */
-      page?: number;
+      pageNum?: number;
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<
       ResponseCommonType<{
-        results?: User[];
-        /** @example 1 */
-        page?: number;
-        /** @example 10 */
-        limit?: number;
-        /** @example 1 */
-        totalPages?: number;
-        /** @example 1 */
-        totalResults?: number;
+        data?: User[];
+        paging?: {
+          /** @example 1 */
+          pageSize?: number;
+          /** @example 10 */
+          pageNum?: number;
+          /** @example 1 */
+          total?: number;
+        };
       }>,
       Error
     >({
