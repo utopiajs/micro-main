@@ -13,7 +13,7 @@ import {
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
 import CreateUser from './create-user';
 
@@ -108,14 +108,21 @@ const UserList: React.FC = () => {
       title: '操作',
       render: (_, record) => {
         return (
-          <div
-            className="user-operation-item"
-            title="删除"
-            onClick={handleDeleteUser.bind(null, record)}
-            style={{ color: colorHighlight }}
+          <Popconfirm
+            title="删除该用户"
+            description="该操作不可逆，确认删除？"
+            onConfirm={() => {
+              handleDeleteUser(record);
+            }}
           >
-            <DeleteOutlined>删除</DeleteOutlined>
-          </div>
+            <div
+              className="user-operation-item"
+              title="删除"
+              style={{ color: colorHighlight }}
+            >
+              <DeleteOutlined>删除</DeleteOutlined>
+            </div>
+          </Popconfirm>
         );
       }
     }
@@ -149,7 +156,11 @@ const UserList: React.FC = () => {
             <span style={{ marginLeft: marginSM }}>新建用户</span>
           </div>
           <div className="create-user-form" style={{ marginTop: marginXXL }}>
-            <CreateUser />
+            <CreateUser
+              onCreatedSuccess={() => {
+                setShowCreateUserPanel(false);
+              }}
+            />
           </div>
         </div>
       ) : (
