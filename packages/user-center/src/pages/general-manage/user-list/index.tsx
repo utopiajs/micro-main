@@ -2,13 +2,20 @@
 import { CoreTable } from '@/components';
 import type {
   CoreTableProps,
+  CoreTableRef,
   CreateDataSourceType
 } from '@/components/core-table';
 import { coreUserApi } from '@/services';
-import { isApiSuccess, removeEmptyFields } from '@utopia/micro-main-utils';
+import { DeleteOutlined, RollbackOutlined } from '@ant-design/icons';
+import {
+  isApiSuccess,
+  removeEmptyFields,
+  useSiteToken
+} from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
 import { Button } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import CreateUser from './create-user';
 
 import Styles from './index.less';
 
@@ -20,6 +27,19 @@ const EMPTY_USER_LIST: CreateDataSourceType<RecordType> = {
 };
 
 const UserList: React.FC = () => {
+  const [showCreateUserPanel, setShowCreateUserPanel] =
+    useState<boolean>(false);
+  const userListTableRef = useRef<CoreTableRef>(null);
+  const {
+    token: {
+      colorHighlight,
+      paddingSM,
+      colorBorderSecondary,
+      marginSM,
+      marginXXL
+    }
+  } = useSiteToken();
+
   const userDataSourcePromise = useCallback(
     async (tableFormFields): Promise<CreateDataSourceType<RecordType>> => {
       const { data, errorCode } = await coreUserApi.usersListWithGet(
@@ -44,6 +64,15 @@ const UserList: React.FC = () => {
     return removeEmptyFields(rawFormFields);
   }, []);
 
+  const handleDeleteUser = useCallback(async (record: RecordType) => {
+    const { errorCode } = await coreUserApi.usersDeleteWithDelete({
+      userId: record.id
+    });
+    if (isApiSuccess(errorCode)) {
+      userListTableRef.current?.reloadData();
+    }
+  }, []);
+
   const colums: CoreTableProps<RecordType>['columns'] = [
     { title: '用户名', dataIndex: 'name', width: 150 },
     {
@@ -62,7 +91,7 @@ const UserList: React.FC = () => {
     {
       title: '邮箱',
       dataIndex: 'email',
-      width: 200
+      width: 240
     },
     {
       title: '角色',
@@ -76,26 +105,68 @@ const UserList: React.FC = () => {
       render: () => <span>2023-06-22</span>
     },
     {
-      title: '操作'
+      title: '操作',
+      render: (_, record) => {
+        return (
+          <div
+            className="user-operation-item"
+            title="删除"
+            onClick={handleDeleteUser.bind(null, record)}
+            style={{ color: colorHighlight }}
+          >
+            <DeleteOutlined>删除</DeleteOutlined>
+          </div>
+        );
+      }
     }
   ];
 
-  const headerOperationBar = [<Button>新建</Button>];
+  const headerOperationBar = [
+    <Button
+      onClick={() => {
+        setShowCreateUserPanel(true);
+      }}
+    >
+      新建
+    </Button>
+  ];
 
   return (
     <div className={Styles['user-list-manage-wrap']}>
-      <div className="user-list-table">
-        <CoreTable<RecordType>
-          createDataSource={userDataSourcePromise}
-          formFieldsTransform={handleFormFieldsTransform}
-          columns={colums}
-          rowKey="id"
-          headerOperationBar={headerOperationBar}
-          headerSearchBar={{ placeholder: '请输入用户名、邮箱' }}
-          showSerialNumber
-          rowSelection={{}}
-        />
-      </div>
+      {showCreateUserPanel ? (
+        <div className="create-user-wrap">
+          <div
+            style={{
+              cursor: 'pointer',
+              padding: paddingSM,
+              border: `1px solid ${colorBorderSecondary}`
+            }}
+            onClick={() => {
+              setShowCreateUserPanel(false);
+            }}
+          >
+            <RollbackOutlined />
+            <span style={{ marginLeft: marginSM }}>新建用户</span>
+          </div>
+          <div className="create-user-form" style={{ marginTop: marginXXL }}>
+            <CreateUser />
+          </div>
+        </div>
+      ) : (
+        <div className="user-list-table">
+          <CoreTable<RecordType>
+            createDataSource={userDataSourcePromise}
+            formFieldsTransform={handleFormFieldsTransform}
+            columns={colums}
+            rowKey="id"
+            ref={userListTableRef}
+            headerOperationBar={headerOperationBar}
+            headerSearchBar={{ placeholder: '请输入用户名、邮箱' }}
+            showSerialNumber
+            rowSelection={{}}
+          />
+        </div>
+      )}
     </div>
   );
 };
