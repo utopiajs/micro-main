@@ -31,7 +31,8 @@ const BaseInfo: React.FC = () => {
       colorBorderBg,
       colorBorder,
       fontSizeSM,
-      marginXS
+      marginXS,
+      padding
     }
   } = useSiteToken();
 
@@ -57,7 +58,7 @@ const BaseInfo: React.FC = () => {
   );
 
   return (
-    <div className={Styles['base-info-wrap']}>
+    <div className={Styles['base-info-wrap']} style={{ padding }}>
       <TitleLabel level={5}>基础信息</TitleLabel>
       <Form
         name="base-info"
