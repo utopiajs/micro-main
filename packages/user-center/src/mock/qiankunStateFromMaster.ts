@@ -19,7 +19,7 @@ const qiankunStateFromMaster: { initialState: IInitialState } = {
     siteThemeConfig: {
       theme: 'light',
       colorPrimary: '#1890ff',
-      borderRadius: 6
+      borderRadius: 2
     }
   }
 };
