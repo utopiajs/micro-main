@@ -2,18 +2,40 @@
 import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
 import { useSiteToken } from '@utopia/micro-main-utils';
 import { Input, Pagination, PaginationProps, Table, TableProps } from 'antd';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react';
 
 import './index.less';
 
 const prefixCls = COMPONENT_CLASSNAME_PREFIX;
 const EMPTY_LIST: any[] = [];
-const EMPTY_PAGINATION: PaginationProps = {};
+const DEFAULT_PAGINATION: PaginationProps = {
+  pageSize: 10,
+  pageSizeOptions: [10, 20, 60, 100],
+  current: 1,
+  showQuickJumper: true,
+  showSizeChanger: true
+};
 const coreTableEleId = 'core-table-id';
 const DEFAULT_PLACEHOLDER = '请输入...';
 
 interface HeaderSearchBarProps {
   placeholder?: string;
+  defaultValue?: string;
+}
+interface FormFieldsProps {
+  pageNum?: number;
+  pageSize?: number;
+  search?: string;
+  [key: string]: unknown;
+}
+export interface CoreTableRef {
+  reloadData: () => void;
 }
 export type CreateDataSourceType<RecordType> = {
   data: RecordType[];
@@ -33,8 +55,15 @@ export interface CoreTableProps<RecordType>
   headerSearchBar?: HeaderSearchBarProps;
 }
 
+export type RefCoreTable = <RecordType extends object = any>(
+  props: React.PropsWithChildren<CoreTableProps<RecordType>> & {
+    ref?: React.Ref<CoreTableRef>;
+  }
+) => React.ReactElement;
+
 function CoreTable<RecordType extends object = any>(
-  props: CoreTableProps<RecordType>
+  props: CoreTableProps<RecordType>,
+  ref: React.Ref<CoreTableRef>
 ) {
   const {
     createDataSource,
@@ -43,16 +72,20 @@ function CoreTable<RecordType extends object = any>(
     headerOperationBar,
     headerSearchBar,
     formFieldsTransform,
+    pagination: paginationProps,
     ...restProps
   } = props;
 
   const [dataSource, setDataSource] = useState<RecordType[]>([]);
   const [pagination, setPagination] = useState<PaginationProps>({});
   const [dataLoading, setDataLoading] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<
+    HeaderSearchBarProps['defaultValue']
+  >(headerSearchBar?.defaultValue);
   const [coreTableScroll, setCoreTableScroll] = useState<
     TableProps<RecordType>['scroll']
   >({});
-  const tableFormFieldsRef = useRef({}); // 表格筛选字段，结合 createDataSource 使用
+
   const {
     token: {
       paddingXS,
@@ -67,22 +100,6 @@ function CoreTable<RecordType extends object = any>(
       colorText
     }
   } = useSiteToken();
-
-  const getTableDataSource = useCallback(async () => {
-    let nextDataSource = EMPTY_LIST;
-    let nextPagination = EMPTY_PAGINATION;
-    if (createDataSource) {
-      setDataLoading(true);
-      const { data, pagination: _pagination } = await createDataSource(
-        formFieldsTransform?.(tableFormFieldsRef.current)
-      );
-      nextDataSource = data;
-      nextPagination = _pagination;
-    }
-    setDataSource(nextDataSource);
-    setPagination(nextPagination);
-    setDataLoading(false);
-  }, [createDataSource, formFieldsTransform]);
 
   const getNextColums = useCallback(() => {
     return showSerialNumber && columns
@@ -108,14 +125,75 @@ function CoreTable<RecordType extends object = any>(
     }
   }, []);
 
+  const getCoreTableFormFields = useCallback(() => {
+    const paginationFields = {
+      pageSize:
+        (paginationProps && paginationProps?.pageSize) ||
+        DEFAULT_PAGINATION.pageSize,
+      pageNum:
+        (paginationProps && paginationProps?.current) ||
+        DEFAULT_PAGINATION.current
+    };
+    const initialFormFields: FormFieldsProps = {
+      search: headerSearchBar?.defaultValue,
+      ...paginationFields
+    };
+
+    return initialFormFields;
+  }, [paginationProps, headerSearchBar?.defaultValue]);
+  const tableFormFieldsRef = useRef(getCoreTableFormFields()); // 表格筛选字段，结合 createDataSource 使用
+
+  const getTableDataSource = useCallback(async () => {
+    let nextDataSource = EMPTY_LIST;
+    let nextPagination = DEFAULT_PAGINATION;
+    if (createDataSource) {
+      setDataLoading(true);
+      const { data, pagination: _pagination } = await createDataSource(
+        formFieldsTransform?.(tableFormFieldsRef.current)
+      );
+      nextDataSource = data;
+      nextPagination = _pagination;
+    }
+    setDataSource(nextDataSource);
+    setPagination(nextPagination);
+    setDataLoading(false);
+  }, [createDataSource, formFieldsTransform]);
+
   const handleSearchBarSearch = useCallback(
     (value) => {
-      tableFormFieldsRef.current = {
-        search: value ?? ''
-      };
+      tableFormFieldsRef.current.search = value ?? '';
+      tableFormFieldsRef.current.pageNum = 1;
       getTableDataSource();
     },
     [getTableDataSource]
+  );
+
+  const handleSearchBarChange = useCallback((e) => {
+    setSearchValue(e.target.value);
+  }, []);
+
+  const handlePaginationChange = useCallback(
+    (page, pageSize) => {
+      tableFormFieldsRef.current.pageNum = page;
+      tableFormFieldsRef.current.pageSize = pageSize;
+      getTableDataSource();
+    },
+    [getTableDataSource]
+  );
+
+  const reloadData = useCallback(() => {
+    setSearchValue('');
+    handleSearchBarSearch('');
+  }, [handleSearchBarSearch]);
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reloadData
+      };
+    },
+    [reloadData]
   );
 
   useEffect(() => {
@@ -156,8 +234,10 @@ function CoreTable<RecordType extends object = any>(
         </div>
         <div className={`${prefixCls}-core-table-header-search`}>
           <Input.Search
+            value={searchValue}
             placeholder={headerSearchBar?.placeholder ?? DEFAULT_PLACEHOLDER}
             onSearch={handleSearchBarSearch}
+            onChange={handleSearchBarChange}
             allowClear
           />
         </div>
@@ -179,6 +259,7 @@ function CoreTable<RecordType extends object = any>(
       <div
         className={`${prefixCls}-core-table-footer`}
         style={{
+          display: paginationProps === false ? 'none' : 'flex',
           padding: `${paddingXS}px`,
           backgroundColor: colorBgElevated,
           borderBottomLeftRadius: borderRadius,
@@ -199,11 +280,20 @@ function CoreTable<RecordType extends object = any>(
           <span>条记录</span>
         </div>
         <div>
-          <Pagination showQuickJumper showSizeChanger {...pagination} />
+          <Pagination
+            {...DEFAULT_PAGINATION}
+            {...paginationProps}
+            {...pagination}
+            onChange={handlePaginationChange}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-export default CoreTable;
+const ForwardCoreTable = React.forwardRef<CoreTableRef>(
+  CoreTable
+) as any as RefCoreTable;
+
+export default ForwardCoreTable;
