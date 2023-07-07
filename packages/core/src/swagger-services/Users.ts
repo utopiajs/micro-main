@@ -167,8 +167,7 @@ export class Users extends HttpClient {
    */
   usersDeleteWithDelete = (
     data: {
-      /** User id */
-      userId?: string;
+      userIds?: string[];
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>

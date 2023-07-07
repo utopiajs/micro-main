@@ -11,7 +11,7 @@
 
 /** @example {"id":"5ebac534954b54139806c112","email":"fake@example.com","name":"fake name","role":"user","preferenceSetting":{"theme":"light","colorPrimary":"#1677ff","borderRadius":6}} */
 export interface User {
-  id?: string;
+  id: string;
   /** @format email */
   email?: string;
   name?: string;
