@@ -225,7 +225,7 @@ function CoreTable<RecordType extends object = any>(
               className="header-operation-item"
               key={index}
               style={{
-                marginLeft: `${index === 0 ? '0' : `${marginXS}`}`
+                marginLeft: `${index === 0 ? '0' : `${marginXS}px`}`
               }}
             >
               {item}
