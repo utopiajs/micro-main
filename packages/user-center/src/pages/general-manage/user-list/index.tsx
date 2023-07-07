@@ -14,7 +14,8 @@ import {
 import {
   isApiSuccess,
   removeEmptyFields,
-  useSiteToken
+  useSiteToken,
+  _Cookies
 } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
 import { Button, Modal, Popconfirm } from 'antd';
@@ -76,6 +77,7 @@ const UserList: React.FC = () => {
     });
     if (isApiSuccess(errorCode)) {
       userListTableRef.current?.reloadData();
+      setUserSelectedRows([]);
     }
   }, []);
 
@@ -195,6 +197,10 @@ const UserList: React.FC = () => {
             showSerialNumber
             rowSelection={{
               selectedRowKeys: userSelectedRows.map((item) => item.id),
+              getCheckboxProps: (record) => ({
+                disabled:
+                  record.role === 'admin' || record.id === _Cookies.get('id')
+              }),
               onChange: (_, selectedRows) => {
                 setUserSelectedRows(selectedRows);
               }
