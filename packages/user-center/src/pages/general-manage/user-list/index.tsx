@@ -6,14 +6,18 @@ import type {
   CreateDataSourceType
 } from '@/components/core-table';
 import { coreUserApi } from '@/services';
-import { DeleteOutlined, RollbackOutlined } from '@ant-design/icons';
+import {
+  AppstoreAddOutlined,
+  DeleteOutlined,
+  RollbackOutlined
+} from '@ant-design/icons';
 import {
   isApiSuccess,
   removeEmptyFields,
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
-import { Button, Popconfirm } from 'antd';
+import { Button, Modal, Popconfirm } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
 import CreateUser from './create-user';
 
@@ -29,7 +33,9 @@ const EMPTY_USER_LIST: CreateDataSourceType<RecordType> = {
 const UserList: React.FC = () => {
   const [showCreateUserPanel, setShowCreateUserPanel] =
     useState<boolean>(false);
+  const [userSelectedRows, setUserSelectedRows] = useState<RecordType[]>([]);
   const userListTableRef = useRef<CoreTableRef>(null);
+  const [modal, contextHolder] = Modal.useModal();
   const {
     token: {
       colorHighlight,
@@ -64,9 +70,9 @@ const UserList: React.FC = () => {
     return removeEmptyFields(rawFormFields);
   }, []);
 
-  const handleDeleteUser = useCallback(async (record: RecordType) => {
+  const handleDeleteUser = useCallback(async (records: RecordType[]) => {
     const { errorCode } = await coreUserApi.usersDeleteWithDelete({
-      userId: record.id
+      userIds: records.map((item) => item.id)
     });
     if (isApiSuccess(errorCode)) {
       userListTableRef.current?.reloadData();
@@ -112,7 +118,7 @@ const UserList: React.FC = () => {
             title="删除该用户"
             description="该操作不可逆，确认删除？"
             onConfirm={() => {
-              handleDeleteUser(record);
+              handleDeleteUser([record]);
             }}
           >
             <div
@@ -130,11 +136,24 @@ const UserList: React.FC = () => {
 
   const headerOperationBar = [
     <Button
+      icon={<AppstoreAddOutlined />}
       onClick={() => {
         setShowCreateUserPanel(true);
       }}
     >
       新建
+    </Button>,
+    <Button
+      icon={<DeleteOutlined />}
+      disabled={userSelectedRows.length === 0}
+      onClick={() => {
+        modal.confirm({
+          title: '确定删除所选用户？该操作不可逆！',
+          onOk: () => handleDeleteUser(userSelectedRows)
+        });
+      }}
+    >
+      删除
     </Button>
   ];
 
@@ -174,10 +193,16 @@ const UserList: React.FC = () => {
             headerOperationBar={headerOperationBar}
             headerSearchBar={{ placeholder: '请输入用户名、邮箱' }}
             showSerialNumber
-            rowSelection={{}}
+            rowSelection={{
+              selectedRowKeys: userSelectedRows.map((item) => item.id),
+              onChange: (_, selectedRows) => {
+                setUserSelectedRows(selectedRows);
+              }
+            }}
           />
         </div>
       )}
+      {contextHolder}
     </div>
   );
 };
