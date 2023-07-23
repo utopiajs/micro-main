@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { v4 as uuidv4 } from 'uuid';
 import { ERROR_CODE } from '../constants';
 
 const isDev = () => process.env.NODE_ENV?.trim() !== 'production';
@@ -27,4 +28,11 @@ const removeEmptyFields = (obj) => {
 };
 const _Cookies = Cookies;
 
-export { isDev, getQueryParams, isApiSuccess, _Cookies, removeEmptyFields };
+export {
+  isDev,
+  getQueryParams,
+  isApiSuccess,
+  _Cookies,
+  uuidv4,
+  removeEmptyFields
+};
