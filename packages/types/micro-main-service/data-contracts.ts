@@ -36,6 +36,22 @@ export interface AuthTokens {
   refresh?: Token;
 }
 
+export interface Role {
+  id: string;
+  name: string;
+  description?: string;
+  createTime: number;
+  createBy: string;
+  updateTime: string;
+}
+
+export interface RoleMappingUser {
+  roleId: string;
+  userIds: string[];
+  createTime: number;
+  updateTime: string;
+}
+
 export interface BingImg {
   startdate?: string;
   fullstartdate?: string;
