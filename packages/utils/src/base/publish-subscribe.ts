@@ -2,7 +2,7 @@
 
 class PublishSubscribe {
   events: {
-    [key: string]: Array<Function>;
+    [key: string]: Array<(...restParams) => void>;
   };
 
   constructor() {
