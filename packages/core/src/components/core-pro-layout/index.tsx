@@ -96,6 +96,10 @@ const CoreProLayout: React.FC = () => {
                   {
                     name: '用户管理',
                     path: '/user-center/general-manage/user-list'
+                  },
+                  {
+                    name: '角色管理',
+                    path: '/user-center/general-manage/role-list'
                   }
                 ]
               }

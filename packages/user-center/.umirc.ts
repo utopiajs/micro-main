@@ -11,6 +11,7 @@ export default defineConfig({
     { path: '/base-info', component: 'base-info' },
     { path: '/preference-setting', component: 'preference-setting' },
     { path: '/general-manage/user-list', component: 'general-manage/user-list' },
+    { path: '/general-manage/role-list', component: 'general-manage/role-list' },
     { path: '/login', component: 'login' }
   ],
   model: {},
