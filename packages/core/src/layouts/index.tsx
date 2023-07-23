@@ -11,7 +11,16 @@ import { useCallback, useEffect, useState } from 'react';
 import './index.less';
 
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
+const DEFAULT_PRIMARY_COLOR = '#1677EF';
 
+function updateCssVariables(variables: { [key: string]: string }) {
+  const root = document.documentElement;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(variables)) {
+    root.style.setProperty(key, value);
+  }
+}
 export default function Layout() {
   const { initialState } = useModel('@@initialState');
   const [siteAntdThemeConfig, setAntdSiteThemeConfig] = useState(
@@ -42,6 +51,7 @@ export default function Layout() {
     setPrefersColor(
       initialState?.siteThemeConfig?.theme || userPrefers.theme || 'light'
     );
+
     window._MICRO_MAIN_CORE_PUB_SUB_.subscribe(
       PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
       (payload) => {
@@ -55,6 +65,11 @@ export default function Layout() {
       }
     );
   }, [getSiteThemeConfig, setPrefersColor, initialState]);
+
+  updateCssVariables({
+    '--micro-core-primary-color':
+      siteAntdThemeConfig.token?.colorPrimary || DEFAULT_PRIMARY_COLOR
+  });
 
   return (
     <ConfigProvider theme={siteAntdThemeConfig}>
