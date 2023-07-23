@@ -1,6 +1,6 @@
 // based on antd table
 import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
-import { useSiteToken } from '@utopia/micro-main-utils';
+import { useSiteToken, uuidv4 } from '@utopia/micro-main-utils';
 import { Input, Pagination, PaginationProps, Table, TableProps } from 'antd';
 import React, {
   useCallback,
@@ -15,13 +15,14 @@ import './index.less';
 const prefixCls = COMPONENT_CLASSNAME_PREFIX;
 const EMPTY_LIST: any[] = [];
 const DEFAULT_PAGINATION: PaginationProps = {
+  total: 0,
   pageSize: 10,
   pageSizeOptions: [10, 20, 60, 100],
   current: 1,
   showQuickJumper: true,
   showSizeChanger: true
 };
-const coreTableEleId = 'core-table-id';
+
 const DEFAULT_PLACEHOLDER = '请输入...';
 
 interface HeaderSearchBarProps {
@@ -73,12 +74,14 @@ function CoreTable<RecordType extends object = any>(
     headerSearchBar,
     formFieldsTransform,
     pagination: paginationProps,
+    size,
     ...restProps
   } = props;
 
   const [dataSource, setDataSource] = useState<RecordType[]>([]);
   const [pagination, setPagination] = useState<PaginationProps>({});
   const [dataLoading, setDataLoading] = useState<boolean>(false);
+  const [coreTableEleId] = useState(uuidv4);
   const [searchValue, setSearchValue] = useState<
     HeaderSearchBarProps['defaultValue']
   >(headerSearchBar?.defaultValue);
@@ -118,12 +121,13 @@ function CoreTable<RecordType extends object = any>(
 
   const getCoreTableScroll = useCallback(() => {
     const coreTableContent = document.getElementById(coreTableEleId);
+    const tableHeaderHeight = size === 'small' ? 39 : 55;
     if (coreTableContent) {
       setCoreTableScroll({
-        y: coreTableContent.getBoundingClientRect().height - 55
+        y: coreTableContent.getBoundingClientRect().height - tableHeaderHeight
       });
     }
-  }, []);
+  }, [coreTableEleId, size]);
 
   const getCoreTableFormFields = useCallback(() => {
     const paginationFields = {
@@ -249,6 +253,7 @@ function CoreTable<RecordType extends object = any>(
       >
         <Table<RecordType>
           {...restProps}
+          size={size}
           pagination={false}
           loading={dataLoading}
           dataSource={dataSource}
@@ -259,7 +264,10 @@ function CoreTable<RecordType extends object = any>(
       <div
         className={`${prefixCls}-core-table-footer`}
         style={{
-          display: paginationProps === false ? 'none' : 'flex',
+          display:
+            paginationProps === false || pagination.total === 0
+              ? 'none'
+              : 'flex',
           padding: `${paddingXS}px`,
           backgroundColor: colorBgElevated,
           borderBottomLeftRadius: borderRadius,
