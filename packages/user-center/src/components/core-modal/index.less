@@ -1,0 +1,31 @@
+@import '../../styles/variables.less';
+
+.@{component-classname-prefix}-core-modal {
+  position: relative;
+  .ant-modal-content {
+    overflow: auto;
+    padding: 0;
+  }
+  .ant-modal-footer {
+    margin-bottom: 8px;
+    padding: 0 8px;
+  }
+  &-close-icon {
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  &-header {
+    border-bottom: 1px solid;
+  }
+  &-body {
+    overflow: auto;
+  }
+}
