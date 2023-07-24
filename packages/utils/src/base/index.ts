@@ -5,3 +5,4 @@ export * from './publish-subscribe';
 export * from './site-theme';
 export * from './validator';
 export * from './lodash';
+export * from './day';
