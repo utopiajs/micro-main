@@ -22,7 +22,7 @@ const CoreModal: React.FC<CoreModalProps> = (props) => {
     children,
     className,
     height,
-    closable,
+    closable = true,
     onCancel,
     ...restProps
   } = props;
@@ -46,7 +46,7 @@ const CoreModal: React.FC<CoreModalProps> = (props) => {
 
   return (
     <Modal
-      title={title}
+      title={false}
       closable={false}
       onCancel={handleCancel}
       {...restProps}
