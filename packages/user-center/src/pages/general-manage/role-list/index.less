@@ -1,0 +1,20 @@
+.role-list-manage-wrap {
+  height: 100%;
+  :global {
+    .role-list-table {
+      height: 100%;
+      .colums-operate-wrap {
+        display: flex;
+        .role-operation-item {
+          width: 25px;
+          text-align: center;
+          font-size: 16px;
+          cursor: pointer;
+          & + .role-operation-item {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}

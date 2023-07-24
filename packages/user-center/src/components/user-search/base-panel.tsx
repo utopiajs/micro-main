@@ -64,12 +64,12 @@ const UserSearchBase: React.FC<UserSearchBaseProps> = (props) => {
             fontWeight: 'bold',
             color: colorPrimary,
             marginInlineStart: marginXS,
-            marginBlockEnd: marginXXS
+            marginInlineEnd: marginXXS
           }}
         >
           {userSelectRows.length}
         </span>
-        <span>个体人员</span>
+        <span>个人员</span>
       </div>
     ],
     [colorPrimary, marginXXS, marginXS, userSelectRows]
@@ -137,7 +137,7 @@ const UserSearchBase: React.FC<UserSearchBaseProps> = (props) => {
           showSerialNumber
           columns={colums}
           size="small"
-          pagination={{ size: 'small', pageSize: 13 }}
+          pagination={{ size: 'small', pageSize: 10 }}
           rowKey="id"
           headerSearchBar={{ placeholder: '请输入用户名、邮箱' }}
           headerOperationBar={userSelectedInfo}
