@@ -128,6 +128,12 @@ const RoleList: React.FC = () => {
     });
   }, []);
 
+  const handleUserSearchClose = useCallback(() => {
+    setUserSearchInfo({
+      open: false
+    });
+  }, []);
+
   const colums: CoreTableProps<RecordType>['columns'] = [
     { title: '角色名称', dataIndex: 'name', width: 150 },
     {
@@ -278,7 +284,11 @@ const RoleList: React.FC = () => {
         </div>
       )}
       {contextHolder}
-      <UserSearch renderType="modal" {...userSearchInfo} />
+      <UserSearch
+        renderType="modal"
+        onCancel={handleUserSearchClose}
+        {...userSearchInfo}
+      />
     </div>
   );
 };
