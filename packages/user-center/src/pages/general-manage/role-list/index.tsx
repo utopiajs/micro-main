@@ -5,7 +5,10 @@ import type {
   CoreTableRef,
   CreateDataSourceType
 } from '@/components/core-table';
-import type { RecordType as UserSearchRecordType } from '@/components/user-search/base-panel';
+import type {
+  RecordType as UserSearchRecordType,
+  RefUserSearchBaseProps
+} from '@/components/user-search/base-panel';
 import { coreRoleApi } from '@/services';
 import {
   AppstoreAddOutlined,
@@ -59,6 +62,8 @@ const RoleList: React.FC = () => {
     defaultValue: []
   });
   const roleListTableRef = useRef<CoreTableRef>(null);
+  const userSearchRef = useRef<RefUserSearchBaseProps>({ userSelectRows: [] });
+  const currentRoleRecordRef = useRef<RecordType>();
   const [modal, contextHolder] = Modal.useModal();
   const {
     token: {
@@ -110,6 +115,7 @@ const RoleList: React.FC = () => {
 
   // mapping user
   const handleMappingUser = useCallback(async (record: RecordType) => {
+    currentRoleRecordRef.current = record;
     const { errorCode, data } = await coreRoleApi.roleMappingUserInfoWithGet({
       roleId: record.id
     });
@@ -133,6 +139,20 @@ const RoleList: React.FC = () => {
       open: false
     });
   }, []);
+
+  const handleUserSearchOk = useCallback(async () => {
+    const userIds = userSearchRef.current?.userSelectRows.map(
+      (item) => item.id
+    );
+    const { errorCode } = await coreRoleApi.roleMappingUserWithPost({
+      roleId: currentRoleRecordRef.current?.id,
+      userIds
+    });
+    if (isApiSuccess(errorCode)) {
+      roleListTableRef.current?.reloadData();
+      handleUserSearchClose();
+    }
+  }, [handleUserSearchClose]);
 
   const colums: CoreTableProps<RecordType>['columns'] = [
     { title: '角色名称', dataIndex: 'name', width: 150 },
@@ -285,8 +305,11 @@ const RoleList: React.FC = () => {
       )}
       {contextHolder}
       <UserSearch
+        ref={userSearchRef}
+        destroyOnClose
         renderType="modal"
         onCancel={handleUserSearchClose}
+        onOk={handleUserSearchOk}
         {...userSearchInfo}
       />
     </div>
