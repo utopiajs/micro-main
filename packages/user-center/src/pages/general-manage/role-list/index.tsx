@@ -5,6 +5,7 @@ import type {
   CoreTableRef,
   CreateDataSourceType
 } from '@/components/core-table';
+import type { RecordType as UserSearchRecordType } from '@/components/user-search/base-panel';
 import { coreRoleApi } from '@/services';
 import {
   AppstoreAddOutlined,
@@ -37,6 +38,10 @@ const EMPTY_ROLE_LIST: CreateDataSourceType<RecordType> = {
 interface RoleOperationPanelInfoProps extends RoleOperationdefaultValue {
   open: boolean;
 }
+interface UserSearchInfoProps {
+  open?: boolean;
+  defaultValue?: UserSearchRecordType[];
+}
 
 const initRoleOperationPanelInfo: RoleOperationPanelInfoProps = {
   open: false,
@@ -44,10 +49,15 @@ const initRoleOperationPanelInfo: RoleOperationPanelInfoProps = {
   name: '',
   description: ''
 };
+
 const RoleList: React.FC = () => {
   const [roleOperationPanelInfo, setRoleOperationPanelInfo] =
     useState<RoleOperationPanelInfoProps>(initRoleOperationPanelInfo);
   const [roleSelectRows, setRoleSelectRows] = useState<RecordType[]>([]);
+  const [userSearchInfo, setUserSearchInfo] = useState<UserSearchInfoProps>({
+    open: false,
+    defaultValue: []
+  });
   const roleListTableRef = useRef<CoreTableRef>(null);
   const [modal, contextHolder] = Modal.useModal();
   const {
@@ -94,8 +104,21 @@ const RoleList: React.FC = () => {
     }
   }, []);
 
-  const handleEditRole = useCallback((records: RecordType) => {
-    setRoleOperationPanelInfo({ ...records, open: true });
+  const handleEditRole = useCallback((record: RecordType) => {
+    setRoleOperationPanelInfo({ ...record, open: true });
+  }, []);
+
+  // mapping user
+  const handleMappingUser = useCallback(async (record: RecordType) => {
+    const { errorCode, data } = await coreRoleApi.roleMappingUserInfoWithGet({
+      roleId: record.id
+    });
+    if (isApiSuccess(errorCode)) {
+      setUserSearchInfo({
+        open: true,
+        defaultValue: data
+      });
+    }
   }, []);
 
   const handleRoleOperationSuccess = useCallback(() => {
@@ -143,7 +166,7 @@ const RoleList: React.FC = () => {
               className="role-operation-item"
               title="关联用户"
               onClick={() => {
-                // handleEditRole(record);
+                handleMappingUser(record);
               }}
             >
               <UsergroupAddOutlined />
@@ -255,7 +278,7 @@ const RoleList: React.FC = () => {
         </div>
       )}
       {contextHolder}
-      <UserSearch renderType="modal" />
+      <UserSearch renderType="modal" {...userSearchInfo} />
     </div>
   );
 };

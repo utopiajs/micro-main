@@ -17,7 +17,7 @@ import type { User } from '@utopia/micro-types';
 import React, { useCallback, useMemo, useState } from 'react';
 import './index.less';
 
-type RecordType = Omit<User, 'preferenceSetting'>;
+export type RecordType = Omit<User, 'preferenceSetting'>;
 export interface UserSearchBaseProps {
   defaultValue?: RecordType[];
 }
