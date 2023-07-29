@@ -166,12 +166,7 @@ export class Roles extends HttpClient {
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<
-      ResponseCommonType<{
-        data?: User[];
-      }>,
-      Error
-    >({
+    this.request<ResponseCommonType<User[]>, Error>({
       url: `/api/micro-main/v1/role/mapping-user-info`,
       method: 'GET',
       params: query,
