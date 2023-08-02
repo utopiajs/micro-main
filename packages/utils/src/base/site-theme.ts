@@ -5,7 +5,7 @@ import { theme as antdTheme, type ThemeConfig } from 'antd';
 const getAntdConfigProviderTheme = (
   siteThemeConfig?: Partial<ISiteThemeConfig>
 ): ThemeConfig => {
-  if (siteThemeConfig) {
+  if (siteThemeConfig?.theme) {
     const { theme, colorPrimary, borderRadius } = siteThemeConfig;
     return {
       algorithm:
