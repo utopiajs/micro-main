@@ -16,7 +16,12 @@ import {
   PublishSubscribe,
   _Cookies
 } from '@utopia/micro-main-utils';
-import { User, type IInitialState } from '@utopia/micro-types';
+import type {
+  IInitialState,
+  QiankunStateForSlaveProps,
+  User
+} from '@utopia/micro-types';
+
 import type { ThemeConfig } from 'antd';
 import { theme } from 'antd';
 
@@ -84,7 +89,7 @@ export async function getInitialState(): Promise<IInitialState> {
 }
 
 // qiankun global data
-export const useQiankunStateForSlave = (): { initialState: IInitialState } => {
+export const useQiankunStateForSlave = (): QiankunStateForSlaveProps => {
   const { initialState } = useModel('@@initialState');
 
   return {

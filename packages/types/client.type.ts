@@ -24,4 +24,12 @@ interface IInitialState {
   siteThemeConfig: Partial<ISiteThemeConfig>;
 }
 
-export { IClientConstantProps, IInitialState, ISiteThemeConfig };
+interface QiankunStateForSlaveProps {
+  initialState: IInitialState;
+}
+export {
+  IClientConstantProps,
+  IInitialState,
+  ISiteThemeConfig,
+  QiankunStateForSlaveProps
+};

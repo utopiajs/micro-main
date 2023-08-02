@@ -1,13 +1,16 @@
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { Outlet, useModel } from '@umijs/max';
-import { getAntdConfigProviderTheme } from '@utopia/micro-main-utils';
-import { PUB_SUB_TYPES, type IInitialState } from '@utopia/micro-types';
+import {
+  getAntdConfigProviderTheme,
+  PUB_SUB_TYPES
+} from '@utopia/micro-main-utils';
+import type { QiankunStateForSlaveProps } from '@utopia/micro-types';
 import { ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
 import OutletWrap from './outlet-wrap';
 
 export default function Layout() {
-  const { initialState }: { initialState: IInitialState } =
+  const { initialState }: QiankunStateForSlaveProps =
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
   const [siteAntdThemeConfig, setSiteAntdThemeConfig] = useState(
     getAntdConfigProviderTheme(initialState?.siteThemeConfig)

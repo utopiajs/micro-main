@@ -1,3 +1,4 @@
-const ERROR_CODE = '0000000000';
+import { PUB_SUB_TYPES } from './core-client';
+import { ERROR_CODE } from './error-code';
 
-export { ERROR_CODE };
+export { PUB_SUB_TYPES, ERROR_CODE };
