@@ -1,4 +1,5 @@
 // login page
+import { DEFAULT_USER_INFO } from '@/constants';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreCommonsApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -8,7 +9,7 @@ import {
   isApiSuccess,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import { type BingImg, type IInitialState } from '@utopia/micro-types';
+import type { BingImg, IInitialState } from '@utopia/micro-types';
 import { Button, Form, Input, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
@@ -27,7 +28,10 @@ const getCurrentDate = () => {
 const LoginPage = () => {
   const [bingImgInfo, setBingImgInfo] = useState<BingImg>({});
   const {
-    initialState = { currentUser: { preferenceSetting: {} }, client: {} }
+    initialState = {
+      currentUser: DEFAULT_USER_INFO,
+      client: {}
+    }
   }: { initialState: Partial<IInitialState> } =
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
 

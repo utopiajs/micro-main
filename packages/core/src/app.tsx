@@ -1,4 +1,8 @@
-import { clientConstantProps, siteThemeConfig } from '@/constants';
+import {
+  clientConstantProps,
+  DEFAULT_USER_INFO,
+  siteThemeConfig
+} from '@/constants';
 import { coreUserApi } from '@/services';
 import {
   history,
@@ -13,8 +17,8 @@ import {
   _Cookies
 } from '@utopia/micro-main-utils';
 import { User, type IInitialState } from '@utopia/micro-types';
-import { theme } from 'antd';
 import type { ThemeConfig } from 'antd';
+import { theme } from 'antd';
 
 const loginPath = '/user-center/login';
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
@@ -85,10 +89,7 @@ export const useQiankunStateForSlave = (): { initialState: IInitialState } => {
 
   return {
     initialState: {
-      currentUser: initialState?.currentUser || {
-        id: '',
-        preferenceSetting: {}
-      },
+      currentUser: initialState?.currentUser || DEFAULT_USER_INFO,
       client: initialState?.client || {},
       siteThemeConfig: initialState?.siteThemeConfig || {}
     }
