@@ -1,4 +1,4 @@
-import { PUB_SUB_TYPES } from '@utopia/micro-types';
+import { PUB_SUB_TYPES } from '../constants';
 import { message as _message } from 'antd';
 import axios, {
   type AxiosInstance,

@@ -2,10 +2,10 @@ import { CoreProLayout } from '@/components';
 import { useModel } from '@umijs/max';
 import {
   getAntdConfigProviderTheme,
-  usePrefersColor
+  usePrefersColor,
+  PUB_SUB_TYPES
 } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
-import { PUB_SUB_TYPES } from '@utopia/micro-types';
 import { ConfigProvider, theme as antdTheme, type ThemeConfig } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import './index.less';

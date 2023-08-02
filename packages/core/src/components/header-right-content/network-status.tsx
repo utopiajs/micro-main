@@ -1,6 +1,6 @@
 // api laoding status
 import CommonLoading from '@/icons/CommonLoading';
-import { PUB_SUB_TYPES } from '@utopia/micro-types';
+import { PUB_SUB_TYPES } from '@utopia/micro-main-utils';
 import { useEffect, useState } from 'react';
 import Styles from './index.less';
 
