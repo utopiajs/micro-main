@@ -13,7 +13,8 @@ import {
   _Cookies
 } from '@utopia/micro-main-utils';
 import { User, type IInitialState } from '@utopia/micro-types';
-import { theme, type ThemeConfig } from 'antd';
+import { theme } from 'antd';
+import type { ThemeConfig } from 'antd';
 
 const loginPath = '/user-center/login';
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
@@ -62,6 +63,7 @@ export async function getInitialState(): Promise<IInitialState> {
     );
     history.push(loginPath);
     return {
+      id: '',
       preferenceSetting: userPrefers.colorPrimary
         ? userPrefers
         : siteThemeConfig
@@ -83,7 +85,10 @@ export const useQiankunStateForSlave = (): { initialState: IInitialState } => {
 
   return {
     initialState: {
-      currentUser: initialState?.currentUser || { preferenceSetting: {} },
+      currentUser: initialState?.currentUser || {
+        id: '',
+        preferenceSetting: {}
+      },
       client: initialState?.client || {},
       siteThemeConfig: initialState?.siteThemeConfig || {}
     }
