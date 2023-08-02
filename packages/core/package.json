@@ -3,12 +3,13 @@
   "private": true,
   "author": "KuangPF <1633397286@qq.com>",
   "scripts": {
-    "dev": "max dev",
     "build": "max build",
+    "dev": "max dev",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
     "setup": "max setup",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "tsc:check": "tsc -p . --noEmit --strict"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

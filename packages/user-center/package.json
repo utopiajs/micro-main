@@ -7,7 +7,8 @@
     "dev": "max dev",
     "postinstall": "max setup",
     "setup": "max setup",
-    "start": "max run dev"
+    "start": "max run dev",
+    "tsc:check": "tsc -p . --noEmit --strict"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
