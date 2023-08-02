@@ -11,7 +11,7 @@
     "dev:utils": "lerna run dev --scope=@utopia/micro-main-utils",
     "api:core": "node scripts/gen-core-services",
     "lint:es": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --fix",
-    "tsc:check": "lerna run tsc:check"
+    "tsc:check": "lerna run tsc:check --parallel"
   },
   "devDependencies": {
     "@utopia/eslint-config-react": "^0.0.10",
