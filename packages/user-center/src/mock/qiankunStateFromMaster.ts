@@ -1,14 +1,21 @@
-import { type IInitialState } from '@utopia/micro-types';
+import type { QiankunStateFromMasterProps } from '@utopia/micro-types';
 
-const qiankunStateFromMaster: { initialState: IInitialState } = {
-  initialState: {
+const qiankunStateFromMaster: Pick<
+  QiankunStateFromMasterProps,
+  'qiankunGlobalState'
+> = {
+  qiankunGlobalState: {
     currentUser: {
       id: '645f959388c7f418bad30d07',
       avatar:
         'http://qiniu-cdn.utopiajs.space/avatar/7c8d2d1c-eb9e-49b9-a6c2-efdb37615f29',
       name: 'KuangPF',
       email: 'me@kuangpf.com',
-      preferenceSetting: {}
+      preferenceSetting: {
+        theme: 'dark',
+        colorPrimary: '',
+        borderRadius: 2
+      }
     },
     client: {
       clientName: '微前端主平台',
