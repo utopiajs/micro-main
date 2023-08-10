@@ -1,15 +1,11 @@
 import {
   clientConstantProps,
-  DEFAULT_USER_INFO,
+  DEFAULT_QIANKUN_GLOBAL_STATE,
   siteThemeConfig
 } from '@/constants';
 import { coreUserApi } from '@/services';
-import {
-  history,
-  useModel,
-  type AntdConfig,
-  type RuntimeAntdConfig
-} from '@umijs/max';
+import type { AntdConfig, RuntimeAntdConfig } from '@umijs/max';
+import { history, useModel } from '@umijs/max';
 import {
   getQueryParams,
   isApiSuccess,
@@ -18,12 +14,12 @@ import {
 } from '@utopia/micro-main-utils';
 import type {
   IInitialState,
-  QiankunStateForSlaveProps,
+  QiankunStateFromMasterProps,
   User
 } from '@utopia/micro-types';
-
 import type { ThemeConfig } from 'antd';
 import { theme } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 
 const loginPath = '/user-center/login';
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
@@ -88,16 +84,34 @@ export async function getInitialState(): Promise<IInitialState> {
   };
 }
 
-// qiankun global data
-export const useQiankunStateForSlave = (): QiankunStateForSlaveProps => {
-  const { initialState } = useModel('@@initialState');
+/**
+ * qiankun global data
+ * setQiankunGlobalState: 更新全局初始化，避免修改主题或者用户信息后需刷新页面才能生效（优化交互）
+ */
+export const useQiankunStateForSlave = (): QiankunStateFromMasterProps => {
+  const { initialState: initialModelState } = useModel('@@initialState');
+
+  const getSiteState = useCallback(() => {
+    return {
+      currentUser:
+        initialModelState?.currentUser ??
+        DEFAULT_QIANKUN_GLOBAL_STATE.currentUser,
+      client: initialModelState?.client ?? DEFAULT_QIANKUN_GLOBAL_STATE.client,
+      siteThemeConfig:
+        initialModelState?.siteThemeConfig ??
+        DEFAULT_QIANKUN_GLOBAL_STATE.siteThemeConfig
+    };
+  }, [initialModelState]);
+
+  const [qiankunGlobalState, setQiankunGlobalState] = useState(getSiteState());
+
+  useEffect(() => {
+    setQiankunGlobalState(getSiteState());
+  }, [getSiteState]);
 
   return {
-    initialState: {
-      currentUser: initialState?.currentUser || DEFAULT_USER_INFO,
-      client: initialState?.client || {},
-      siteThemeConfig: initialState?.siteThemeConfig || {}
-    }
+    qiankunGlobalState,
+    setQiankunGlobalState
   };
 };
 

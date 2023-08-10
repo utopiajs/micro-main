@@ -1,4 +1,6 @@
-import { ProLayout, type MenuDataItem } from '@ant-design/pro-components';
+import { UserOutlined } from '@ant-design/icons';
+import type { MenuDataItem } from '@ant-design/pro-components';
+import { ProLayout } from '@ant-design/pro-components';
 import {
   Link,
   useLocation,
@@ -79,6 +81,7 @@ const CoreProLayout: React.FC = () => {
               {
                 name: '个人中心',
                 path: '/user-center/',
+                icon: <UserOutlined />,
                 children: [
                   {
                     name: '用户信息',
