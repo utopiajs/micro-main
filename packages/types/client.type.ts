@@ -21,12 +21,14 @@ interface ISiteThemeConfig {
 interface IInitialState {
   currentUser: User;
   client: Partial<IClientConstantProps>;
-  siteThemeConfig: Partial<ISiteThemeConfig>;
+  siteThemeConfig: ISiteThemeConfig;
 }
 
 interface QiankunStateForSlaveProps {
-  initialState: IInitialState;
+  qiankunGlobalState: IInitialState;
+  setQiankunGlobalState: React.Dispatch<React.SetStateAction<IInitialState>>;
 }
+
 export {
   IClientConstantProps,
   IInitialState,
