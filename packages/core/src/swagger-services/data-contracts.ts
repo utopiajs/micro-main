@@ -18,9 +18,9 @@ export interface User {
   avatar?: string;
   role?: 'user' | 'admin';
   preferenceSetting: {
-    theme?: 'light' | 'dark';
-    colorPrimary?: string;
-    borderRadius?: number;
+    theme: 'light' | 'dark';
+    colorPrimary: string;
+    borderRadius: number;
   };
 }
 
