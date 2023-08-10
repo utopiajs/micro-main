@@ -43,7 +43,8 @@ const UserList: React.FC = () => {
       paddingSM,
       colorBorderSecondary,
       marginSM,
-      marginXXL
+      marginXXL,
+      colorText
     }
   } = useSiteToken();
 
@@ -167,7 +168,8 @@ const UserList: React.FC = () => {
             style={{
               cursor: 'pointer',
               padding: paddingSM,
-              border: `1px solid ${colorBorderSecondary}`
+              border: `1px solid ${colorBorderSecondary}`,
+              color: colorText
             }}
             onClick={() => {
               setShowCreateUserPanel(false);

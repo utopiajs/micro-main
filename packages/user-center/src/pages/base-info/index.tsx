@@ -8,7 +8,7 @@ import {
   useSiteToken,
   _Cookies
 } from '@utopia/micro-main-utils';
-import type { IInitialState } from '@utopia/micro-types';
+import type { QiankunStateFromMasterProps } from '@utopia/micro-types';
 import { Form, message, Upload } from 'antd';
 import React, { useCallback, useState } from 'react';
 import Styles from './index.less';
@@ -19,10 +19,10 @@ const formItemLayout = {
 };
 
 const BaseInfo: React.FC = () => {
-  const { initialState }: { initialState: IInitialState } =
+  const { qiankunGlobalState }: QiankunStateFromMasterProps =
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
 
-  const [userInfo, setUserInfo] = useState(initialState.currentUser);
+  const [userInfo, setUserInfo] = useState(qiankunGlobalState.currentUser);
   const [uploadLoading, setUploadLoading] = useState(false);
   const {
     token: {

@@ -71,7 +71,8 @@ const RoleList: React.FC = () => {
       paddingSM,
       colorBorderSecondary,
       marginSM,
-      marginXXL
+      marginXXL,
+      colorText
     }
   } = useSiteToken();
 
@@ -261,7 +262,8 @@ const RoleList: React.FC = () => {
             style={{
               cursor: 'pointer',
               padding: paddingSM,
-              border: `1px solid ${colorBorderSecondary}`
+              border: `1px solid ${colorBorderSecondary}`,
+              color: colorText
             }}
             onClick={() => {
               setRoleOperationPanelInfo({
