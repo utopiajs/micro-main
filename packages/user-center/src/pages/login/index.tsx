@@ -1,5 +1,4 @@
 // login page
-import { DEFAULT_USER_INFO } from '@/constants';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreCommonsApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -9,7 +8,7 @@ import {
   isApiSuccess,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import type { BingImg, IInitialState } from '@utopia/micro-types';
+import type { BingImg, QiankunStateFromMasterProps } from '@utopia/micro-types';
 import { Button, Form, Input, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
@@ -27,12 +26,7 @@ const getCurrentDate = () => {
 
 const LoginPage = () => {
   const [bingImgInfo, setBingImgInfo] = useState<BingImg>({});
-  const {
-    initialState = {
-      currentUser: DEFAULT_USER_INFO,
-      client: {}
-    }
-  }: { initialState: Partial<IInitialState> } =
+  const { qiankunGlobalState }: QiankunStateFromMasterProps =
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
 
   const {
@@ -84,7 +78,7 @@ const LoginPage = () => {
           boxShadow
         }}
       >
-        <Title level={4}>{initialState?.client?.clientName}</Title>
+        <Title level={4}>{qiankunGlobalState?.client?.clientName}</Title>
         <Form
           name="user-center-login"
           className="login-form"
@@ -121,7 +115,7 @@ const LoginPage = () => {
         </Form>
         <p>
           <Text type="secondary" style={{ fontSize: fontSizeSM }}>
-            {initialState?.client?.copyRight}
+            {qiankunGlobalState?.client?.copyRight}
           </Text>
         </p>
       </div>
