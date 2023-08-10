@@ -4,10 +4,11 @@ import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreUserApi } from '@/services';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
-import { isApiSuccess, useSiteToken, PUB_SUB_TYPES } from '@utopia/micro-main-utils';
+import { isApiSuccess, useSiteToken } from '@utopia/micro-main-utils';
+import type { QiankunStateFromMasterProps } from '@utopia/micro-types';
 import type { MenuTheme } from 'antd';
-import { Button, Form, Radio, Tooltip } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Form, message, Radio, Tooltip } from 'antd';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import BlockCheckbox from './block-check-box';
 import Styles from './index.less';
 import ThemeColor from './ThemeColor';
@@ -64,25 +65,37 @@ const borderRadiusList = [
   }
 ];
 
+let isPreferenceSettingChanged = false;
 const PreferenceSetting: React.FC = () => {
-  const { initialState } =
+  const {
+    qiankunGlobalState,
+    setQiankunGlobalState
+  }: QiankunStateFromMasterProps =
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
-  const [settingState] = useState<IPreferenceSettings>(
-    initialState?.siteThemeConfig
-  );
+  const [settingState] = useState(qiankunGlobalState.siteThemeConfig);
+  const currentInitialStateRef =
+    useRef<QiankunStateFromMasterProps['qiankunGlobalState']>(
+      qiankunGlobalState
+    );
+  const [messageApi, contextHolder] = message.useMessage();
   const {
     token: { padding }
   } = useSiteToken();
 
   const [preferenceSettingForm] = Form.useForm();
 
-  const handleValueChange = useCallback((_, allFields) => {
-    // return
-    window._MICRO_MAIN_CORE_PUB_SUB_?.publish(
-      PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
-      allFields
-    );
-  }, []);
+  const handleValueChange = useCallback(
+    (_, allFields) => {
+      isPreferenceSettingChanged = true;
+      const nextQiankunGlobalState: QiankunStateFromMasterProps['qiankunGlobalState'] =
+        {
+          ...qiankunGlobalState,
+          siteThemeConfig: allFields
+        };
+      setQiankunGlobalState(nextQiankunGlobalState);
+    },
+    [qiankunGlobalState, setQiankunGlobalState]
+  );
 
   const handleReset = useCallback(() => {
     preferenceSettingForm.resetFields();
@@ -90,24 +103,29 @@ const PreferenceSetting: React.FC = () => {
   }, [preferenceSettingForm, handleValueChange, settingState]);
 
   // handle finish
-  const handleFinish = useCallback(async (values) => {
-    const { errorCode } = await coreUserApi.usersUpdateWithPatch({
-      preferenceSetting: values
-    });
-    if (isApiSuccess(errorCode)) {
-      window.location.reload();
-    }
-  }, []);
+  const handleFinish = useCallback(
+    async (values) => {
+      const { errorCode } = await coreUserApi.usersUpdateWithPatch({
+        preferenceSetting: values
+      });
+      if (isApiSuccess(errorCode)) {
+        messageApi.success('主题修改成功');
+        currentInitialStateRef.current = {
+          ...qiankunGlobalState,
+          siteThemeConfig: values
+        };
+        isPreferenceSettingChanged = false;
+      }
+    },
+    [qiankunGlobalState, messageApi]
+  );
 
   useEffect(() => {
     // 全局样式保持一致，防止预览后不保存而导致表单值与样式不一致
     return () => {
-      window._MICRO_MAIN_CORE_PUB_SUB_?.publish(
-        PUB_SUB_TYPES.GET_SITE_THEME_VALUE,
-        settingState
-      );
+      setQiankunGlobalState(currentInitialStateRef.current);
     };
-  }, [settingState]);
+  }, [setQiankunGlobalState]);
 
   return (
     <div className={Styles['preference-setting-wrap']} style={{ padding }}>
@@ -143,6 +161,7 @@ const PreferenceSetting: React.FC = () => {
           </Tooltip>
         </Form.Item>
       </Form>
+      {contextHolder}
     </div>
   );
 };
