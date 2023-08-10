@@ -24,7 +24,7 @@ interface IInitialState {
   siteThemeConfig: ISiteThemeConfig;
 }
 
-interface QiankunStateForSlaveProps {
+interface QiankunStateFromMasterProps {
   qiankunGlobalState: IInitialState;
   setQiankunGlobalState: React.Dispatch<React.SetStateAction<IInitialState>>;
 }
@@ -33,5 +33,5 @@ export {
   IClientConstantProps,
   IInitialState,
   ISiteThemeConfig,
-  QiankunStateForSlaveProps
+  QiankunStateFromMasterProps
 };
