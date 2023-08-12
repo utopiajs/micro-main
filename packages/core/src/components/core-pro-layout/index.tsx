@@ -1,4 +1,8 @@
-import { UserOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  SettingOutlined,
+  UserOutlined
+} from '@ant-design/icons';
 import type { MenuDataItem } from '@ant-design/pro-components';
 import { ProLayout } from '@ant-design/pro-components';
 import {
@@ -79,8 +83,17 @@ const CoreProLayout: React.FC = () => {
           new Promise((resolve) => {
             resolve([
               {
+                name: '系统设置',
+                icon: <SettingOutlined />,
+                children: [
+                  {
+                    name: '路由设置',
+                    path: '/user-center/sys-setting/route-config'
+                  }
+                ]
+              },
+              {
                 name: '个人中心',
-                path: '/user-center/',
                 icon: <UserOutlined />,
                 children: [
                   {
@@ -95,6 +108,7 @@ const CoreProLayout: React.FC = () => {
               },
               {
                 name: '综合管理',
+                icon: <AppstoreOutlined />,
                 children: [
                   {
                     name: '用户管理',
