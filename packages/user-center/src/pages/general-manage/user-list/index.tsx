@@ -15,6 +15,7 @@ import {
   isApiSuccess,
   removeEmptyFields,
   useSiteToken,
+  formateTime,
   _Cookies
 } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
@@ -87,12 +88,12 @@ const UserList: React.FC = () => {
     {
       title: 'id',
       dataIndex: 'id',
-      width: 300
+      width: 260
     },
     {
       title: '头像',
       dataIndex: 'avatar',
-      width: 200,
+      width: 60,
       render: (value) => (
         <img alt="用户头像" width={30} height={30} src={value} />
       )
@@ -100,7 +101,7 @@ const UserList: React.FC = () => {
     {
       title: '邮箱',
       dataIndex: 'email',
-      width: 240
+      width: 220
     },
     {
       title: '角色',
@@ -109,9 +110,15 @@ const UserList: React.FC = () => {
     },
     {
       title: '创建日期',
-      dataIndex: 'role',
+      dataIndex: 'createTime',
       width: 200,
-      render: () => <span>2023-06-22</span>
+      render: (value) => <span>{formateTime(value)}</span>
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updatedTime',
+      width: 200,
+      render: (value) => <span>{formateTime(value)}</span>
     },
     {
       title: '操作',
