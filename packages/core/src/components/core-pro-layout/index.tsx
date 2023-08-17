@@ -1,5 +1,5 @@
 import {
-  AppstoreOutlined,
+  MacCommandOutlined,
   SettingOutlined,
   UserOutlined
 } from '@ant-design/icons';
@@ -108,7 +108,7 @@ const CoreProLayout: React.FC = () => {
               },
               {
                 name: '综合管理',
-                icon: <AppstoreOutlined />,
+                icon: <MacCommandOutlined />,
                 children: [
                   {
                     name: '用户管理',
