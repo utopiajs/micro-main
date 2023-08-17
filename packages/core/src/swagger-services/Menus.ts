@@ -23,17 +23,7 @@ export class Menus extends HttpClient {
    * @secure
    */
   menuCreateWithPost = (
-    data: {
-      name: string;
-      url: string;
-      code?: string;
-      parentId?: number;
-      displayOrder?: any;
-      isShow?: boolean;
-      showHeader?: boolean;
-      showSidebar?: boolean;
-      redirectUrl?: string;
-    },
+    data: any,
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<Menu>, Error>({
@@ -52,18 +42,7 @@ export class Menus extends HttpClient {
    * @secure
    */
   menuUpdateWithPost = (
-    data: {
-      id: string;
-      name?: string;
-      url?: string;
-      code?: string;
-      parentId?: number;
-      displayOrder?: any;
-      isShow?: boolean;
-      showHeader?: boolean;
-      showSidebar?: boolean;
-      redirectUrl?: string;
-    },
+    data: any,
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<Menu>, Error>({
