@@ -32,7 +32,7 @@ const BaseInfo: React.FC = () => {
       colorBorder,
       fontSizeSM,
       marginXS,
-      padding
+      paddingXS
     }
   } = useSiteToken();
 
@@ -58,7 +58,7 @@ const BaseInfo: React.FC = () => {
   );
 
   return (
-    <div className={Styles['base-info-wrap']} style={{ padding }}>
+    <div className={Styles['base-info-wrap']} style={{ padding: paddingXS }}>
       <TitleLabel level={5}>基础信息</TitleLabel>
       <Form
         name="base-info"
@@ -91,9 +91,7 @@ const BaseInfo: React.FC = () => {
                   alt="avatar"
                   className="avatar"
                 />
-              ) : (
-                'ss'
-              )}
+              ) : null}
               <div
                 className="avatar-edit"
                 style={{
