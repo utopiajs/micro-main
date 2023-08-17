@@ -1,0 +1,34 @@
+@import '../../styles/variables.less';
+
+.@{component-classname-prefix}-core-tree {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .ant-tree {
+    height: 100%;
+    &-node-content-wrapper {
+      flex: auto;
+    }
+  }
+  &-header-operation {
+    display: flex;
+    .header-operation-item {
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      font-size: 18px;
+      margin-right: 5px;
+      cursor: pointer;
+      &:not(&-disabled):hover {
+        opacity: 0.8;
+      }
+      &-disabled {
+        cursor: not-allowed;
+        color: rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+  &-body {
+    flex: auto;
+  }
+}
