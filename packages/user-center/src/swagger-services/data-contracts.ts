@@ -21,7 +21,7 @@ export interface AuthTokens {
   refresh?: Token;
 }
 
-export interface Menu {
+export interface MenuOrign {
   id: string;
   name: string;
   url: string;
@@ -32,9 +32,14 @@ export interface Menu {
   showHeader: boolean;
   showSidebar: boolean;
   redirectUrl: string;
-  createTime: any;
-  updateTime: string;
 }
+
+export interface MenuTime {
+  createTime?: string;
+  updateTime?: string;
+}
+
+export type Menu = MenuOrign & MenuTime;
 
 export type MenuTreeNode = (Menu & {
   children?: MenuTreeNode[];
