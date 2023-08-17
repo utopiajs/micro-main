@@ -9,21 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-/** @example {"id":"5ebac534954b54139806c112","email":"fake@example.com","name":"fake name","role":"user","preferenceSetting":{"theme":"light","colorPrimary":"#1677ff","borderRadius":6}} */
-export interface User {
-  id: string;
-  /** @format email */
-  email?: string;
-  name?: string;
-  avatar?: string;
-  role?: 'user' | 'admin';
-  preferenceSetting: {
-    theme: 'light' | 'dark';
-    colorPrimary: string;
-    borderRadius: number;
-  };
-}
-
 /** @example {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg","expires":"2020-05-12T16:18:04.793Z"} */
 export interface Token {
   token?: string;
@@ -34,6 +19,30 @@ export interface Token {
 export interface AuthTokens {
   access?: Token;
   refresh?: Token;
+}
+
+export interface Menu {
+  id: string;
+  name: string;
+  url: string;
+  code: string;
+  parentId: number;
+  displayOrder: any;
+  isShow: boolean;
+  showHeader: boolean;
+  showSidebar: boolean;
+  redirectUrl: string;
+  createTime: any;
+  updateTime: string;
+}
+
+export type MenuTreeNode = (Menu & {
+  children?: MenuTreeNode[];
+})[];
+
+export interface Error {
+  code?: number;
+  message?: string;
 }
 
 export interface Role {
@@ -52,6 +61,21 @@ export interface RoleMappingUser {
   updateTime: string;
 }
 
+/** @example {"id":"5ebac534954b54139806c112","email":"fake@example.com","name":"fake name","role":"user","preferenceSetting":{"theme":"light","colorPrimary":"#1677ff","borderRadius":6}} */
+export interface User {
+  id: string;
+  /** @format email */
+  email?: string;
+  name?: string;
+  avatar?: string;
+  role?: 'user' | 'admin';
+  preferenceSetting: {
+    theme: 'light' | 'dark';
+    colorPrimary: string;
+    borderRadius: number;
+  };
+}
+
 export interface BingImg {
   startdate?: string;
   fullstartdate?: string;
@@ -68,9 +92,4 @@ export interface BingImg {
 export interface UploadRes {
   url?: string;
   size?: number;
-}
-
-export interface Error {
-  code?: number;
-  message?: string;
 }
