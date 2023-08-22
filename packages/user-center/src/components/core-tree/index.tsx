@@ -1,70 +1,79 @@
 // 基于 antd Tree 分装，增加一些特有操作以及布局
 import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  FileAddOutlined
-} from '@ant-design/icons';
 import { useSiteToken } from '@utopia/micro-main-utils';
 import type { TreeProps } from 'antd';
 import { Input, Tree } from 'antd';
-import classNames from 'classnames';
-import React from 'react';
+import type { SearchProps } from 'antd/es/input/Search';
+import React, { useCallback } from 'react';
 
 import './index.less';
 
 interface CoreTreeProps extends TreeProps {
   placeholder?: string;
+  searchValue?: string;
+  onSearch?: SearchProps['onSearch'];
+  headerRender?: () => React.ReactNode;
 }
-
-const prefixCls = COMPONENT_CLASSNAME_PREFIX;
+const prefixCls = `${COMPONENT_CLASSNAME_PREFIX}-core-tree`;
 
 const CoreTree: React.FC<CoreTreeProps> = (props) => {
-  const { placeholder, selectedKeys, ...restProps } = props;
   const {
-    token: { paddingXXS, marginXS, colorTextDisabled, colorText }
+    placeholder,
+    selectedKeys,
+    searchValue,
+    headerRender,
+    onSearch,
+    titleRender,
+    ...restProps
+  } = props;
+  const {
+    token: { paddingXXS, marginXS, colorErrorText }
   } = useSiteToken();
-  const operateDisabled = !selectedKeys?.length;
+
+  // 处理搜索高亮
+  const treeNodeRender = useCallback(
+    (nodeData) => {
+      if (titleRender) {
+        return titleRender(nodeData);
+      }
+      if (searchValue) {
+        const rawString = nodeData.name ?? '';
+        const searchTitleHighlightStr = rawString
+          .split(searchValue)
+          .join(`<span style="color:${colorErrorText}">${searchValue}</span>`);
+
+        return (
+          <span dangerouslySetInnerHTML={{ __html: searchTitleHighlightStr }} />
+        );
+      }
+
+      return nodeData.name;
+    },
+    [titleRender, searchValue, colorErrorText]
+  );
+
   return (
-    <div className={`${prefixCls}-core-tree`} style={{ padding: paddingXXS }}>
+    <div className={`${prefixCls}`} style={{ padding: paddingXXS }}>
+      {headerRender && (
+        <div className={`${prefixCls}-header-content`}>{headerRender()}</div>
+      )}
       <div
-        className={`${prefixCls}-core-tree-header-operation`}
-        style={{ color: colorText }}
-      >
-        <div className={classNames(['header-operation-item'])}>
-          <FileAddOutlined />
-        </div>
-        <div
-          className={classNames([
-            'header-operation-item',
-            { 'header-operation-item-disabled': operateDisabled }
-          ])}
-          style={{
-            color: `${operateDisabled ? colorTextDisabled : colorText}`
-          }}
-        >
-          <EditOutlined />
-        </div>
-        <div
-          className={classNames([
-            'header-operation-item',
-            { 'header-operation-item-disabled': operateDisabled }
-          ])}
-          style={{
-            color: `${operateDisabled ? colorTextDisabled : colorText}`
-          }}
-        >
-          <DeleteOutlined />
-        </div>
-      </div>
-      <div
-        className={`${prefixCls}-core-tree-search`}
+        className={`${prefixCls}-search`}
         style={{ marginBlockStart: marginXS, marginBlockEnd: marginXS }}
       >
-        <Input.Search placeholder={placeholder} />
+        <Input.Search
+          placeholder={placeholder}
+          onSearch={onSearch}
+          allowClear
+        />
       </div>
-      <div className={`${prefixCls}-core-tree-body`}>
-        <Tree selectedKeys={selectedKeys} blockNode {...restProps} />
+      <div className={`${prefixCls}-body`}>
+        <Tree
+          selectedKeys={selectedKeys}
+          blockNode
+          titleRender={treeNodeRender}
+          {...restProps}
+        />
       </div>
     </div>
   );
