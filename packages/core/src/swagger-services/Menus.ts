@@ -79,12 +79,12 @@ export class Menus extends HttpClient {
    * @description delete a menu.
    *
    * @tags Menus
-   * @name MenuDeleteWithPost
+   * @name MenuDeleteWithDelete
    * @summary delete a menu
-   * @request POST:/menu/delete
+   * @request DELETE:/menu/delete
    * @secure
    */
-  menuDeleteWithPost = (
+  menuDeleteWithDelete = (
     data: {
       id?: string;
     },
@@ -92,7 +92,7 @@ export class Menus extends HttpClient {
   ) =>
     this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/menu/delete`,
-      method: 'POST',
+      method: 'DELETE',
       data: data,
       ...params
     });
