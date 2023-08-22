@@ -26,8 +26,9 @@ export interface MenuOrign {
   name: string;
   url: string;
   code: string;
-  parentId: number;
+  parentId: string;
   displayOrder: any;
+  level: 1 | 2 | 3;
   isShow: boolean;
   showHeader: boolean;
   showSidebar: boolean;
@@ -41,9 +42,9 @@ export interface MenuTime {
 
 export type Menu = MenuOrign & MenuTime;
 
-export type MenuTreeNode = (Menu & {
+export type MenuTreeNode = Menu & {
   children?: MenuTreeNode[];
-})[];
+};
 
 export interface Error {
   code?: number;

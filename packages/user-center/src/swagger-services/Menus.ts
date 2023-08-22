@@ -75,4 +75,25 @@ export class Menus extends HttpClient {
       params: query,
       ...params
     });
+  /**
+   * @description delete a menu.
+   *
+   * @tags Menus
+   * @name MenuDeleteWithPost
+   * @summary delete a menu
+   * @request POST:/menu/delete
+   * @secure
+   */
+  menuDeleteWithPost = (
+    data: {
+      id?: string;
+    },
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<ResponseCommonType<void>, Error>({
+      url: `/api/micro-main/v1/menu/delete`,
+      method: 'POST',
+      data: data,
+      ...params
+    });
 }
