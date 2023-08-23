@@ -96,4 +96,28 @@ export class Menus extends HttpClient {
       data: data,
       ...params
     });
+  /**
+   * No description
+   *
+   * @tags Menus
+   * @name MenuNodeMoveWithPost
+   * @summary move menu node
+   * @request POST:/menu/nodeMove
+   * @secure
+   */
+  menuNodeMoveWithPost = (
+    data: {
+      dragNode: Menu;
+      prevNode?: Menu;
+      targetNode?: Menu;
+      dropPosition: number;
+    },
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<ResponseCommonType<void>, Error>({
+      url: `/api/micro-main/v1/menu/nodeMove`,
+      method: 'POST',
+      data: data,
+      ...params
+    });
 }
