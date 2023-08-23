@@ -30,10 +30,21 @@ const treeLoop = (
   return true;
 };
 
+/**
+ * @param info.dropToGap 表示是否拖动在节点之间的缝隙中，true，表示在节点分析中，false 则表示在节点内容中（作为内容区第一个节点）
+ * @param originMenuTreeData
+ * @returns
+ */
 const handleSortDragMenu = (info, originMenuTreeData) => {
-  const { node, dragNode } = info;
+  const { node, dragNode, dropToGap } = info;
   const dropPos = node.pos.split('-');
   const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+  const movedInfo = {
+    dragNode,
+    targetNode: undefined, // // target 只会在将一个节点直接整体拖入到另一个节点内容中时存在
+    prevNode: node,
+    dropPosition
+  };
 
   const nextMenuTreeData = [...originMenuTreeData];
   // Find dragObject
@@ -43,13 +54,14 @@ const handleSortDragMenu = (info, originMenuTreeData) => {
     dragObj = item;
   });
 
-  if (!info.dropToGap) {
+  if (!dropToGap) {
     // Drop on the content
     treeLoop(nextMenuTreeData, node.key, (item) => {
       item.children = item.children || [];
       // where to insert. New item was inserted to the start of the array in this example, but can be anywhere
       item.children.unshift(dragObj);
     });
+    movedInfo.targetNode = node;
   } else if (
     (info.node.children || []).length > 0 && // Has children
     info.node.expanded && // Is expanded
@@ -62,6 +74,7 @@ const handleSortDragMenu = (info, originMenuTreeData) => {
       // in previous version, we use item.children.push(dragObj) to insert the
       // item to the tail of the children
     });
+    movedInfo.targetNode = node;
   } else {
     let ar: DataNode[] = [];
     let i: number;
@@ -77,7 +90,7 @@ const handleSortDragMenu = (info, originMenuTreeData) => {
     });
   }
 
-  return { sortedMenuTreeData: nextMenuTreeData };
+  return { sortedMenuTreeData: nextMenuTreeData, movedInfo };
 };
 
 export { handleSortDragMenu, isSameTreeLevel, treeLoop };

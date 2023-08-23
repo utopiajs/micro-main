@@ -177,8 +177,11 @@ const RouteConfig: React.FC = () => {
   // 菜单拖动
   const handleMenuDrap = useCallback(
     (info) => {
-      const { sortedMenuTreeData } = handleSortDragMenu(info, menuTreeData);
-
+      const { sortedMenuTreeData, movedInfo } = handleSortDragMenu(
+        info,
+        menuTreeData
+      );
+      coreMenuApi.menuNodeMoveWithPost(movedInfo);
       setMenuTreeData(sortedMenuTreeData);
       return true;
     },
