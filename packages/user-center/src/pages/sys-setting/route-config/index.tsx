@@ -117,6 +117,7 @@ const RouteConfig: React.FC = () => {
         );
         if (isApiSuccess(errorCode)) {
           messageAPI.success('菜单新增成功');
+          operateStatusRef.current = 'edit';
           setSelectedKeys([data.id]);
           setCurrentEditMenu(data);
           getMenuTreeData(); // 全量更新
