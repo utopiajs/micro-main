@@ -1,5 +1,5 @@
 // 用户管理
-import { CoreTable, UserSearch } from '@/components';
+import { CoreTable, MenuTransfer, UserSearch } from '@/components';
 import type {
   CoreTableProps,
   CoreTableRef,
@@ -61,6 +61,12 @@ const RoleList: React.FC = () => {
     open: false,
     defaultValue: []
   });
+  const [menuTransferInfo, setMenuTransferInfo] = useState<UserSearchInfoProps>(
+    {
+      open: true,
+      defaultValue: []
+    }
+  );
   const roleListTableRef = useRef<CoreTableRef>(null);
   const userSearchRef = useRef<RefUserSearchBaseProps>({ userSelectRows: [] });
   const currentRoleRecordRef = useRef<RecordType>();
@@ -126,6 +132,11 @@ const RoleList: React.FC = () => {
         defaultValue: data
       });
     }
+  }, []);
+
+  // handleMappingMenuModule
+  const handleMappingMenuModule = useCallback(async (record: RecordType) => {
+    currentRoleRecordRef.current = record;
   }, []);
 
   const handleRoleOperationSuccess = useCallback(() => {
@@ -197,6 +208,15 @@ const RoleList: React.FC = () => {
               }}
             >
               <UsergroupAddOutlined />
+            </div>
+            <div
+              className="role-operation-item"
+              title="关联模块"
+              onClick={() => {
+                handleMappingMenuModule(record);
+              }}
+            >
+              <AppstoreAddOutlined />
             </div>
             <div
               className="role-operation-item"
@@ -314,6 +334,7 @@ const RoleList: React.FC = () => {
         onOk={handleUserSearchOk}
         {...userSearchInfo}
       />
+      <MenuTransfer renderType="modal" {...menuTransferInfo} />
     </div>
   );
 };

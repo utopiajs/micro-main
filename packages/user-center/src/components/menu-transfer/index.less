@@ -1,0 +1,62 @@
+@import '../../styles/variables.less';
+
+.@{component-classname-prefix}-menu-transfer{
+  &-base-panel {
+    &-body {
+      display: flex;
+      align-items: stretch;
+      height: 500px;
+    }
+  }
+  &-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 50%;
+    width: auto;
+    height: 100%;
+    border: 1px solid;
+    &-header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid;
+      height: 40px;
+    }
+    &-body {
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+  &-operation {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    margin: 0 8px;
+    vertical-align: middle;
+  }
+  &-selected-list-wrap {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .@{component-classname-prefix}-menu-transfer-selected-list-header {
+      display: flex;
+      &-title {
+        flex: 1 1 50%;
+      }
+    }
+    .@{component-classname-prefix}-menu-transfer-selected-list-body {
+      overflow-y: auto;
+      flex: 1;
+      &-item {
+        display: flex;
+        border-bottom: 1px solid;
+        line-height: 35px;
+        &-title {
+          flex: 1 1 50%;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
