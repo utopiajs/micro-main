@@ -5,6 +5,8 @@ import { ERROR_CODE } from '../constants';
 type NonNullableProperties<T> = {
   [K in keyof T]: Exclude<T[K], undefined | null | ''>;
 };
+
+const _Cookies = Cookies;
 const isDev = () => process.env.NODE_ENV?.trim() !== 'production';
 
 const getQueryParams = (url: string = window.location.search) => {
@@ -53,7 +55,18 @@ function convertArrayFromTree(
   return resultList;
 }
 
-const _Cookies = Cookies;
+/**
+ * 页面缺省字段填充
+ * @param value 字段原始值
+ * @param fillText 填充默认值
+ */
+function renderDefaultField(value, fillText = '--') {
+  if (value === 0) {
+    return value;
+  }
+
+  return value || fillText;
+}
 
 export {
   isDev,
@@ -62,5 +75,6 @@ export {
   _Cookies,
   uuidv4,
   removeEmptyFields,
-  convertArrayFromTree
+  convertArrayFromTree,
+  renderDefaultField
 };

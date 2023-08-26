@@ -7,25 +7,38 @@ import {
   cloneDeep,
   convertArrayFromTree,
   isApiSuccess,
+  renderDefaultField,
   useHoverStyle,
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { Menu, MenuTreeNode } from '@utopia/micro-types';
 import { Button, Checkbox } from 'antd';
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react';
 import CoreTree from '../core-tree';
 
 import './index.less';
 
 export interface RefMenuTransferBaseProps {
-  menuSelectRows: string[];
+  targetList: Menu[];
 }
 interface DataNode extends MenuTreeNode {
   key: number | string;
   children?: DataNode[];
 }
 
-export interface MenuTransferBaseProps {}
+interface TargetMenu extends Menu {
+  checked?: boolean;
+}
+export interface MenuTransferBaseProps {
+  defaultValue?: string[];
+}
 
 const prefixCls = `${COMPONENT_CLASSNAME_PREFIX}-menu-transfer`;
 
@@ -33,12 +46,13 @@ const MenuTransferBase = forwardRef<
   RefMenuTransferBaseProps,
   MenuTransferBaseProps
 >((props, ref) => {
+  const { defaultValue = [] } = props;
+
   const [menuTreeData, setMenuTreeData] = useState<DataNode[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<string[]>([]); // 主要用户搜索
-  const [checkedKeys, setCheckedKeys] = useState<string[]>([]);
+  const [checkedKeys, setCheckedKeys] = useState<string[]>(defaultValue);
   const [checkedNodes, setCheckedNodes] = useState<Menu[]>([]);
-  const [targetList, setTargetList] = useState<Menu[]>([]); // 右侧列表数据
-  const [targetCheckedList, setTargetCheckedList] = useState<string[]>([]);
+  const [targetList, setTargetList] = useState<TargetMenu[]>([]); // 右侧列表数据
   const menuTreeSearchValueRef = useRef<{ search: string }>({ search: '' });
   const menuListRef = useRef<Menu[]>([]);
 
@@ -54,6 +68,12 @@ const MenuTransferBase = forwardRef<
       colorFillAlter
     }
   } = useSiteToken();
+
+  useImperativeHandle(ref, () => {
+    return {
+      targetList
+    };
+  });
 
   useHoverStyle(
     `.${prefixCls}-selected-list-body-item`,
@@ -97,6 +117,12 @@ const MenuTransferBase = forwardRef<
     setTargetList(checkedNodes);
   }, [checkedNodes]);
 
+  // remove
+  const removeTargetList = useCallback(() => {
+    const nextTargetList = targetList.filter((item) => !item.checked);
+    setTargetList(nextTargetList);
+  }, [targetList]);
+
   // 处理 menuTree 全选操作
   const menuTreeCheckAll = useCallback((e) => {
     if (e.target.checked) {
@@ -108,36 +134,59 @@ const MenuTransferBase = forwardRef<
     }
   }, []);
 
-  const getMenuTreeCheckboxValue = useCallback(() => {
-    const checkedLength = checkedKeys.length;
-    const allMenuListLength = menuListRef.current.length;
+  const getCheckboxValue = useCallback((_checkedkeys, allList) => {
+    const checkedLength = _checkedkeys.length;
+    const allListLength = allList.length;
     return {
-      indeterminate: checkedLength > 0 && checkedLength !== allMenuListLength,
-      checked: checkedLength === allMenuListLength,
-      disabled: menuListRef.current.length === 0
+      indeterminate: checkedLength > 0 && checkedLength !== allListLength,
+      checked: checkedLength === allListLength && allListLength !== 0,
+      disabled: allListLength === 0
     };
-  }, [checkedKeys]);
+  }, []);
 
-  const getTargetListCheckboxValue = useCallback(() => {
-    const checkedLength = targetCheckedList.length;
-    const targetListLength = targetList.length;
-    return {
-      indeterminate: checkedLength > 0 && checkedLength !== targetListLength,
-      checked: checkedLength === targetListLength,
-      disabled: targetList.length === 0
-    };
-  }, [targetCheckedList, targetList]);
+  const getMenuTreeSelectedText = useCallback((_checkedKeys, allList) => {
+    const checkedLength = _checkedKeys.length;
+    const allListLength = allList.length;
+    return `${checkedLength ? `${checkedLength}/` : ''}${allListLength} 项`;
+  }, []);
 
-  const getMenuTreeSelectedText = useCallback(() => {
-    const checkedLength = checkedKeys.length;
-    const allMenuListLength = menuListRef.current.length;
-    return `${checkedLength ? `${checkedLength}/` : ''}${allMenuListLength} 项`;
-  }, [checkedKeys]);
+  // 右侧列表点击
+  const handleTargetItemCheck = useCallback(
+    (e, item) => {
+      const { id } = item;
+      const nextTargetList = targetList.map((_item) => {
+        if (_item.id === id) {
+          _item.checked = e.target.checked;
+        }
+        return _item;
+      });
+
+      setTargetList(nextTargetList);
+    },
+    [targetList]
+  );
+
+  // target check all
+  const menuTargetCheckAll = useCallback(
+    (e) => {
+      const nextTargetList = targetList.map((_item) => {
+        return {
+          ..._item,
+          checked: e.target.checked
+        };
+      });
+      setTargetList(nextTargetList);
+    },
+    [targetList]
+  );
 
   useEffect(() => {
     getMenuTreeData();
   }, [getMenuTreeData]);
 
+  const targetCheckedList = targetList
+    .filter((item) => item.checked)
+    .map((item) => item.id);
   return (
     <div className={`${prefixCls}-base-panel`}>
       <div className={`${prefixCls}-base-panel-body`}>
@@ -157,11 +206,11 @@ const MenuTransferBase = forwardRef<
           >
             <Checkbox
               style={{ marginInlineEnd: `${marginXS}px` }}
-              {...getMenuTreeCheckboxValue()}
+              {...getCheckboxValue(checkedKeys, menuListRef.current)}
               onChange={menuTreeCheckAll}
             />
             <span className={`${prefixCls}-list-heade-selected`}>
-              {getMenuTreeSelectedText()}
+              {getMenuTreeSelectedText(checkedKeys, menuListRef.current)}
             </span>
           </div>
           <div className={`${prefixCls}-list-body`}>
@@ -181,11 +230,18 @@ const MenuTransferBase = forwardRef<
           <Button
             type="primary"
             size="small"
+            disabled={checkedKeys.length === 0}
             icon={<RightOutlined />}
             style={{ marginBottom: `${marginXXS}px` }}
             onClick={addTargetList}
           />
-          <Button danger size="small" icon={<LeftOutlined />} />
+          <Button
+            danger
+            size="small"
+            icon={<LeftOutlined />}
+            disabled={targetCheckedList.length === 0}
+            onClick={removeTargetList}
+          />
         </div>
         <div
           className={`${prefixCls}-list`}
@@ -200,8 +256,14 @@ const MenuTransferBase = forwardRef<
               padding: `${paddingXS}px ${paddingSM}px`
             }}
           >
-            <Checkbox style={{ marginInlineEnd: `${marginXS}px` }} />
-            <span className={`${prefixCls}-list-heade-selected`}>2项</span>
+            <Checkbox
+              style={{ marginInlineEnd: `${marginXS}px` }}
+              onChange={menuTargetCheckAll}
+              {...getCheckboxValue(targetCheckedList, targetList)}
+            />
+            <span className={`${prefixCls}-list-heade-selected`}>
+              {getMenuTreeSelectedText(targetCheckedList, targetList)}
+            </span>
           </div>
           <div className={`${prefixCls}-list-body`}>
             <div className={`${prefixCls}-selected-list-wrap`}>
@@ -212,7 +274,11 @@ const MenuTransferBase = forwardRef<
                   backgroundColor: colorBgTextHover
                 }}
               >
-                <Checkbox style={{ marginInlineEnd: `${marginXS}px` }} />
+                <Checkbox
+                  style={{ marginInlineEnd: `${marginXS}px` }}
+                  onChange={menuTargetCheckAll}
+                  {...getCheckboxValue(targetCheckedList, targetList)}
+                />
                 <div className={`${prefixCls}-selected-list-header-title`}>
                   模块名称
                 </div>
@@ -232,7 +298,10 @@ const MenuTransferBase = forwardRef<
                   >
                     <Checkbox
                       style={{ marginInlineEnd: `${marginXS}px` }}
-                      {...getTargetListCheckboxValue()}
+                      checked={item.checked}
+                      onChange={(e) => {
+                        handleTargetItemCheck.apply(null, [e, item]);
+                      }}
                     />
                     <div
                       className={`${prefixCls}-selected-list-body-item-title`}
@@ -242,7 +311,7 @@ const MenuTransferBase = forwardRef<
                     <div
                       className={`${prefixCls}-selected-list-body-item-title`}
                     >
-                      {item.name}
+                      {renderDefaultField(item.parentName)}
                     </div>
                   </div>
                 ))}

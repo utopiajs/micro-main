@@ -5,6 +5,7 @@ import type {
   CoreTableRef,
   CreateDataSourceType
 } from '@/components/core-table';
+import type { RefMenuTransferBaseProps } from '@/components/menu-transfer/base-panel';
 import type {
   RecordType as UserSearchRecordType,
   RefUserSearchBaseProps
@@ -69,6 +70,7 @@ const RoleList: React.FC = () => {
   );
   const roleListTableRef = useRef<CoreTableRef>(null);
   const userSearchRef = useRef<RefUserSearchBaseProps>({ userSelectRows: [] });
+  const menuTransferRef = useRef<RefMenuTransferBaseProps>({ targetList: [] });
   const currentRoleRecordRef = useRef<RecordType>();
   const [modal, contextHolder] = Modal.useModal();
   const {
@@ -137,6 +139,9 @@ const RoleList: React.FC = () => {
   // handleMappingMenuModule
   const handleMappingMenuModule = useCallback(async (record: RecordType) => {
     currentRoleRecordRef.current = record;
+    setMenuTransferInfo({
+      open: true
+    });
   }, []);
 
   const handleRoleOperationSuccess = useCallback(() => {
@@ -148,6 +153,12 @@ const RoleList: React.FC = () => {
 
   const handleUserSearchClose = useCallback(() => {
     setUserSearchInfo({
+      open: false
+    });
+  }, []);
+
+  const handleMenuTranserClose = useCallback(() => {
+    setMenuTransferInfo({
       open: false
     });
   }, []);
@@ -165,6 +176,12 @@ const RoleList: React.FC = () => {
       handleUserSearchClose();
     }
   }, [handleUserSearchClose]);
+
+  const handleMenuTransferOk = useCallback(async () => {
+    const menuSelectedList = menuTransferRef.current.targetList.map(
+      (item) => item.id
+    );
+  }, []);
 
   const colums: CoreTableProps<RecordType>['columns'] = [
     { title: '角色名称', dataIndex: 'name', width: 150 },
@@ -334,7 +351,13 @@ const RoleList: React.FC = () => {
         onOk={handleUserSearchOk}
         {...userSearchInfo}
       />
-      <MenuTransfer renderType="modal" {...menuTransferInfo} />
+      <MenuTransfer
+        ref={menuTransferRef}
+        renderType="modal"
+        onCancel={handleMenuTranserClose}
+        onOk={handleMenuTransferOk}
+        {...menuTransferInfo}
+      />
     </div>
   );
 };
