@@ -27,6 +27,7 @@ export interface MenuOrign {
   url: string;
   code: string;
   parentId: string;
+  parentName: string;
   displayOrder: any;
   level: 1 | 2 | 3;
   isShow: boolean;

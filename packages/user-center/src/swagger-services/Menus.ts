@@ -76,6 +76,30 @@ export class Menus extends HttpClient {
       ...params
     });
   /**
+   * No description
+   *
+   * @tags Menus
+   * @name MenuListWithGet
+   * @summary get menu list
+   * @request GET:/menu/list
+   * @secure
+   */
+  menuListWithGet = (
+    query?: {
+      /** menu name */
+      search?: string;
+      /** 查找当级数型结构 */
+      parentId?: string;
+    },
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<ResponseCommonType<Menu[]>, Error>({
+      url: `/api/micro-main/v1/menu/list`,
+      method: 'GET',
+      params: query,
+      ...params
+    });
+  /**
    * @description delete a menu.
    *
    * @tags Menus
