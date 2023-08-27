@@ -125,13 +125,13 @@ const RoleList: React.FC = () => {
   // mapping user
   const handleMappingUser = useCallback(async (record: RecordType) => {
     currentRoleRecordRef.current = record;
-    const { errorCode, data } = await coreRoleApi.roleMappingUserInfoWithGet({
+    const { errorCode, data } = await coreRoleApi.roleMappingModuleInfoWithGet({
       roleId: record.id
     });
     if (isApiSuccess(errorCode)) {
       setUserSearchInfo({
         open: true,
-        defaultValue: data
+        defaultValue: data.users
       });
     }
   }, []);
@@ -167,8 +167,8 @@ const RoleList: React.FC = () => {
     const userIds = userSearchRef.current?.userSelectRows.map(
       (item) => item.id
     );
-    const { errorCode } = await coreRoleApi.roleMappingUserWithPost({
-      roleId: currentRoleRecordRef.current?.id,
+    const { errorCode } = await coreRoleApi.roleMappingModuleWithPost({
+      roleId: currentRoleRecordRef.current?.id ?? '',
       userIds
     });
     if (isApiSuccess(errorCode)) {
