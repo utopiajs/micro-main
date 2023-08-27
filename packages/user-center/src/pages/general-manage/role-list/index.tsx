@@ -33,6 +33,7 @@ import RoleOperation from './role-operation';
 import Styles from './index.less';
 
 type RecordType = Role;
+type RoleMappingModule = 'menu' | 'user';
 
 const EMPTY_ROLE_LIST: CreateDataSourceType<RecordType> = {
   data: [],
@@ -45,6 +46,11 @@ interface RoleOperationPanelInfoProps extends RoleOperationdefaultValue {
 interface UserSearchInfoProps {
   open?: boolean;
   defaultValue?: UserSearchRecordType[];
+}
+
+interface MenuTransferInfoProps {
+  open?: boolean;
+  defaultValue?: string[];
 }
 
 const initRoleOperationPanelInfo: RoleOperationPanelInfoProps = {
@@ -62,12 +68,11 @@ const RoleList: React.FC = () => {
     open: false,
     defaultValue: []
   });
-  const [menuTransferInfo, setMenuTransferInfo] = useState<UserSearchInfoProps>(
-    {
-      open: true,
+  const [menuTransferInfo, setMenuTransferInfo] =
+    useState<MenuTransferInfoProps>({
+      open: false,
       defaultValue: []
-    }
-  );
+    });
   const roleListTableRef = useRef<CoreTableRef>(null);
   const userSearchRef = useRef<RefUserSearchBaseProps>({ userSelectRows: [] });
   const menuTransferRef = useRef<RefMenuTransferBaseProps>({ targetList: [] });
@@ -122,27 +127,30 @@ const RoleList: React.FC = () => {
     setRoleOperationPanelInfo({ ...record, open: true });
   }, []);
 
-  // mapping user
-  const handleMappingUser = useCallback(async (record: RecordType) => {
-    currentRoleRecordRef.current = record;
-    const { errorCode, data } = await coreRoleApi.roleMappingModuleInfoWithGet({
-      roleId: record.id
-    });
-    if (isApiSuccess(errorCode)) {
-      setUserSearchInfo({
-        open: true,
-        defaultValue: data.userList
-      });
-    }
-  }, []);
-
-  // handleMappingMenuModule
-  const handleMappingMenuModule = useCallback(async (record: RecordType) => {
-    currentRoleRecordRef.current = record;
-    setMenuTransferInfo({
-      open: true
-    });
-  }, []);
+  // handleMappingModule
+  const handleMappingModule = useCallback(
+    async (record: RecordType, mappingModuleType: RoleMappingModule) => {
+      currentRoleRecordRef.current = record;
+      const { errorCode, data } =
+        await coreRoleApi.roleMappingModuleInfoWithGet({
+          roleId: record.id
+        });
+      if (isApiSuccess(errorCode)) {
+        if (mappingModuleType === 'user') {
+          setUserSearchInfo({
+            open: true,
+            defaultValue: data.userList
+          });
+        } else if (mappingModuleType === 'menu') {
+          setMenuTransferInfo({
+            open: true,
+            defaultValue: data.menuList?.map((item) => item.id)
+          });
+        }
+      }
+    },
+    []
+  );
 
   const handleRoleOperationSuccess = useCallback(() => {
     setRoleOperationPanelInfo({
@@ -151,16 +159,16 @@ const RoleList: React.FC = () => {
     });
   }, []);
 
-  const handleUserSearchClose = useCallback(() => {
-    setUserSearchInfo({
-      open: false
-    });
-  }, []);
-
-  const handleMenuTranserClose = useCallback(() => {
-    setMenuTransferInfo({
-      open: false
-    });
+  const handleRoleMappingModuleClose = useCallback((type: 'user' | 'menu') => {
+    if (type === 'user') {
+      setUserSearchInfo({
+        open: false
+      });
+    } else if (type === 'menu') {
+      setMenuTransferInfo({
+        open: false
+      });
+    }
   }, []);
 
   // 处理添加角色映射
@@ -191,10 +199,10 @@ const RoleList: React.FC = () => {
       );
       if (isApiSuccess(errorCode)) {
         roleListTableRef.current?.reloadData();
-        handleUserSearchClose();
+        handleRoleMappingModuleClose(type);
       }
     },
-    [handleUserSearchClose]
+    [handleRoleMappingModuleClose]
   );
 
   const colums: CoreTableProps<RecordType>['columns'] = [
@@ -235,7 +243,7 @@ const RoleList: React.FC = () => {
               className="role-operation-item"
               title="关联用户"
               onClick={() => {
-                handleMappingUser(record);
+                handleMappingModule(record, 'user');
               }}
             >
               <UsergroupAddOutlined />
@@ -244,7 +252,7 @@ const RoleList: React.FC = () => {
               className="role-operation-item"
               title="关联模块"
               onClick={() => {
-                handleMappingMenuModule(record);
+                handleMappingModule(record, 'menu');
               }}
             >
               <AppstoreAddOutlined />
@@ -361,7 +369,9 @@ const RoleList: React.FC = () => {
         ref={userSearchRef}
         destroyOnClose
         renderType="modal"
-        onCancel={handleUserSearchClose}
+        onCancel={() => {
+          handleRoleMappingModuleClose('user');
+        }}
         onOk={() => {
           handleRoleMappingModuleOk('user');
         }}
@@ -370,7 +380,9 @@ const RoleList: React.FC = () => {
       <MenuTransfer
         ref={menuTransferRef}
         renderType="modal"
-        onCancel={handleMenuTranserClose}
+        onCancel={() => {
+          handleRoleMappingModuleClose('menu');
+        }}
         onOk={() => {
           handleRoleMappingModuleOk('menu');
         }}
