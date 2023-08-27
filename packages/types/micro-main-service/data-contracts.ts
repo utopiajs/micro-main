@@ -61,9 +61,10 @@ export interface Role {
   updateTime: string;
 }
 
-export interface RoleMappingUser {
+export interface RoleMappingModules {
   roleId: string;
   userIds: string[];
+  menuIds?: string[];
   createTime: number;
   updateTime: string;
 }

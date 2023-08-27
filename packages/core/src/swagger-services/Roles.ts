@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Error, Role, RoleMappingUser, User } from './data-contracts';
+import { Error, Menu, Role, RoleMappingModules, User } from './data-contracts';
 import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class Roles extends HttpClient {
@@ -132,20 +132,21 @@ export class Roles extends HttpClient {
    * @description Role mapping user
    *
    * @tags Roles
-   * @name RoleMappingUserWithPost
+   * @name RoleMappingModuleWithPost
    * @summary Role mapping user
-   * @request POST:/role/mapping-user
+   * @request POST:/role/mapping-module
    * @secure
    */
-  roleMappingUserWithPost = (
+  roleMappingModuleWithPost = (
     data: {
-      roleId?: string;
-      userIds: string[];
+      roleId: string;
+      userIds?: string[];
+      menuIds?: string[];
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<ResponseCommonType<RoleMappingUser>, Error>({
-      url: `/api/micro-main/v1/role/mapping-user`,
+    this.request<ResponseCommonType<RoleMappingModules>, Error>({
+      url: `/api/micro-main/v1/role/mapping-module`,
       method: 'POST',
       data: data,
       ...params
@@ -154,20 +155,26 @@ export class Roles extends HttpClient {
    * @description Get the user under the current role
    *
    * @tags Roles
-   * @name RoleMappingUserInfoWithGet
+   * @name RoleMappingModuleInfoWithGet
    * @summary get users
-   * @request GET:/role/mapping-user-info
+   * @request GET:/role/mapping-module-info
    * @secure
    */
-  roleMappingUserInfoWithGet = (
+  roleMappingModuleInfoWithGet = (
     query?: {
       /** role id */
       roleId?: string;
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<ResponseCommonType<User[]>, Error>({
-      url: `/api/micro-main/v1/role/mapping-user-info`,
+    this.request<
+      ResponseCommonType<{
+        users?: User[];
+        menus?: Menu[];
+      }>,
+      Error
+    >({
+      url: `/api/micro-main/v1/role/mapping-module-info`,
       method: 'GET',
       params: query,
       ...params
