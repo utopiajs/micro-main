@@ -131,7 +131,7 @@ const RoleList: React.FC = () => {
     if (isApiSuccess(errorCode)) {
       setUserSearchInfo({
         open: true,
-        defaultValue: data.users
+        defaultValue: data.userList
       });
     }
   }, []);
@@ -163,25 +163,39 @@ const RoleList: React.FC = () => {
     });
   }, []);
 
-  const handleUserSearchOk = useCallback(async () => {
-    const userIds = userSearchRef.current?.userSelectRows.map(
-      (item) => item.id
-    );
-    const { errorCode } = await coreRoleApi.roleMappingModuleWithPost({
-      roleId: currentRoleRecordRef.current?.id ?? '',
-      userIds
-    });
-    if (isApiSuccess(errorCode)) {
-      roleListTableRef.current?.reloadData();
-      handleUserSearchClose();
-    }
-  }, [handleUserSearchClose]);
+  // 处理添加角色映射
+  const handleRoleMappingModuleOk = useCallback(
+    async (type: 'user' | 'menu') => {
+      const roleMappingModuleParam: {
+        roleId: string;
+        userIds?: string[];
+        menuIds?: string[];
+      } = {
+        roleId: currentRoleRecordRef.current?.id ?? ''
+      };
+      if (type === 'user') {
+        const userIds = userSearchRef.current?.userSelectRows.map(
+          (item) => item.id
+        );
+        roleMappingModuleParam.userIds = userIds;
+      }
+      if (type === 'menu') {
+        const menuSelectedList = menuTransferRef.current.targetList.map(
+          (item) => item.id
+        );
+        roleMappingModuleParam.menuIds = menuSelectedList;
+      }
 
-  const handleMenuTransferOk = useCallback(async () => {
-    const menuSelectedList = menuTransferRef.current.targetList.map(
-      (item) => item.id
-    );
-  }, []);
+      const { errorCode } = await coreRoleApi.roleMappingModuleWithPost(
+        roleMappingModuleParam
+      );
+      if (isApiSuccess(errorCode)) {
+        roleListTableRef.current?.reloadData();
+        handleUserSearchClose();
+      }
+    },
+    [handleUserSearchClose]
+  );
 
   const colums: CoreTableProps<RecordType>['columns'] = [
     { title: '角色名称', dataIndex: 'name', width: 150 },
@@ -202,7 +216,7 @@ const RoleList: React.FC = () => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
+      dataIndex: 'createdTime',
       width: 200,
       render: (value) => <span>{formateTime(value)}</span>
     },
@@ -348,14 +362,18 @@ const RoleList: React.FC = () => {
         destroyOnClose
         renderType="modal"
         onCancel={handleUserSearchClose}
-        onOk={handleUserSearchOk}
+        onOk={() => {
+          handleRoleMappingModuleOk('user');
+        }}
         {...userSearchInfo}
       />
       <MenuTransfer
         ref={menuTransferRef}
         renderType="modal"
         onCancel={handleMenuTranserClose}
-        onOk={handleMenuTransferOk}
+        onOk={() => {
+          handleRoleMappingModuleOk('menu');
+        }}
         {...menuTransferInfo}
       />
     </div>

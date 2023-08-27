@@ -169,8 +169,8 @@ export class Roles extends HttpClient {
   ) =>
     this.request<
       ResponseCommonType<{
-        users?: User[];
-        menus?: Menu[];
+        userList?: User[];
+        menuList?: Menu[];
       }>,
       Error
     >({
