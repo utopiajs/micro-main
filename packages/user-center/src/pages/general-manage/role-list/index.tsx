@@ -24,7 +24,7 @@ import {
   removeEmptyFields,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import type { Role } from '@utopia/micro-types';
+import type { Menu, Role } from '@utopia/micro-types';
 import { Button, Modal, Popconfirm } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
 import type { RoleOperationdefaultValue } from './role-operation';
@@ -50,7 +50,7 @@ interface UserSearchInfoProps {
 
 interface MenuTransferInfoProps {
   open?: boolean;
-  defaultValue?: string[];
+  defaultValue?: Menu[];
 }
 
 const initRoleOperationPanelInfo: RoleOperationPanelInfoProps = {
@@ -144,7 +144,7 @@ const RoleList: React.FC = () => {
         } else if (mappingModuleType === 'menu') {
           setMenuTransferInfo({
             open: true,
-            defaultValue: data.menuList?.map((item) => item.id)
+            defaultValue: data.menuList
           });
         }
       }
@@ -364,7 +364,6 @@ const RoleList: React.FC = () => {
           />
         </div>
       )}
-      {contextHolder}
       <UserSearch
         ref={userSearchRef}
         destroyOnClose
@@ -378,6 +377,7 @@ const RoleList: React.FC = () => {
         {...userSearchInfo}
       />
       <MenuTransfer
+        key={currentRoleRecordRef.current?.id}
         ref={menuTransferRef}
         renderType="modal"
         onCancel={() => {
@@ -388,6 +388,7 @@ const RoleList: React.FC = () => {
         }}
         {...menuTransferInfo}
       />
+      {contextHolder}
     </div>
   );
 };
