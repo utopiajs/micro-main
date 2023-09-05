@@ -7,34 +7,42 @@ import type {
 } from '@/components/core-table';
 import { coreUserApi } from '@/services';
 import {
-  AppstoreAddOutlined,
+  ArrowLeftOutlined,
   DeleteOutlined,
-  RollbackOutlined
+  EditOutlined,
+  PlusOutlined
 } from '@ant-design/icons';
 import {
+  formateTime,
   isApiSuccess,
   removeEmptyFields,
-  useSiteToken,
-  formateTime,
-  _Cookies
+  useSiteToken
 } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
-import { Button, Modal, Popconfirm } from 'antd';
+import { Button, Modal, Popconfirm, Tag } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
-import CreateUser from './create-user';
+import UserOperation from './user-operation';
 
 import Styles from './index.less';
 
 type RecordType = Omit<User, 'preferenceSetting'>;
+interface UserOperationPanelInfoProps {
+  open?: boolean;
+  defaultValue?: Partial<User>;
+}
 
 const EMPTY_USER_LIST: CreateDataSourceType<RecordType> = {
   data: [],
   pagination: {}
 };
+const { EllipsisContent } = CoreTable;
 
 const UserList: React.FC = () => {
-  const [showCreateUserPanel, setShowCreateUserPanel] =
-    useState<boolean>(false);
+  const [userOperationPanelInfo, setUserOperationPanelInfo] =
+    useState<UserOperationPanelInfoProps>({
+      open: false,
+      defaultValue: {}
+    });
   const [userSelectedRows, setUserSelectedRows] = useState<RecordType[]>([]);
   const userListTableRef = useRef<CoreTableRef>(null);
   const [modal, contextHolder] = Modal.useModal();
@@ -105,12 +113,21 @@ const UserList: React.FC = () => {
     },
     {
       title: '角色',
-      dataIndex: 'role',
-      width: 150
+      dataIndex: 'roleList',
+      width: 250,
+      render: (value) => (
+        <EllipsisContent>
+          {value.map((role, index) => (
+            <Tag color="cyan" key={index}>
+              {role.name}
+            </Tag>
+          ))}
+        </EllipsisContent>
+      )
     },
     {
       title: '创建日期',
-      dataIndex: 'createTime',
+      dataIndex: 'createdTime',
       width: 200,
       render: (value) => <span>{formateTime(value)}</span>
     },
@@ -124,21 +141,36 @@ const UserList: React.FC = () => {
       title: '操作',
       render: (_, record) => {
         return (
-          <Popconfirm
-            title="删除该用户"
-            description="该操作不可逆，确认删除？"
-            onConfirm={() => {
-              handleDeleteUser([record]);
-            }}
-          >
+          <div className="colums-operate-wrap">
             <div
-              className="user-operation-item"
+              className="operation-item"
               title="删除"
               style={{ color: colorHighlight }}
             >
-              <DeleteOutlined>删除</DeleteOutlined>
+              <Popconfirm
+                title="删除该用户"
+                description="该操作不可逆，确认删除？"
+                onConfirm={() => {
+                  handleDeleteUser([record]);
+                }}
+              >
+                <DeleteOutlined>删除</DeleteOutlined>
+              </Popconfirm>
             </div>
-          </Popconfirm>
+
+            <div
+              className="operation-item"
+              title="编辑"
+              onClick={() => {
+                setUserOperationPanelInfo({
+                  open: true,
+                  defaultValue: record
+                });
+              }}
+            >
+              <EditOutlined />
+            </div>
+          </div>
         );
       }
     }
@@ -146,9 +178,9 @@ const UserList: React.FC = () => {
 
   const headerOperationBar = [
     <Button
-      icon={<AppstoreAddOutlined />}
+      icon={<PlusOutlined />}
       onClick={() => {
-        setShowCreateUserPanel(true);
+        setUserOperationPanelInfo({ open: true });
       }}
     >
       新建
@@ -169,7 +201,7 @@ const UserList: React.FC = () => {
 
   return (
     <div className={Styles['user-list-manage-wrap']}>
-      {showCreateUserPanel ? (
+      {userOperationPanelInfo.open ? (
         <div className="create-user-wrap">
           <div
             style={{
@@ -179,16 +211,30 @@ const UserList: React.FC = () => {
               color: colorText
             }}
             onClick={() => {
-              setShowCreateUserPanel(false);
+              setUserOperationPanelInfo({
+                open: false
+              });
             }}
           >
-            <RollbackOutlined />
-            <span style={{ marginLeft: marginSM }}>新建用户</span>
+            <ArrowLeftOutlined />
+            <span style={{ marginLeft: marginSM }}>
+              {userOperationPanelInfo?.defaultValue?.id
+                ? '编辑用户'
+                : '新建用户'}
+            </span>
           </div>
           <div className="create-user-form" style={{ marginTop: marginXXL }}>
-            <CreateUser
+            <UserOperation
+              defaultValue={userOperationPanelInfo.defaultValue}
               onCreatedSuccess={() => {
-                setShowCreateUserPanel(false);
+                setUserOperationPanelInfo({
+                  open: false
+                });
+              }}
+              onEditedSuccess={() => {
+                setUserOperationPanelInfo({
+                  open: false
+                });
               }}
             />
           </div>
@@ -206,10 +252,6 @@ const UserList: React.FC = () => {
             showSerialNumber
             rowSelection={{
               selectedRowKeys: userSelectedRows.map((item) => item.id),
-              getCheckboxProps: (record) => ({
-                disabled:
-                  record.role === 'admin' || record.id === _Cookies.get('id')
-              }),
               onChange: (_, selectedRows) => {
                 setUserSelectedRows(selectedRows);
               }

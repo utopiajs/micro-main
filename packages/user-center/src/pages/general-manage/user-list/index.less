@@ -3,11 +3,17 @@
   :global {
     .user-list-table {
       height: 100%;
-      .user-operation-item {
-        width: 25px;
-        text-align: center;
-        font-size: 16px;
-        cursor: pointer;
+      .colums-operate-wrap {
+        display: flex;
+        .operation-item {
+          width: 25px;
+          text-align: center;
+          font-size: 16px;
+          cursor: pointer;
+          & + .operation-item {
+            margin-left: 8px;
+          }
+        }
       }
     }
   }
