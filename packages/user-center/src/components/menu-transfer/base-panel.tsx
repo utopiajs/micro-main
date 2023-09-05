@@ -37,7 +37,7 @@ interface TargetMenu extends Menu {
   checked?: boolean;
 }
 export interface MenuTransferBaseProps {
-  defaultValue?: string[];
+  defaultValue?: Menu[];
 }
 
 const prefixCls = `${COMPONENT_CLASSNAME_PREFIX}-menu-transfer`;
@@ -47,12 +47,13 @@ const MenuTransferBase = forwardRef<
   MenuTransferBaseProps
 >((props, ref) => {
   const { defaultValue = [] } = props;
+  const defaultCheckedKeys = defaultValue.map((item) => item.id);
 
   const [menuTreeData, setMenuTreeData] = useState<DataNode[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<string[]>([]); // 主要用户搜索
-  const [checkedKeys, setCheckedKeys] = useState<string[]>(defaultValue);
-  const [checkedNodes, setCheckedNodes] = useState<Menu[]>([]);
-  const [targetList, setTargetList] = useState<TargetMenu[]>([]); // 右侧列表数据
+  const [checkedKeys, setCheckedKeys] = useState<string[]>(defaultCheckedKeys);
+  const [checkedNodes, setCheckedNodes] = useState<Menu[]>(defaultValue);
+  const [targetList, setTargetList] = useState<TargetMenu[]>(defaultValue); // 右侧列表数据
   const menuTreeSearchValueRef = useRef<{ search: string }>({ search: '' });
   const menuListRef = useRef<Menu[]>([]);
 
@@ -111,6 +112,14 @@ const MenuTransferBase = forwardRef<
       setCheckedNodes(_checkedNodes);
     },
     []
+  );
+
+  const handleMenuSearch = useCallback(
+    (value) => {
+      menuTreeSearchValueRef.current.search = value;
+      getMenuTreeData();
+    },
+    [getMenuTreeData]
   );
 
   const addTargetList = useCallback(() => {
@@ -220,6 +229,8 @@ const MenuTransferBase = forwardRef<
               checkedKeys={checkedKeys}
               treeData={menuTreeData}
               expandedKeys={expandedKeys}
+              searchValue={menuTreeSearchValueRef.current.search}
+              onSearch={handleMenuSearch}
               onExpand={handleMenuExpand}
               fieldNames={{ title: 'name', key: 'id' }}
               onCheck={handleMenuTreeCheck}
