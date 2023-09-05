@@ -130,6 +130,7 @@ export class Users extends HttpClient {
    */
   usersUpdateWithPatch = (
     data: {
+      id?: string;
       name?: string;
       /**
        * must be unique

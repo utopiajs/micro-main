@@ -37,8 +37,8 @@ export interface MenuOrign {
 }
 
 export interface MenuTime {
-  createTime?: string;
-  updateTime?: string;
+  createdTime?: string;
+  updatedTime?: string;
 }
 
 export type Menu = MenuOrign & MenuTime;
@@ -56,17 +56,23 @@ export interface Role {
   id: string;
   name: string;
   description?: string;
-  createTime: number;
+  createdTime: number;
   createBy: string;
-  updateTime: string;
+  updatedTime: number;
 }
 
 export interface RoleMappingModules {
   roleId: string;
   userIds: string[];
   menuIds?: string[];
-  createTime: number;
-  updateTime: string;
+  createdTime: number;
+  updatedTime: number;
+}
+
+export interface RoleOption {
+  id: string;
+  name: string;
+  description: string;
 }
 
 /** @example {"id":"5ebac534954b54139806c112","email":"fake@example.com","name":"fake name","role":"user","preferenceSetting":{"theme":"light","colorPrimary":"#1677ff","borderRadius":6}} */
@@ -76,6 +82,7 @@ export interface User {
   email?: string;
   name?: string;
   avatar?: string;
+  roleList?: RoleOption[];
   role?: 'user' | 'admin';
   preferenceSetting: {
     theme: 'light' | 'dark';

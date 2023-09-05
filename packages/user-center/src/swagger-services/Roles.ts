@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Error, Menu, Role, RoleMappingModules, User } from './data-contracts';
+import { Error, Menu, Role, User } from './data-contracts';
 import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class Roles extends HttpClient {
@@ -97,7 +97,7 @@ export class Roles extends HttpClient {
     data: {
       name?: string;
       description?: string;
-      roleId?: string;
+      id?: string;
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
@@ -145,7 +145,7 @@ export class Roles extends HttpClient {
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<ResponseCommonType<RoleMappingModules>, Error>({
+    this.request<ResponseCommonType<void>, Error>({
       url: `/api/micro-main/v1/role/mapping-module`,
       method: 'POST',
       data: data,
@@ -169,14 +169,31 @@ export class Roles extends HttpClient {
   ) =>
     this.request<
       ResponseCommonType<{
-        userList?: User[];
-        menuList?: Menu[];
+        userList: User[];
+        menuList: Menu[];
       }>,
       Error
     >({
       url: `/api/micro-main/v1/role/mapping-module-info`,
       method: 'GET',
       params: query,
+      ...params
+    });
+  /**
+   * @description Only admins can getet all roles.
+   *
+   * @tags Roles
+   * @name RoleOptionListWithGet
+   * @summary Get all roles lsit
+   * @request GET:/role/option-list
+   * @secure
+   */
+  roleOptionListWithGet = (
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<ResponseCommonType<Role[]>, Error>({
+      url: `/api/micro-main/v1/role/option-list`,
+      method: 'GET',
       ...params
     });
 }
