@@ -9,6 +9,7 @@ import React, {
   useRef,
   useState
 } from 'react';
+import EllipsisContent from './ellipsis-content';
 
 import './index.less';
 
@@ -302,6 +303,9 @@ function CoreTable<RecordType extends object = any>(
 
 const ForwardCoreTable = React.forwardRef<CoreTableRef>(
   CoreTable
-) as any as RefCoreTable;
+) as any as RefCoreTable & {
+  EllipsisContent: typeof EllipsisContent;
+};
 
+ForwardCoreTable.EllipsisContent = ForwardCoreTable;
 export default ForwardCoreTable;
