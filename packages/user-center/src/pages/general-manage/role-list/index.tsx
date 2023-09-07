@@ -10,7 +10,7 @@ import type {
   RecordType as UserSearchRecordType,
   RefUserSearchBaseProps
 } from '@/components/user-search/base-panel';
-import { coreRoleApi } from '@/services';
+import { coreRoleApi, coreRoleMappingModules } from '@/services';
 import {
   AppstoreAddOutlined,
   DeleteOutlined,
@@ -132,7 +132,7 @@ const RoleList: React.FC = () => {
     async (record: RecordType, mappingModuleType: RoleMappingModule) => {
       currentRoleRecordRef.current = record;
       const { errorCode, data } =
-        await coreRoleApi.roleMappingModuleInfoWithGet({
+        await coreRoleMappingModules.roleMappingModuleInfoWithGet({
           roleId: record.id
         });
       if (isApiSuccess(errorCode)) {
@@ -194,7 +194,7 @@ const RoleList: React.FC = () => {
         roleMappingModuleParam.menuIds = menuSelectedList;
       }
 
-      const { errorCode } = await coreRoleApi.roleMappingModuleWithPost(
+      const { errorCode } = await coreRoleMappingModules.roleMappingModuleWithPost(
         roleMappingModuleParam
       );
       if (isApiSuccess(errorCode)) {
