@@ -127,7 +127,7 @@ const UserOperation: React.FC<UserOperationProps> = (props) => {
           htmlType="submit"
           style={{ marginRight: marginXS }}
         >
-          {initialValues.id ? '保存修改' : '新建'}
+          {initialValues.id ? '保存修改' : '新建用户'}
         </Button>
         <Button onClick={handleReset}>重置</Button>
       </Form.Item>

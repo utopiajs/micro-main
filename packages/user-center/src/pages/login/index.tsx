@@ -119,11 +119,14 @@ const LoginPage = () => {
           </Text>
         </p>
       </div>
-      <div
+      <img
         className="bg-wrap"
-        style={{
-          backgroundImage: `url(https://www.bing.com${bingImgInfo.url})`
-        }}
+        alt=""
+        src={
+          bingImgInfo.url
+            ? `url(https://www.bing.com${bingImgInfo.url})`
+            : '/assets/images/background.svg'
+        }
       />
     </div>
   );

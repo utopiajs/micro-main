@@ -65,7 +65,6 @@ const borderRadiusList = [
   }
 ];
 
-let isPreferenceSettingChanged = false;
 const PreferenceSetting: React.FC = () => {
   const {
     qiankunGlobalState,
@@ -86,7 +85,6 @@ const PreferenceSetting: React.FC = () => {
 
   const handleValueChange = useCallback(
     (_, allFields) => {
-      isPreferenceSettingChanged = true;
       const nextQiankunGlobalState: QiankunStateFromMasterProps['qiankunGlobalState'] =
         {
           ...qiankunGlobalState,
@@ -114,7 +112,6 @@ const PreferenceSetting: React.FC = () => {
           ...qiankunGlobalState,
           siteThemeConfig: values
         };
-        isPreferenceSettingChanged = false;
       }
     },
     [qiankunGlobalState, messageApi]
