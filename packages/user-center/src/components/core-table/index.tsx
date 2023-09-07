@@ -307,5 +307,5 @@ const ForwardCoreTable = React.forwardRef<CoreTableRef>(
   EllipsisContent: typeof EllipsisContent;
 };
 
-ForwardCoreTable.EllipsisContent = ForwardCoreTable;
+ForwardCoreTable.EllipsisContent = EllipsisContent;
 export default ForwardCoreTable;

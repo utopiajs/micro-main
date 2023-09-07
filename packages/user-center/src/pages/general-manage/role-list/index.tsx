@@ -210,7 +210,7 @@ const RoleList: React.FC = () => {
     {
       title: 'id',
       dataIndex: 'id',
-      width: 300
+      width: 260
     },
     {
       title: '角色描述',

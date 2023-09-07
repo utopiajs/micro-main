@@ -96,7 +96,7 @@ const UserList: React.FC = () => {
     {
       title: 'id',
       dataIndex: 'id',
-      width: 260
+      width: 240
     },
     {
       title: '头像',
@@ -109,7 +109,7 @@ const UserList: React.FC = () => {
     {
       title: '邮箱',
       dataIndex: 'email',
-      width: 220
+      width: 190
     },
     {
       title: '角色',
@@ -139,6 +139,7 @@ const UserList: React.FC = () => {
     },
     {
       title: '操作',
+      width: 100,
       render: (_, record) => {
         return (
           <div className="colums-operate-wrap">
