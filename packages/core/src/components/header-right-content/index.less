@@ -26,7 +26,7 @@
       align-items: center;
       height: 100%;
       padding: 0 5px;
-      transition: all .3s;
+      transition: all 0.3s;
       cursor: pointer;
       .drop-content-arrow {
         margin-left: 5px;
@@ -41,12 +41,31 @@
       position: absolute;
       top: 55px;
       right: -20px;
-      width: 180px;
-      padding: 10px 0;
+      width: 320px;
       border: 1px solid;
       border-top: none;
       border-right: none;
       user-select: none;
+      .account-info {
+        display: flex;
+        align-items: center;
+        height: 70px;
+        margin-bottom: 5px;
+        padding: 10px;
+        &-left {
+          margin-right: 5px;
+        }
+        &-right {
+          .account-info-item {
+            .account-info-tag {
+              display: inline-block;
+              margin-top: 5px;
+              padding: 2px;
+              border: 1px solid;
+            }
+          }
+        }
+      }
       .operation-item {
         padding: 8px 18px;
         font-size: 14px;
@@ -54,6 +73,11 @@
         span + span {
           margin-left: 12px;
         }
+      }
+      &-bottom {
+        border-top: 1px solid;
+        margin-top: 10px;
+        padding: 10px;
       }
     }
   }

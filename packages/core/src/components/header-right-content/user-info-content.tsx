@@ -1,6 +1,10 @@
 import ArrowDownIcon from '@/icons/ArrowDownIcon';
 import { coreAuthApi } from '@/services';
-import { BgColorsOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  BarsOutlined,
+  IdcardOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
 import { Link } from '@umijs/max';
 import {
   isApiSuccess,
@@ -8,8 +12,8 @@ import {
   useSiteToken,
   _Cookies
 } from '@utopia/micro-main-utils';
-import { type IInitialState } from '@utopia/micro-types';
-import { Avatar } from 'antd';
+import type { IInitialState } from '@utopia/micro-types';
+import { Avatar, Button, Typography } from 'antd';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Styles from './index.less';
@@ -28,7 +32,9 @@ const UserInfoContent = (props: IProps) => {
       colorTextTertiary,
       colorBorder,
       colorBgContainer,
-      colorBgTextHover
+      colorBgTextHover,
+      controlItemBgHover,
+      colorPrimary
     }
   } = useSiteToken();
   const showDropContentRef = useRef(false);
@@ -84,10 +90,7 @@ const UserInfoContent = (props: IProps) => {
         className="user-avatar user-avatar-hover"
         onClick={handleShowDropContent}
       >
-        <Avatar
-          shape="circle"
-          src={initialState?.currentUser.avatar}
-        >
+        <Avatar shape="circle" src={initialState?.currentUser.avatar}>
           U
         </Avatar>
         <div
@@ -109,24 +112,75 @@ const UserInfoContent = (props: IProps) => {
           borderTopColor: colorBgContainer
         }}
       >
+        <div
+          className="account-info"
+          style={{
+            backgroundColor: controlItemBgHover
+          }}
+        >
+          <div className="account-info-left">
+            <Avatar
+              shape="circle"
+              size={40}
+              src={initialState?.currentUser.avatar}
+            >
+              U
+            </Avatar>
+          </div>
+          <div className="account-info-right">
+            <div className="account-info-item">
+              <span style={{ color: colorTextTertiary }}>账号 ID: </span>
+              <Typography.Paragraph
+                style={{ display: 'inline-block', marginBottom: 0 }}
+                copyable={{
+                  text: initialState?.currentUser.id,
+                  tooltips: false
+                }}
+              >
+                {initialState?.currentUser.id}
+              </Typography.Paragraph>
+            </div>
+            <div className="account-info-item">
+              <div
+                className="account-info-tag"
+                style={{
+                  borderColor: colorPrimary,
+                  color: colorPrimary
+                }}
+              >
+                主账号
+              </div>
+            </div>
+          </div>
+        </div>
         <ul>
+          <Link to="/user-center/base-info">
+            <li
+              className="operation-item operation-item-hover"
+              style={{ color: colorText }}
+            >
+              <IdcardOutlined />
+              <span>基本信息</span>
+            </li>
+          </Link>
           <Link to="/user-center/preference-setting">
             <li
               className="operation-item operation-item-hover"
               style={{ color: colorText }}
             >
-              <BgColorsOutlined />
-              <span>主题设置</span>
+              <BarsOutlined />
+              <span>偏好设置</span>
             </li>
           </Link>
-          <li
-            className="operation-item operation-item-hover"
-            onClick={handleLogout}
-          >
-            <LogoutOutlined />
-            <span>退出登陆</span>
-          </li>
         </ul>
+        <div
+          className="drop-content-panel-bottom"
+          style={{ borderColor: colorBorder }}
+        >
+          <Button icon={<LogoutOutlined />} block onClick={handleLogout}>
+            退出登录
+          </Button>
+        </div>
       </div>
     </div>
   );
