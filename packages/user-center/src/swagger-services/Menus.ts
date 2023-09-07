@@ -79,6 +79,30 @@ export class Menus extends HttpClient {
    * No description
    *
    * @tags Menus
+   * @name MenuUserTreeWithGet
+   * @summary get menu tree with authority
+   * @request GET:/menu/user-tree
+   * @secure
+   */
+  menuUserTreeWithGet = (
+    query?: {
+      /** menu name */
+      search?: string;
+      /** 查找当级数型结构 */
+      parentId?: string;
+    },
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<ResponseCommonType<MenuTreeNode>, Error>({
+      url: `/api/micro-main/v1/menu/user-tree`,
+      method: 'GET',
+      params: query,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags Menus
    * @name MenuListWithGet
    * @summary get menu list
    * @request GET:/menu/list
