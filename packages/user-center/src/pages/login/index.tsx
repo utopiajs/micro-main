@@ -1,4 +1,5 @@
 // login page
+import defaultBackgroundSVG from '@/assets/images/background.svg';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreCommonsApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -125,7 +126,7 @@ const LoginPage = () => {
         src={
           bingImgInfo.url
             ? `https://www.bing.com${bingImgInfo.url}`
-            : '/assets/images/background.svg'
+            : defaultBackgroundSVG
         }
       />
     </div>
