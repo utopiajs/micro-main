@@ -60,8 +60,7 @@ export class Auth extends HttpClient {
    */
   authLoginWithPost = (
     data: {
-      /** @format email */
-      email: string;
+      code: string;
       /** @format password */
       password: string;
     },

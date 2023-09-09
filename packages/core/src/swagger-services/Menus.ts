@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Error, Menu, MenuTreeNode } from './data-contracts';
+import { Error, Menu, MenuOrigin, MenuTreeNode } from './data-contracts';
 import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class Menus extends HttpClient {
@@ -23,7 +23,7 @@ export class Menus extends HttpClient {
    * @secure
    */
   menuCreateWithPost = (
-    data: any,
+    data: MenuOrigin,
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<Menu>, Error>({
@@ -42,7 +42,7 @@ export class Menus extends HttpClient {
    * @secure
    */
   menuUpdateWithPost = (
-    data: any,
+    data: MenuOrigin,
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
     this.request<ResponseCommonType<Menu>, Error>({
@@ -69,7 +69,7 @@ export class Menus extends HttpClient {
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<ResponseCommonType<MenuTreeNode>, Error>({
+    this.request<ResponseCommonType<MenuTreeNode[]>, Error>({
       url: `/api/micro-main/v1/menu/tree`,
       method: 'GET',
       params: query,
