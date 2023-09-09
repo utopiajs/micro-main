@@ -93,7 +93,7 @@ export class Menus extends HttpClient {
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<ResponseCommonType<MenuTreeNode>, Error>({
+    this.request<ResponseCommonType<MenuTreeNode[]>, Error>({
       url: `/api/micro-main/v1/menu/user-tree`,
       method: 'GET',
       params: query,

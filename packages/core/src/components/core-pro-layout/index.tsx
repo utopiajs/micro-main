@@ -1,8 +1,5 @@
-import {
-  MacCommandOutlined,
-  SettingOutlined,
-  UserOutlined
-} from '@ant-design/icons';
+import { coreMenuApi } from '@/services';
+import { convertMenuData } from '@/utils';
 import type { MenuDataItem } from '@ant-design/pro-components';
 import { ProLayout } from '@ant-design/pro-components';
 import {
@@ -12,7 +9,7 @@ import {
   useNavigate,
   useOutlet
 } from '@umijs/max';
-import { useSiteToken } from '@utopia/micro-main-utils';
+import { isApiSuccess, useSiteToken } from '@utopia/micro-main-utils';
 import React, { useCallback, useMemo, useState } from 'react';
 import HeaderRightContent from '../header-right-content';
 import Styles from './index.less';
@@ -79,49 +76,14 @@ const CoreProLayout: React.FC = () => {
       ]}
       className={Styles['micro-main-core-layout']}
       menu={{
-        request: () =>
-          new Promise((resolve) => {
-            resolve([
-              {
-                name: '系统设置',
-                icon: <SettingOutlined />,
-                children: [
-                  {
-                    name: '路由设置',
-                    path: '/user-center/sys-setting/route-config'
-                  }
-                ]
-              },
-              {
-                name: '个人中心',
-                icon: <UserOutlined />,
-                children: [
-                  {
-                    name: '用户信息',
-                    path: '/user-center/base-info'
-                  },
-                  {
-                    name: '偏好设置',
-                    path: '/user-center/preference-setting'
-                  }
-                ]
-              },
-              {
-                name: '综合管理',
-                icon: <MacCommandOutlined />,
-                children: [
-                  {
-                    name: '用户管理',
-                    path: '/user-center/general-manage/user-list'
-                  },
-                  {
-                    name: '角色管理',
-                    path: '/user-center/general-manage/role-list'
-                  }
-                ]
-              }
-            ]);
-          })
+        request: async () => {
+          const { errorCode, data } = await coreMenuApi.menuUserTreeWithGet();
+          if (isApiSuccess(errorCode)) {
+            const convertedMenuData = convertMenuData(data);
+            return convertedMenuData;
+          }
+          return [];
+        }
       }}
       token={{
         sider: {
