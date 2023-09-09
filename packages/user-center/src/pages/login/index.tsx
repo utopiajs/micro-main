@@ -86,12 +86,12 @@ const LoginPage = () => {
           onFinish={handleLoginFormFinish}
         >
           <Form.Item
-            name="email"
+            name="code"
             rules={[{ required: true, message: '用户名是必填项' }]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="用户名"
+              placeholder="用户名或邮箱"
             />
           </Form.Item>
           <Form.Item
