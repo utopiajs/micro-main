@@ -96,7 +96,7 @@ const RouteConfig: React.FC = () => {
   // 处理菜单数据
   const handleMenuFormFinish = useCallback(
     async (values: Menu) => {
-      const { id } = currentEditMenu;
+      const { id, level } = currentEditMenu;
       // 没有 id，新建，否则修改, id -1 hack 菜单新建情况
       if (id && operateStatusRef.current !== 'add') {
         const { errorCode } = await coreMenuApi.menuUpdateWithPost({
@@ -112,6 +112,8 @@ const RouteConfig: React.FC = () => {
           // 二级菜单
           values.parentId = id;
         }
+        const _level = level ? level + 1 : 1;
+        values.level = _level as 1 | 2 | 3;
         const { errorCode, data } = await coreMenuApi.menuCreateWithPost(
           removeEmptyFields(values)
         );
