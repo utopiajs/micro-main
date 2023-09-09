@@ -26,10 +26,10 @@ export interface MenuOrigin {
   name: string;
   url: string;
   code: string;
-  icon: string;
   parentId: string;
   parentName: string;
-  displayOrder: any;
+  displayOrder: number;
+  icon: string;
   level: 1 | 2 | 3;
   isShow: boolean;
   showHeader: boolean;

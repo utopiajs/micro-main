@@ -28,7 +28,8 @@ export interface MenuOrigin {
   code: string;
   parentId: string;
   parentName: string;
-  displayOrder: any;
+  displayOrder: number;
+  icon: string;
   level: 1 | 2 | 3;
   isShow: boolean;
   showHeader: boolean;
