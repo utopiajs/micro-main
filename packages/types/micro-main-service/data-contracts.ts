@@ -26,6 +26,7 @@ export interface MenuOrigin {
   name: string;
   url: string;
   code: string;
+  icon: string;
   parentId: string;
   parentName: string;
   displayOrder: any;

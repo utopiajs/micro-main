@@ -241,14 +241,13 @@ const RouteConfig: React.FC = () => {
           className="menu-header-title"
           style={{
             padding: paddingSM,
-            marginBottom: marginXXL,
             borderBottomColor: colorBorderSecondary
           }}
         >
           {currentEditMenu.name ||
             (operateStatusRef.current === 'add' ? '新建菜单' : '路由配置')}
         </div>
-        <div className="menu-form-content">
+        <div className="menu-form-content" style={{ paddingTop: marginXXL }}>
           <Form
             {...formItemEditLayout}
             form={menuEditForm}
@@ -266,6 +265,9 @@ const RouteConfig: React.FC = () => {
               <Input />
             </Form.Item>
             <Form.Item label="菜单编码" name="code">
+              <Input />
+            </Form.Item>
+            <Form.Item label="导航图标" name="icon">
               <Input />
             </Form.Item>
             <Form.Item
