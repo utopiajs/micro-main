@@ -1,7 +1,12 @@
-import React from 'react';
+import { Spin } from 'antd';
+import Styles from './index.less';
 
-const MicroAppLoading: React.FC = () => {
-  return <div>loading</div>;
+const MicroAppLoading = (loading) => {
+  return loading ? (
+    <div className={Styles['micro-app-loading-wrap']}>
+      <Spin tip="应用加载中..." spinning />
+    </div>
+  ) : null;
 };
 
 export default MicroAppLoading;

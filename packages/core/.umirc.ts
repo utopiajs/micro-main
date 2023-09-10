@@ -16,12 +16,14 @@ export default defineConfig({
     }
   ],
   antd: {
-    configProvider:{}
+    configProvider: {}
   },
   access: {},
   model: {},
   qiankun: {
-    master: {}
+    master: {
+      defaultLoader: '@/components/micro-app-loading'
+    }
   },
   initialState: {},
   request: {},
