@@ -80,6 +80,10 @@ const UserInfoContent = (props: IProps) => {
       style={{ fontSize: fontSizeSM }}
       className={Styles['user-info-content-wrap']}
     >
+      <div
+        className="header-right-split"
+        style={{ backgroundColor: colorBorder }}
+      />
       <div className="user-base-info">
         <div style={{ color: colorText }} className="user-name">
           {initialState?.currentUser.name}
