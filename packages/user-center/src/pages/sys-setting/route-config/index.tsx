@@ -95,7 +95,7 @@ const RouteConfig: React.FC = () => {
 
   // 处理菜单数据
   const handleMenuFormFinish = useCallback(
-    async (values: Menu) => {
+    async (values: Menu & { convertRootMenu?: boolean }) => {
       const { id } = currentEditMenu;
       if (id && operateStatusRef.current !== 'add') {
         const { errorCode } = await coreMenuApi.menuUpdateWithPost({
@@ -107,10 +107,11 @@ const RouteConfig: React.FC = () => {
           getMenuTreeData(); // 全量更新
         }
       } else {
-        if (id) {
+        if (id && !values.convertRootMenu) {
           // 二级菜单
           values.parentId = id;
         }
+        delete values.convertRootMenu;
         const { errorCode, data } = await coreMenuApi.menuCreateWithPost(
           removeEmptyFields(values)
         );
@@ -135,7 +136,8 @@ const RouteConfig: React.FC = () => {
     operateStatusRef.current = 'add';
     setCurrentEditMenu({
       ...menuDefalutValue,
-      id: currentEditMenu.id
+      id: currentEditMenu.id,
+      convertRootMenu: false
     } as Menu);
   }, [currentEditMenu]);
 
@@ -286,9 +288,19 @@ const RouteConfig: React.FC = () => {
             >
               <Switch />
             </Form.Item>
+            {operateStatusRef.current === 'add' && currentEditMenu.id && (
+              <Form.Item
+                label="新建为一级菜单"
+                name="convertRootMenu"
+                valuePropName="checked"
+              >
+                <Switch />
+              </Form.Item>
+            )}
+
             <Form.Item {...formTailLayout}>
               <Button type="primary" htmlType="submit">
-                保存
+                {operateStatusRef.current === 'add' ? '新建' : '保存修改'}
               </Button>
               <Button
                 onClick={handleMenuFormReset}
