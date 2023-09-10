@@ -112,8 +112,6 @@ const RouteConfig: React.FC = () => {
           // 二级菜单
           values.parentId = id;
         }
-        const _level = level ? level + 1 : 1;
-        values.level = _level as 1 | 2 | 3;
         const { errorCode, data } = await coreMenuApi.menuCreateWithPost(
           removeEmptyFields(values)
         );
