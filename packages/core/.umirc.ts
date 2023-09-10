@@ -12,7 +12,10 @@ export default defineConfig({
     },
     {
       path: '/user-center/*',
-      microApp: 'user-center'
+      microApp: 'user-center',
+      microAppProps: {
+        autoSetLoading: true
+      }
     }
   ],
   antd: {
