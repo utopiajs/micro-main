@@ -30,7 +30,7 @@ export interface MenuOrigin {
   parentName: string;
   displayOrder: number;
   icon: string;
-  level: 1 | 2 | 3;
+  level: number;
   isShow: boolean;
   showHeader: boolean;
   showSidebar: boolean;
