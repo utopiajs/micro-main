@@ -1,5 +1,5 @@
-import { type MenuTheme } from 'antd';
-import { type User } from './micro-main-service/data-contracts';
+import type { MenuTheme } from 'antd';
+import type { MenuTreeNode, User } from './micro-main-service/data-contracts';
 
 interface IClientConstantProps {
   /** 平台名称 */
@@ -22,6 +22,7 @@ interface IInitialState {
   currentUser: User;
   client: Partial<IClientConstantProps>;
   siteThemeConfig: ISiteThemeConfig;
+  menuConfigUserTree: MenuTreeNode[];
 }
 
 interface QiankunStateFromMasterProps {

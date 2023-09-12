@@ -3,10 +3,11 @@ import {
   DEFAULT_QIANKUN_GLOBAL_STATE,
   siteThemeConfig
 } from '@/constants';
-import { coreUserApi } from '@/services';
+import { coreMenuApi, coreUserApi } from '@/services';
 import type { AntdConfig, RuntimeAntdConfig } from '@umijs/max';
 import { history, useModel } from '@umijs/max';
 import {
+  convertArrayFromTree,
   getQueryParams,
   isApiSuccess,
   PublishSubscribe,
@@ -14,6 +15,7 @@ import {
 } from '@utopia/micro-main-utils';
 import type {
   IInitialState,
+  MenuTreeNode,
   QiankunStateFromMasterProps,
   User
 } from '@utopia/micro-types';
@@ -25,6 +27,9 @@ const loginPath = '/user-center/login';
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
 const { redirectUrl = '/' } = getQueryParams();
 const _MICRO_MAIN_CORE_PUB_SUB_ = new PublishSubscribe();
+
+// 保存一份用户菜单列表，用于权限控制
+let _menuConfigUserList: MenuTreeNode[] = [];
 
 export const qiankun = {
   apps: [
@@ -75,10 +80,22 @@ export async function getInitialState(): Promise<IInitialState> {
     };
   };
 
-  const currentUser = await fetchUserInfo();
+  const getmenuConfigUserTree = async () => {
+    const { errorCode, data } = await coreMenuApi.menuUserTreeWithGet();
+    if (isApiSuccess(errorCode)) {
+      return data;
+    }
+    return [];
+  };
 
+  const currentUser = await fetchUserInfo();
+  const menuConfigUserTree = await getmenuConfigUserTree();
+
+  // 转换为数组结构，便于比较
+  _menuConfigUserList = convertArrayFromTree(menuConfigUserTree);
   return {
     currentUser,
+    menuConfigUserTree,
     siteThemeConfig: currentUser.preferenceSetting,
     client: clientConstantProps
   };
@@ -99,7 +116,10 @@ export const useQiankunStateForSlave = (): QiankunStateFromMasterProps => {
       client: initialModelState?.client ?? DEFAULT_QIANKUN_GLOBAL_STATE.client,
       siteThemeConfig:
         initialModelState?.siteThemeConfig ??
-        DEFAULT_QIANKUN_GLOBAL_STATE.siteThemeConfig
+        DEFAULT_QIANKUN_GLOBAL_STATE.siteThemeConfig,
+      menuConfigUserTree:
+        initialModelState?.menuConfigUserTree ??
+        DEFAULT_QIANKUN_GLOBAL_STATE.menuConfigUserTree
     };
   }, [initialModelState]);
 
@@ -114,6 +134,17 @@ export const useQiankunStateForSlave = (): QiankunStateFromMasterProps => {
     setQiankunGlobalState
   };
 };
+
+export function onRouteChange({ location }) {
+  const { pathname } = location;
+  // 兼容动态路由
+  if (
+    _menuConfigUserList.filter((item) => item.url === pathname).length < 1 &&
+    !pathname.startsWith('/micro-main-core/iframe/')
+  ) {
+    history.push('/404');
+  }
+}
 
 // registe PublishSubscribe
 window._MICRO_MAIN_CORE_PUB_SUB_ = _MICRO_MAIN_CORE_PUB_SUB_;
