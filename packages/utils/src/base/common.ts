@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { cloneDeep } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
 import { ERROR_CODE } from '../constants';
 
@@ -39,8 +40,9 @@ function convertArrayFromTree(
   resultList: any[] = [],
   ...rest
 ) {
+  const nextTreeList = cloneDeep(treeList);
   const { childrenKey = 'children', ignoreParentNode = false } = rest[0] ?? {};
-  treeList.forEach((item) => {
+  nextTreeList.forEach((item) => {
     if (item[childrenKey]) {
       convertArrayFromTree(item[childrenKey], resultList, ...rest);
       delete item[childrenKey];
