@@ -34,6 +34,7 @@ export interface MenuOrigin {
   isShow: boolean;
   showHeader: boolean;
   showSidebar: boolean;
+  openWithNewTarget: boolean;
   redirectUrl: string;
 }
 
