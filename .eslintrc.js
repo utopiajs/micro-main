@@ -4,7 +4,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     'import/no-extraneous-dependencies': 0,
     'no-param-reassign': 0,
-    'react/prop-types': 0
+    'react/prop-types': 0,
+    'func-call-spacing': 0,
+    'func-spaced-func': 0
   },
   globals: {
     jsdom: true,
