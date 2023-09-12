@@ -6,7 +6,8 @@ module.exports = {
     'no-param-reassign': 0,
     'react/prop-types': 0,
     'func-call-spacing': 0,
-    'no-spaced-func': 0
+    'no-spaced-func': 0,
+    'import/order': 0
   },
   globals: {
     jsdom: true,
