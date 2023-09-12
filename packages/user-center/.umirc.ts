@@ -22,7 +22,8 @@ export default defineConfig({
       path: '/sys-setting/route-config',
       component: 'sys-setting/route-config'
     },
-    { path: '/login', component: 'login' }
+    { path: '/login', component: 'login' },
+    { path: '/*', component: '@/pages/404/index.tsx' }
   ],
   model: {},
   qiankun: {
