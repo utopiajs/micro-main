@@ -16,7 +16,12 @@ export default defineConfig({
       microAppProps: {
         autoSetLoading: true
       }
-    }
+    },
+    {
+      path: '/micro-main-core/iframe/:iframeSrc',
+      component: '@/pages/micro-main-iframe/index.tsx'
+    },
+    { path: '/*', component: '@/pages/404/index.tsx' }
   ],
   antd: {
     configProvider: {}
