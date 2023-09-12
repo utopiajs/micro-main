@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import trexIcon from '@/assets/images/trex-icon.png';
 import { Typography } from 'antd';
 import Styles from './index.less';
