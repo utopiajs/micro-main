@@ -34,6 +34,7 @@ const DEFAULT_QIANKUN_GLOBAL_STATE: QiankunStateFromMasterProps['qiankunGlobalSt
       theme: 'light',
       colorPrimary: '#1890ff',
       borderRadius: 2
-    }
+    },
+    menuConfigUserTree: []
   };
 export { siteThemeConfig, DEFAULT_QIANKUN_GLOBAL_STATE };
