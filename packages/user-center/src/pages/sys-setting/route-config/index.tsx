@@ -1,8 +1,10 @@
 // route config
 import { CoreTree } from '@/components';
 import { formItemEditLayout, formTailLayout } from '@/constants';
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreMenuApi } from '@/services';
 import { ExclamationCircleOutlined, WarningOutlined } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import {
   cloneDeep,
   convertArrayFromTree,
@@ -10,7 +12,11 @@ import {
   removeEmptyFields,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import type { Menu, MenuTreeNode } from '@utopia/micro-types';
+import type {
+  Menu,
+  MenuTreeNode,
+  QiankunStateFromMasterProps
+} from '@utopia/micro-types';
 import {
   Button,
   Form,
@@ -37,7 +43,8 @@ const menuDefalutValue: Partial<Menu> = {
   url: '',
   code: '',
   showHeader: true,
-  showSidebar: true
+  showSidebar: true,
+  openWithNewTarget: false
 };
 
 const RouteConfig: React.FC = () => {
@@ -49,6 +56,12 @@ const RouteConfig: React.FC = () => {
   );
   const [showEditFormPanel, setShowEditFormPanel] = useState(false);
   const [menuDraggable, setMenuDraggable] = useState<boolean>(false);
+  const {
+    qiankunGlobalState,
+    setQiankunGlobalState
+  }: QiankunStateFromMasterProps =
+    useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
+
   const [messageAPI, contextHolder] = message.useMessage();
   const [menuEditForm] = Form.useForm();
   const [modalAPI, modalContextHolder] = Modal.useModal();
@@ -93,6 +106,17 @@ const RouteConfig: React.FC = () => {
     setCurrentEditMenu(node);
   }, []);
 
+  // 更新主平台菜单树
+  const updateMicroMainCoreMenu = useCallback(async () => {
+    const { errorCode, data } = await coreMenuApi.menuUserTreeWithGet();
+    if (isApiSuccess(errorCode)) {
+      setQiankunGlobalState({
+        ...qiankunGlobalState,
+        menuConfigUserTree: data
+      });
+    }
+  }, [qiankunGlobalState, setQiankunGlobalState]);
+
   // 处理菜单数据
   const handleMenuFormFinish = useCallback(
     async (values: Menu & { convertRootMenu?: boolean }) => {
@@ -123,8 +147,9 @@ const RouteConfig: React.FC = () => {
           getMenuTreeData(); // 全量更新
         }
       }
+      updateMicroMainCoreMenu();
     },
-    [messageAPI, currentEditMenu, getMenuTreeData]
+    [messageAPI, currentEditMenu, getMenuTreeData, updateMicroMainCoreMenu]
   );
 
   // reset
@@ -177,16 +202,16 @@ const RouteConfig: React.FC = () => {
 
   // 菜单拖动
   const handleMenuDrap = useCallback(
-    (info) => {
+    async (info) => {
       const { sortedMenuTreeData, movedInfo } = handleSortDragMenu(
         info,
         menuTreeData
       );
-      coreMenuApi.menuNodeMoveWithPost(movedInfo);
       setMenuTreeData(sortedMenuTreeData);
-      return true;
+      await coreMenuApi.menuNodeMoveWithPost(movedInfo);
+      await updateMicroMainCoreMenu();
     },
-    [menuTreeData]
+    [menuTreeData, updateMicroMainCoreMenu]
   );
 
   // 搜索菜单树
@@ -279,14 +304,14 @@ const RouteConfig: React.FC = () => {
               name="showHeader"
               valuePropName="checked"
             >
-              <Switch />
+              <Switch disabled />
             </Form.Item>
             <Form.Item
               label="展示侧边栏"
               name="showSidebar"
               valuePropName="checked"
             >
-              <Switch />
+              <Switch disabled />
             </Form.Item>
             {operateStatusRef.current === 'add' && currentEditMenu.id && (
               <Form.Item
