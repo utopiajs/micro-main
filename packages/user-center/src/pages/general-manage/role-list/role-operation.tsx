@@ -6,7 +6,7 @@ import type { Role } from '@utopia/micro-types';
 import { Button, Form, Input } from 'antd';
 import React, { useCallback, useState } from 'react';
 
-export type RoleOperationdefaultValue = Pick<
+export type RoleOperationDefaultValue = Pick<
   Role,
   'name' | 'description' | 'id'
 >;
@@ -14,7 +14,7 @@ export type RoleOperationdefaultValue = Pick<
 export interface RoleOperationProps {
   onCreatedSuccess?: () => void;
   onEditSuccess?: () => void;
-  defaultValue?: RoleOperationdefaultValue;
+  defaultValue?: RoleOperationDefaultValue;
 }
 
 const RoleOperation: React.FC<RoleOperationProps> = (props) => {

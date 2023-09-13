@@ -27,7 +27,7 @@ import {
 import type { Menu, Role } from '@utopia/micro-types';
 import { Button, Modal, Popconfirm } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
-import type { RoleOperationdefaultValue } from './role-operation';
+import type { RoleOperationDefaultValue } from './role-operation';
 import RoleOperation from './role-operation';
 
 import Styles from './index.less';
@@ -40,7 +40,7 @@ const EMPTY_ROLE_LIST: CreateDataSourceType<RecordType> = {
   pagination: {}
 };
 
-interface RoleOperationPanelInfoProps extends RoleOperationdefaultValue {
+interface RoleOperationPanelInfoProps extends RoleOperationDefaultValue {
   open: boolean;
 }
 interface UserSearchInfoProps {
