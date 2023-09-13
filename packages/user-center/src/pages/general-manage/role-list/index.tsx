@@ -1,5 +1,14 @@
-// 用户管理
-import { CoreTable, MenuTransfer, UserSearch } from '@/components';
+// 角色管理
+import {
+  AuthApiSearch,
+  CoreTable,
+  MenuTransfer,
+  UserSearch
+} from '@/components';
+import type {
+  RecordType as AuthApiSearchRecordType,
+  RefAuthApiSearchBaseProps
+} from '@/components/auth-api-search/base-panel';
 import type {
   CoreTableProps,
   CoreTableRef,
@@ -7,12 +16,13 @@ import type {
 } from '@/components/core-table';
 import type { RefMenuTransferBaseProps } from '@/components/menu-transfer/base-panel';
 import type {
-  RecordType as UserSearchRecordType,
-  RefUserSearchBaseProps
+  RefUserSearchBaseProps,
+  RecordType as UserSearchRecordType
 } from '@/components/user-search/base-panel';
 import { coreRoleApi, coreRoleMappingModules } from '@/services';
 import {
   AppstoreAddOutlined,
+  DatabaseOutlined,
   DeleteOutlined,
   EditOutlined,
   RollbackOutlined,
@@ -33,7 +43,7 @@ import RoleOperation from './role-operation';
 import Styles from './index.less';
 
 type RecordType = Role;
-type RoleMappingModule = 'menu' | 'user';
+type RoleMappingModule = 'menu' | 'user' | 'auth-api';
 
 const EMPTY_ROLE_LIST: CreateDataSourceType<RecordType> = {
   data: [],
@@ -46,6 +56,10 @@ interface RoleOperationPanelInfoProps extends RoleOperationDefaultValue {
 interface UserSearchInfoProps {
   open?: boolean;
   defaultValue?: UserSearchRecordType[];
+}
+interface AuthApiSearchInfoProps {
+  open?: boolean;
+  defaultValue?: AuthApiSearchRecordType[];
 }
 
 interface MenuTransferInfoProps {
@@ -68,6 +82,11 @@ const RoleList: React.FC = () => {
     open: false,
     defaultValue: []
   });
+  const [authApiSearchInfo, setAuthApiSearchInfo] =
+    useState<AuthApiSearchInfoProps>({
+      open: false,
+      defaultValue: []
+    });
   const [menuTransferInfo, setMenuTransferInfo] =
     useState<MenuTransferInfoProps>({
       open: false,
@@ -75,9 +94,13 @@ const RoleList: React.FC = () => {
     });
   const roleListTableRef = useRef<CoreTableRef>(null);
   const userSearchRef = useRef<RefUserSearchBaseProps>({ userSelectRows: [] });
+  const authApiSearchRef = useRef<RefAuthApiSearchBaseProps>({
+    authApiSelectRows: []
+  });
   const menuTransferRef = useRef<RefMenuTransferBaseProps>({ targetList: [] });
   const currentRoleRecordRef = useRef<RecordType>();
   const [modal, contextHolder] = Modal.useModal();
+
   const {
     token: {
       colorHighlight,
@@ -146,6 +169,11 @@ const RoleList: React.FC = () => {
             open: true,
             defaultValue: data.menuList
           });
+        } else if (mappingModuleType === 'auth-api') {
+          setAuthApiSearchInfo({
+            open: true,
+            defaultValue: data.authApiList
+          });
         }
       }
     },
@@ -159,25 +187,33 @@ const RoleList: React.FC = () => {
     });
   }, []);
 
-  const handleRoleMappingModuleClose = useCallback((type: 'user' | 'menu') => {
-    if (type === 'user') {
-      setUserSearchInfo({
-        open: false
-      });
-    } else if (type === 'menu') {
-      setMenuTransferInfo({
-        open: false
-      });
-    }
-  }, []);
+  const handleRoleMappingModuleClose = useCallback(
+    (type: RoleMappingModule) => {
+      if (type === 'user') {
+        setUserSearchInfo({
+          open: false
+        });
+      } else if (type === 'menu') {
+        setMenuTransferInfo({
+          open: false
+        });
+      } else if (type === 'auth-api') {
+        setAuthApiSearchInfo({
+          open: false
+        });
+      }
+    },
+    []
+  );
 
   // 处理添加角色映射
   const handleRoleMappingModuleOk = useCallback(
-    async (type: 'user' | 'menu') => {
+    async (type: RoleMappingModule) => {
       const roleMappingModuleParam: {
         roleId: string;
         userIds?: string[];
         menuIds?: string[];
+        authApiIds?: string[];
       } = {
         roleId: currentRoleRecordRef.current?.id ?? ''
       };
@@ -193,10 +229,17 @@ const RoleList: React.FC = () => {
         );
         roleMappingModuleParam.menuIds = menuSelectedList;
       }
+      if (type === 'auth-api') {
+        const menuSelectedList = authApiSearchRef.current.authApiSelectRows.map(
+          (item) => item.id
+        );
+        roleMappingModuleParam.authApiIds = menuSelectedList;
+      }
 
-      const { errorCode } = await coreRoleMappingModules.roleMappingModuleWithPost(
-        roleMappingModuleParam
-      );
+      const { errorCode } =
+        await coreRoleMappingModules.roleMappingModuleWithPost(
+          roleMappingModuleParam
+        );
       if (isApiSuccess(errorCode)) {
         roleListTableRef.current?.reloadData();
         handleRoleMappingModuleClose(type);
@@ -257,6 +300,16 @@ const RoleList: React.FC = () => {
             >
               <AppstoreAddOutlined />
             </div>
+            <div
+              className="role-operation-item"
+              title="关联数据权限"
+              onClick={() => {
+                handleMappingModule(record, 'auth-api');
+              }}
+            >
+              <DatabaseOutlined />
+            </div>
+
             <div
               className="role-operation-item"
               title="编辑"
@@ -353,7 +406,7 @@ const RoleList: React.FC = () => {
             rowKey="id"
             ref={roleListTableRef}
             headerOperationBar={headerOperationBar}
-            headerSearchBar={{ placeholder: '请输入用角色名称、描述' }}
+            headerSearchBar={{ placeholder: '请输入角色名称、描述' }}
             showSerialNumber
             rowSelection={{
               selectedRowKeys: roleSelectRows.map((item) => item.id),
@@ -375,6 +428,18 @@ const RoleList: React.FC = () => {
           handleRoleMappingModuleOk('user');
         }}
         {...userSearchInfo}
+      />
+      <AuthApiSearch
+        ref={authApiSearchRef}
+        destroyOnClose
+        renderType="modal"
+        onCancel={() => {
+          handleRoleMappingModuleClose('auth-api');
+        }}
+        onOk={() => {
+          handleRoleMappingModuleOk('auth-api');
+        }}
+        {...authApiSearchInfo}
       />
       <MenuTransfer
         key={currentRoleRecordRef.current?.id}

@@ -11,7 +11,7 @@ const coreAuthApi = new Auth();
 const coreRoleApi = new Roles();
 const coreRoleMappingModules = new RoleMappingModules();
 const coreMenuApi = new Menus();
-const coreAuthManagesApi = new AuthManages();
+const coreAuthManageApi = new AuthManages();
 const coreCommonsApi = new Commons();
 
 export {
@@ -20,6 +20,6 @@ export {
   coreMenuApi,
   coreRoleApi,
   coreCommonsApi,
-  coreAuthManagesApi,
+  coreAuthManageApi,
   coreRoleMappingModules
 };
