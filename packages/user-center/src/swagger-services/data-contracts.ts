@@ -9,6 +9,23 @@
  * ---------------------------------------------------------------
  */
 
+export interface AuthManage {
+  id: string;
+  name: string;
+  code: string;
+  group: AuthManageGroupOption;
+  apiUrl: string;
+  description: string;
+  createdTime: number;
+  createBy: string;
+  updatedTime: number;
+}
+
+export interface AuthManageGroupOption {
+  label: string;
+  value: string;
+}
+
 /** @example {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg","expires":"2020-05-12T16:18:04.793Z"} */
 export interface Token {
   token?: string;
@@ -67,6 +84,7 @@ export interface RoleMappingModules {
   roleId: string;
   userIds: string[];
   menuIds?: string[];
+  authApiIds?: string[];
   createdTime: number;
   updatedTime: number;
 }
@@ -109,4 +127,11 @@ export interface BingImg {
 export interface UploadRes {
   url?: string;
   size?: number;
+}
+
+/** @example {"pageSize":1,"pageNum":10,"total":100} */
+export interface PagingRes {
+  pageSize?: number;
+  pageNum?: number;
+  total?: number;
 }

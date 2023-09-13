@@ -27,6 +27,7 @@ export class RoleMappingModules extends HttpClient {
       roleId: string;
       userIds?: string[];
       menuIds?: string[];
+      authApiIds?: string[];
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
