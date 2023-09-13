@@ -1,0 +1,20 @@
+.auth-api-list-manage-wrap {
+  height: 100%;
+  :global {
+    .auth-api-list-table {
+      height: 100%;
+      .colums-operate-wrap {
+        display: flex;
+        .auth-api-operation-item {
+          width: 25px;
+          text-align: center;
+          font-size: 16px;
+          cursor: pointer;
+          & + .auth-api-operation-item {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+}
