@@ -140,7 +140,7 @@ export function onRouteChange({ location }) {
   // 兼容动态路由
   if (
     _menuConfigUserList.filter((item) => item.url === pathname).length < 1 &&
-    !pathname.startsWith('/micro-main-core/iframe/')
+    !pathname.startsWith('/micro-main-core/iframe/') && !pathname.startsWith('/user-center/login')
   ) {
     history.push('/404');
   }
