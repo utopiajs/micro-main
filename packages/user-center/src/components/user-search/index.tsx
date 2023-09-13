@@ -14,7 +14,7 @@ const UserSearch = forwardRef<RefUserSearchBaseProps, UserSearchProps>(
     const { renderType = 'base', defaultValue, ...restProps } = props;
 
     return renderType === 'base' ? (
-      <UserSearch defaultValue={defaultValue} />
+      <UserSearchBase defaultValue={defaultValue} />
     ) : (
       <CoreModal title="用户搜索" width={800} {...restProps}>
         <UserSearchBase defaultValue={defaultValue} ref={ref} />
