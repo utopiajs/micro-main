@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Error, Menu, User } from './data-contracts';
+import { AuthManage, Error, Menu, User } from './data-contracts';
 import { HttpClient, RequestParams, type ResponseCommonType } from './http-client';
 
 export class RoleMappingModules extends HttpClient {
@@ -57,6 +57,7 @@ export class RoleMappingModules extends HttpClient {
       ResponseCommonType<{
         userList: User[];
         menuList: Menu[];
+        authApiList: AuthManage[];
       }>,
       Error
     >({
