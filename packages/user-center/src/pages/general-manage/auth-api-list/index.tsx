@@ -129,17 +129,17 @@ const AuthApiManageList: React.FC = () => {
     {
       title: '权限描述',
       dataIndex: 'description',
-      width: 240
+      width: 150
     },
     {
       title: 'api 路径',
       dataIndex: 'apiUrl',
-      width: 240
+      width: 150
     },
     {
       title: '创建人',
       dataIndex: 'createdBy',
-      width: 150
+      width: 100
     },
     {
       title: '创建时间',
@@ -155,6 +155,7 @@ const AuthApiManageList: React.FC = () => {
     },
     {
       title: '操作',
+      width: 100,
       render: (_, record) => {
         return (
           <div className="colums-operate-wrap">
