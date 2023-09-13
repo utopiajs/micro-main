@@ -1,4 +1,5 @@
 import { Auth } from '@/swagger-services/Auth';
+import { AuthManages } from '@/swagger-services/AuthManages';
 import { Commons } from '@/swagger-services/Commons';
 import { Menus } from '@/swagger-services/Menus';
 import { RoleMappingModules } from '@/swagger-services/RoleMappingModules';
@@ -10,6 +11,7 @@ const coreAuthApi = new Auth();
 const coreRoleApi = new Roles();
 const coreRoleMappingModules = new RoleMappingModules();
 const coreMenuApi = new Menus();
+const coreAuthManagesApi = new AuthManages();
 const coreCommonsApi = new Commons();
 
 export {
@@ -18,5 +20,6 @@ export {
   coreMenuApi,
   coreRoleApi,
   coreCommonsApi,
+  coreAuthManagesApi,
   coreRoleMappingModules
 };
