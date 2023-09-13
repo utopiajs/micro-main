@@ -313,6 +313,13 @@ const RouteConfig: React.FC = () => {
             >
               <Switch disabled />
             </Form.Item>
+            <Form.Item
+              label="新窗口打开"
+              name="openWithNewTarget"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
             {operateStatusRef.current === 'add' && currentEditMenu.id && (
               <Form.Item
                 label="新建为一级菜单"
