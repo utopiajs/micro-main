@@ -19,6 +19,10 @@ export default defineConfig({
       component: 'general-manage/role-list'
     },
     {
+      path: '/general-manage/auth-api-list',
+      component: 'general-manage/auth-api-list'
+    },
+    {
       path: '/sys-setting/route-config',
       component: 'sys-setting/route-config'
     },
