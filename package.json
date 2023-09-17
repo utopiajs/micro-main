@@ -9,6 +9,7 @@
     "dev:core": "lerna run dev --scope=@utopia/micro-main-core",
     "dev:uc": "lerna run dev --scope=@utopia/micro-sub-user-center",
     "dev:utils": "lerna run dev --scope=@utopia/micro-main-utils",
+    "dev:component": "lerna run dev --scope=@utopia/core-component",
     "api:core": "node scripts/gen-core-services",
     "lint:es": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --fix",
     "tsc:check": "lerna run tsc:check --parallel"
