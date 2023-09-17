@@ -9,7 +9,11 @@ import {
   useNavigate,
   useOutlet
 } from '@umijs/max';
-import { useSiteToken } from '@utopia/micro-main-utils';
+import {
+  ROUTE_LOGIN_PATH,
+  ROUTE_REGISTER_PATH,
+  useSiteToken
+} from '@utopia/micro-main-utils';
 import React, {
   useCallback,
   useEffect,
@@ -43,7 +47,7 @@ const CoreProLayout: React.FC = () => {
     reload: () => void;
   }>();
 
-  const { client, menuConfigUserTree, currentUser } = qiankunGlobalState;
+  const { clientConfig, menuConfigUserTree } = qiankunGlobalState;
   const headerContentJSX = useMemo(() => <HeaderRightContent />, []);
 
   const handleIframeLink = useCallback((menu) => {
@@ -59,6 +63,8 @@ const CoreProLayout: React.FC = () => {
     const selectedKey = _location.pathname;
     if (!selectedKey.startsWith('/micro-main-core/iframe/')) {
       setMenuSelectedKeys([selectedKey]);
+    } else {
+      setMenuSelectedKeys([]);
     }
   }, []);
 
@@ -97,17 +103,22 @@ const CoreProLayout: React.FC = () => {
     [location.pathname, handleIframeLink]
   );
 
+  const isProLayoutWithPureModel = useCallback(() => {
+    // login & register page
+    return [ROUTE_LOGIN_PATH, ROUTE_REGISTER_PATH].includes(location.pathname);
+  }, [location]);
+
   useEffect(() => {
     menuActionRef.current?.reload();
   }, [menuConfigUserTree]);
 
   return (
     <ProLayout
-      title={client.clientName}
+      title={clientConfig.name}
       layout="mix"
       siderWidth={208}
-      logo={client.logo}
-      pure={Boolean(!currentUser.id)}
+      logo={clientConfig.logo}
+      pure={isProLayoutWithPureModel()}
       onMenuHeaderClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
