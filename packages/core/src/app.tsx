@@ -1,17 +1,17 @@
-import {
-  clientConstantProps,
-  DEFAULT_QIANKUN_GLOBAL_STATE,
-  siteThemeConfig
-} from '@/constants';
-import { coreMenuApi, coreUserApi } from '@/services';
+import { DEFAULT_QIANKUN_GLOBAL_STATE, siteThemeConfig } from '@/constants';
+import { coreClientConfig, coreMenuApi, coreUserApi } from '@/services';
 import type { AntdConfig, RuntimeAntdConfig } from '@umijs/max';
 import { history, useModel } from '@umijs/max';
 import {
+  PublishSubscribe,
+  ROUTE_CORE_IFRAME_SRC,
+  ROUTE_CORE_NOT_FOUND,
+  ROUTE_LOGIN_PATH,
+  ROUTE_REGISTER_PATH,
+  _Cookies,
   convertArrayFromTree,
   getQueryParams,
-  isApiSuccess,
-  PublishSubscribe,
-  _Cookies
+  isApiSuccess
 } from '@utopia/micro-main-utils';
 import type {
   IInitialState,
@@ -23,7 +23,6 @@ import type { ThemeConfig } from 'antd';
 import { theme } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 
-const loginPath = '/user-center/login';
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
 const { redirectUrl = '/' } = getQueryParams();
 const _MICRO_MAIN_CORE_PUB_SUB_ = new PublishSubscribe();
@@ -62,7 +61,7 @@ export async function getInitialState(): Promise<IInitialState> {
         PREFERS_LS_KEY,
         JSON.stringify(data.preferenceSetting)
       );
-      if (location.pathname === loginPath) {
+      if (location.pathname === ROUTE_LOGIN_PATH) {
         window.location.href = redirectUrl;
       }
       return data;
@@ -71,7 +70,13 @@ export async function getInitialState(): Promise<IInitialState> {
     const userPrefers: User['preferenceSetting'] = JSON.parse(
       localStorage.getItem(PREFERS_LS_KEY) || '{}'
     );
-    history.push(loginPath);
+    if (![ROUTE_LOGIN_PATH, ROUTE_REGISTER_PATH].includes(location.pathname)) {
+      if (redirectUrl.indexOf(ROUTE_LOGIN_PATH) > -1) {
+        history.push(`${ROUTE_LOGIN_PATH}`);
+      } else {
+        history.push(`${ROUTE_LOGIN_PATH}?redirectUrl=${location.pathname}`);
+      }
+    }
     return {
       id: '',
       preferenceSetting: userPrefers.colorPrimary
@@ -80,16 +85,31 @@ export async function getInitialState(): Promise<IInitialState> {
     };
   };
 
-  const getmenuConfigUserTree = async () => {
-    const { errorCode, data } = await coreMenuApi.menuUserTreeWithGet();
+  const getMenuConfigUserTree = async () => {
+    const { errorCode, data } = await coreMenuApi.menuUserTreeWithGet(
+      {},
+      { showErrorMessage: false }
+    );
     if (isApiSuccess(errorCode)) {
       return data;
     }
     return [];
   };
 
+  // 获取平台相关信息
+  const getClientConfig = async () => {
+    const { errorCode, data } = await coreClientConfig.clientConfigInfoWithGet({
+      showErrorMessage: false
+    });
+    if (isApiSuccess(errorCode)) {
+      return data;
+    }
+    return {};
+  };
+
   const currentUser = await fetchUserInfo();
-  const menuConfigUserTree = await getmenuConfigUserTree();
+  const menuConfigUserTree = await getMenuConfigUserTree();
+  const clientConfig = await getClientConfig();
 
   // 转换为数组结构，便于比较
   _menuConfigUserList = convertArrayFromTree(menuConfigUserTree);
@@ -97,7 +117,7 @@ export async function getInitialState(): Promise<IInitialState> {
     currentUser,
     menuConfigUserTree,
     siteThemeConfig: currentUser.preferenceSetting,
-    client: clientConstantProps
+    clientConfig
   };
 }
 
@@ -113,7 +133,7 @@ export const useQiankunStateForSlave = (): QiankunStateFromMasterProps => {
       currentUser:
         initialModelState?.currentUser ??
         DEFAULT_QIANKUN_GLOBAL_STATE.currentUser,
-      client: initialModelState?.client ?? DEFAULT_QIANKUN_GLOBAL_STATE.client,
+        clientConfig: initialModelState?.clientConfig ?? DEFAULT_QIANKUN_GLOBAL_STATE.clientConfig,
       siteThemeConfig:
         initialModelState?.siteThemeConfig ??
         DEFAULT_QIANKUN_GLOBAL_STATE.siteThemeConfig,
@@ -140,7 +160,10 @@ export function onRouteChange({ location }) {
   // 兼容动态路由
   if (
     _menuConfigUserList.filter((item) => item.url === pathname).length < 1 &&
-    !pathname.startsWith('/micro-main-core/iframe/') && !pathname.startsWith('/user-center/login')
+    !pathname.startsWith(ROUTE_CORE_IFRAME_SRC) &&
+    ![ROUTE_LOGIN_PATH, ROUTE_REGISTER_PATH, ROUTE_CORE_NOT_FOUND].includes(
+      pathname
+    )
   ) {
     history.push('/404');
   }
