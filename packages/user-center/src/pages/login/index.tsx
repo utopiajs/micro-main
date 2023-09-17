@@ -29,7 +29,7 @@ const LoginPage = () => {
   const [bingImgInfo, setBingImgInfo] = useState<BingImg>({});
   const { qiankunGlobalState }: QiankunStateFromMasterProps =
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
-
+  const { clientConfig } = qiankunGlobalState;
   const {
     token: { colorBgContainer, padding, boxShadow, fontSizeSM, marginXS }
   } = useSiteToken();
@@ -79,7 +79,7 @@ const LoginPage = () => {
           boxShadow
         }}
       >
-        <Title level={4}>{qiankunGlobalState?.client?.clientName}</Title>
+        <Title level={4}>{clientConfig.name}</Title>
         <Form
           name="user-center-login"
           className="login-form"
@@ -123,7 +123,7 @@ const LoginPage = () => {
         </Form>
         <p>
           <Text type="secondary" style={{ fontSize: fontSizeSM }}>
-            {qiankunGlobalState?.client?.copyRight}
+            {clientConfig.copyright}
           </Text>
         </p>
       </div>
