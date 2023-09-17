@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@umijs/max": "^4.0.80",
+    "@utopia/core-component": "^0.0.1",
     "@utopia/micro-main-utils": "^0.0.1",
     "@utopia/micro-types": "^0.0.0",
     "antd": "^5.4.2",

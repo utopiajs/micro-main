@@ -15,6 +15,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.6.12",
     "@umijs/max": "^4.0.80",
+    "@utopia/core-component": "^0.0.1",
     "@utopia/micro-main-utils": "^0.0.1",
     "@utopia/micro-types": "^0.0.0",
     "antd": "^5.0.0",
