@@ -140,7 +140,7 @@ const UserSearchBase = forwardRef<RefUserSearchBaseProps, UserSearchBaseProps>(
       },
       {
         title: '创建时间',
-        dataIndex: 'createTime',
+        dataIndex: 'createdTime',
         width: 200,
         render: (value) => <span>{formateTime(value)}</span>
       }

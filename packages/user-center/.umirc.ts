@@ -27,6 +27,7 @@ export default defineConfig({
       component: 'sys-setting/route-config'
     },
     { path: '/login', component: 'login' },
+    { path: '/register', component: 'register' },
     { path: '/*', component: '@/pages/404/index.tsx' }
   ],
   model: {},
