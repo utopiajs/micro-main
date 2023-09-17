@@ -1,0 +1,38 @@
+.register-page-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  :global {
+    .register-panel {
+      width: 500px;
+      &-header {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        .logo {
+          width: 60px;
+          margin-right: 10px;
+        }
+      }
+      &-body {
+        margin-top: 20px;
+      }
+    }
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+      .text {
+        margin-left: 5px;
+      }
+    }
+  }
+}

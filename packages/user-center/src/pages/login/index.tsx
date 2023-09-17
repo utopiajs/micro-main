@@ -1,5 +1,4 @@
 // login page
-import defaultBackgroundSVG from '@/assets/images/background.svg';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreCommonsApi } from '@/services';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -7,6 +6,7 @@ import { useModel } from '@umijs/max';
 import {
   getQueryParams,
   isApiSuccess,
+  ROUTE_REGISTER_PATH,
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { BingImg, QiankunStateFromMasterProps } from '@utopia/micro-types';
@@ -31,7 +31,7 @@ const LoginPage = () => {
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
 
   const {
-    token: { colorBgContainer, padding, boxShadow, fontSizeSM }
+    token: { colorBgContainer, padding, boxShadow, fontSizeSM, marginXS }
   } = useSiteToken();
 
   useEffect(() => {
@@ -104,11 +104,18 @@ const LoginPage = () => {
               placeholder="密码"
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item style={{ marginBottom: marginXS }}>
             <Button
               type="primary"
               htmlType="submit"
               className="login-form-button"
+            >
+              登陆
+            </Button>
+            <Button
+              type="link"
+              href={`${ROUTE_REGISTER_PATH}?redirectUrl=${redirectUrl}`}
+              style={{ float: 'right', paddingRight: 0 }}
             >
               登陆
             </Button>
@@ -126,7 +133,7 @@ const LoginPage = () => {
         src={
           bingImgInfo.url
             ? `https://www.bing.com${bingImgInfo.url}`
-            : defaultBackgroundSVG
+            : 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg'
         }
       />
     </div>
