@@ -16,10 +16,11 @@ import type {
 } from '@/components/core-table';
 import type { RefMenuTransferBaseProps } from '@/components/menu-transfer/base-panel';
 import type {
-  RefUserSearchBaseProps,
-  RecordType as UserSearchRecordType
+  RecordType as UserSearchRecordType,
+  RefUserSearchBaseProps
 } from '@/components/user-search/base-panel';
-import { coreRoleApi, coreRoleMappingModules } from '@/services';
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
+import { coreMenuApi, coreRoleApi, coreRoleMappingModules } from '@/services';
 import {
   AppstoreAddOutlined,
   DatabaseOutlined,
@@ -28,13 +29,18 @@ import {
   RollbackOutlined,
   UsergroupAddOutlined
 } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import {
   formateTime,
   isApiSuccess,
   removeEmptyFields,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import type { Menu, Role } from '@utopia/micro-types';
+import type {
+  Menu,
+  QiankunStateFromMasterProps,
+  Role
+} from '@utopia/micro-types';
 import { Button, Modal, Popconfirm } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
 import type { RoleOperationDefaultValue } from './role-operation';
@@ -75,6 +81,11 @@ const initRoleOperationPanelInfo: RoleOperationPanelInfoProps = {
 };
 
 const RoleList: React.FC = () => {
+  const {
+    qiankunGlobalState,
+    setQiankunGlobalState
+  }: QiankunStateFromMasterProps =
+    useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
   const [roleOperationPanelInfo, setRoleOperationPanelInfo] =
     useState<RoleOperationPanelInfoProps>(initRoleOperationPanelInfo);
   const [roleSelectRows, setRoleSelectRows] = useState<RecordType[]>([]);
@@ -187,6 +198,17 @@ const RoleList: React.FC = () => {
     });
   }, []);
 
+  // 更新主平台菜单树
+  const updateMicroMainCoreMenu = useCallback(async () => {
+    const { errorCode, data } = await coreMenuApi.menuUserTreeWithGet();
+    if (isApiSuccess(errorCode)) {
+      setQiankunGlobalState({
+        ...qiankunGlobalState,
+        menuConfigUserTree: data
+      });
+    }
+  }, [qiankunGlobalState, setQiankunGlobalState]);
+
   const handleRoleMappingModuleClose = useCallback(
     (type: RoleMappingModule) => {
       if (type === 'user') {
@@ -243,9 +265,12 @@ const RoleList: React.FC = () => {
       if (isApiSuccess(errorCode)) {
         roleListTableRef.current?.reloadData();
         handleRoleMappingModuleClose(type);
+        if (type === 'menu') {
+          await updateMicroMainCoreMenu();
+        }
       }
     },
-    [handleRoleMappingModuleClose]
+    [handleRoleMappingModuleClose, updateMicroMainCoreMenu]
   );
 
   const colums: CoreTableProps<RecordType>['columns'] = [

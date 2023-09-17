@@ -1,9 +1,6 @@
 import type { QiankunStateFromMasterProps } from '@utopia/micro-types';
 
-const qiankunStateFromMaster: Pick<
-  QiankunStateFromMasterProps,
-  'qiankunGlobalState'
-> = {
+const qiankunStateFromMaster: QiankunStateFromMasterProps = {
   qiankunGlobalState: {
     currentUser: {
       id: '645f959388c7f418bad30d07',
@@ -17,10 +14,11 @@ const qiankunStateFromMaster: Pick<
         borderRadius: 2
       }
     },
-    client: {
-      clientName: '微前端主平台',
-      clientVersion: '1.0.0',
-      copyRight: '1.0.0',
+    menuConfigUserTree: [],
+    clientConfig: {
+      name: '微前端主平台',
+      version: '1.0.0',
+      copyright: 'KuangPF | @2022-present',
       logo: 'https://avatars.githubusercontent.com/u/53040934?s=200&v=4'
     },
     siteThemeConfig: {
@@ -28,6 +26,10 @@ const qiankunStateFromMaster: Pick<
       colorPrimary: '#1890ff',
       borderRadius: 2
     }
+  },
+  setQiankunGlobalState: () => {
+    // eslint-disable-next-line no-console
+    console.log('setQiankunGlobalState done');
   }
 };
 
