@@ -1,0 +1,22 @@
+@import '../../styles/variables.less';
+
+.@{component-classname-prefix}-core-tree {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .ant-tree {
+    height: 100%;
+    &-node-content-wrapper {
+      flex: auto;
+    }
+    &-treenode-draggable {
+      .ant-tree-node-content-wrapper {
+        cursor: move;
+      }
+    }
+  }
+  &-body {
+    flex-grow: 1;
+    overflow: auto;
+  }
+}

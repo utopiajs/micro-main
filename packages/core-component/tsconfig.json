@@ -3,6 +3,9 @@
     "strict": true,
     "declaration": true,
     "skipLibCheck": true,
-    "baseUrl": "./"
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "jsx": "react-jsx",
+    "noImplicitAny": false
   }
 }
