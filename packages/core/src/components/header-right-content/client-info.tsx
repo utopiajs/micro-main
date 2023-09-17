@@ -1,11 +1,31 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { CoreModal } from '@utopia/core-component';
 import { formItemLargeLayout, useSiteToken } from '@utopia/micro-main-utils';
+import type { IInitialState } from '@utopia/micro-types';
 import { Col, Form, Typography } from 'antd';
 import React, { useCallback, useState } from 'react';
 import Styles from './index.less';
 
-const ClientInfo: React.FC = () => {
+interface IProps {
+  initialState?: IInitialState;
+}
+
+const ClientInfo: React.FC<IProps> = (props) => {
+  const {
+    initialState: {
+      clientConfig: {
+        name,
+        logo,
+        version,
+        deployTime,
+        description,
+        copyright,
+        siteUrl,
+        contact
+      }
+    } = { clientConfig: {} }
+  } = props;
+
   const [openClientInfoModal, setOpenClientInfoModal] = useState(false);
   const {
     token: { colorTextSecondary, colorBorder, colorBgTextHover }
@@ -35,18 +55,14 @@ const ClientInfo: React.FC = () => {
         footer={null}
       >
         <div className="header-content">
-          <img
-            alt=""
-            className="logo"
-            src="http://10.209.8.44:11127/sso/themes/unisinsight/images/logo.png"
-          />
+          <img alt="" className="logo" src={logo} />
           <div style={{ textAlign: 'left' }}>
-            <Typography.Title level={4}>紫光华智</Typography.Title>
+            <Typography.Title level={4}>{name}</Typography.Title>
             <Typography.Text
               className="description"
               style={{ color: colorTextSecondary }}
             >
-              专注于数智视觉产品和解决方案的研发、生产、销售和服务
+              {description}
             </Typography.Text>
           </div>
         </div>
@@ -57,23 +73,20 @@ const ClientInfo: React.FC = () => {
             {...formItemLargeLayout}
           >
             <Col span={12}>
-              <Form.Item label="平台版本">1.0.0(R)</Form.Item>
+              <Form.Item label="平台版本">{version}</Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="发布日期">2023-08-28 17:10:57</Form.Item>
+              <Form.Item label="发布日期">{deployTime}</Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="平台官网">
-                <Typography.Link
-                  target="_blank"
-                  href="https://www.unisinsight.com/"
-                >
-                  https://unisinsight.com/
+                <Typography.Link target="_blank" href={siteUrl}>
+                  {siteUrl}
                 </Typography.Link>
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="联系我们">kf@unisinsight.com</Form.Item>
+              <Form.Item label="联系我们">{contact}</Form.Item>
             </Col>
           </Form>
         </div>
@@ -81,8 +94,7 @@ const ClientInfo: React.FC = () => {
           className="copyright-footer"
           style={{ backgroundColor: colorBgTextHover }}
         >
-          copyright @ 2022 重庆紫光华山智安科技有限公司及其许可者
-          版权所有，保留一切权利
+          {copyright}
         </div>
       </CoreModal>
     </div>

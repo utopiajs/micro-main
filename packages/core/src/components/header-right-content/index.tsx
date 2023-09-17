@@ -8,7 +8,7 @@ const HeaderRightContent = () => {
   const { initialState } = useModel('@@initialState');
   return (
     <div className={Styles['header-right-content-wrap']}>
-      <ClientInfo />
+      <ClientInfo initialState={initialState} />
       <UserInfoContent initialState={initialState} />
       <ApiLoadingStatus />
     </div>
