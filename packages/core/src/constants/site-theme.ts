@@ -24,12 +24,7 @@ const DEFAULT_QIANKUN_GLOBAL_STATE: QiankunStateFromMasterProps['qiankunGlobalSt
         borderRadius: 2
       }
     },
-    client: {
-      clientName: '微前端主平台',
-      clientVersion: '1.0.0',
-      copyRight: '1.0.0',
-      logo: 'https://avatars.githubusercontent.com/u/53040934?s=200&v=4'
-    },
+    clientConfig: {},
     siteThemeConfig: {
       theme: 'light',
       colorPrimary: '#1890ff',
