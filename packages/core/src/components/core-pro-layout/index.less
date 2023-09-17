@@ -67,9 +67,25 @@
         margin-block: 4px;
       }
     }
-    .ant-menu-submenu-url {
-      margin-inline: 4px;
-      margin-block: 4px;
+    .ant-menu-submenu-url,
+    .ant-menu-item-only-child {
+      margin-inline: 4px !important;
+      margin-block: 4px !important;
+    }
+  }
+}
+
+:global {
+  #root-master {
+    .micro-main-core-outlet-wrap {
+      height: 100%;
+      &-children {
+        overflow: auto;
+        height: 100%;
+        .qiankun-micro-app-wrapper {
+          height: 100%;
+        }
+      }
     }
   }
 }
