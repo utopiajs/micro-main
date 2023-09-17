@@ -5,9 +5,10 @@ import {
   IdcardOutlined,
   LogoutOutlined
 } from '@ant-design/icons';
-import { Link } from '@umijs/max';
+import { history, Link, useLocation } from '@umijs/max';
 import {
   isApiSuccess,
+  ROUTE_LOGIN_PATH,
   useHoverStyle,
   useSiteToken,
   _Cookies
@@ -37,6 +38,7 @@ const UserInfoContent = (props: IProps) => {
       colorPrimary
     }
   } = useSiteToken();
+  const { pathname } = useLocation();
   const showDropContentRef = useRef(false);
   useHoverStyle(
     '.operation-item-hover,.user-avatar-hover',
@@ -58,9 +60,10 @@ const UserInfoContent = (props: IProps) => {
       refreshToken: _Cookies.get('refresh.token')
     });
     if (isApiSuccess(errorCode)) {
+      history.push(`${ROUTE_LOGIN_PATH}?redirectUrl=${pathname}`);
       window.location.reload();
     }
-  }, []);
+  }, [pathname]);
 
   const handleDocumentClick = useCallback(() => {
     if (showDropContentRef.current) {
