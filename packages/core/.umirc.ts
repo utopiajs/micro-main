@@ -21,6 +21,10 @@ export default defineConfig({
       path: '/micro-main-core/iframe/:iframeSrc',
       component: '@/pages/micro-main-iframe/index.tsx'
     },
+    {
+      path: '/micro-main-core/client-config',
+      component: 'client-config'
+    },
     { path: '/*', component: '@/pages/404/index.tsx' }
   ],
   antd: {
