@@ -38,6 +38,19 @@ export interface AuthTokens {
   refresh?: Token;
 }
 
+export interface ClientConfig {
+  logo?: string;
+  name?: string;
+  description?: string;
+  version?: string;
+  siteUrl?: string;
+  contact?: string;
+  deployTime?: number;
+  createdTime?: number;
+  copyright?: string;
+  updatedTime?: number;
+}
+
 export interface MenuOrigin {
   id: string;
   name: string;
@@ -103,7 +116,6 @@ export interface User {
   name?: string;
   avatar?: string;
   roleList?: RoleOption[];
-  role?: 'user' | 'admin';
   preferenceSetting: {
     theme: 'light' | 'dark';
     colorPrimary: string;

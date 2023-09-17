@@ -58,7 +58,6 @@ export class Users extends HttpClient {
        * @minLength 8
        */
       password: string;
-      role: 'user' | 'admin';
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
@@ -81,8 +80,6 @@ export class Users extends HttpClient {
     query?: {
       /** User name or email */
       search?: string;
-      /** User role */
-      role?: string;
       /** sort by query in the form of field:desc/asc (ex. name:asc) */
       sortBy?: string;
       /**
@@ -176,6 +173,34 @@ export class Users extends HttpClient {
       url: `/api/micro-main/v1/users/delete`,
       method: 'DELETE',
       data: data,
+      ...params
+    });
+  /**
+   * @description Only admins can retrieve all users.
+   *
+   * @tags Users
+   * @name UsersInfoCheckWithGet
+   * @request GET:/users/info-check
+   * @secure
+   */
+  usersInfoCheckWithGet = (
+    query: {
+      type: string;
+      name?: string;
+      email?: string;
+    },
+    params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
+  ) =>
+    this.request<
+      ResponseCommonType<{
+        isTaken: boolean;
+        type: 'name' | 'email';
+      }>,
+      Error
+    >({
+      url: `/api/micro-main/v1/users/info-check`,
+      method: 'GET',
+      params: query,
       ...params
     });
 }
