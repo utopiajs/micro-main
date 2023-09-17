@@ -1,5 +1,6 @@
 // 平台配置信息
 import { coreClientConfig } from '@/services';
+import { useModel } from '@umijs/max';
 import { TitleLabel } from '@utopia/core-component';
 import {
   formItemEditLayout,
@@ -12,7 +13,10 @@ import { Button, Form, Input, message } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 
 const ClientConfigPage: React.FC = () => {
-  const [initialValues, setInitialValues] = useState({});
+  const { initialState } = useModel('@@initialState');
+  const [initialValues, setInitialValues] = useState(
+    initialState?.clientConfig ?? {}
+  );
   const [clientConfigForm] = Form.useForm();
   const [messageApi, messageContextHolder] = message.useMessage();
 
@@ -22,6 +26,7 @@ const ClientConfigPage: React.FC = () => {
 
   const handleFinish = useCallback(
     async (values) => {
+      // values.deployTime = values.deployTime.format('YYYY-MM-DD HH:mm:ss');
       const { errorCode } = await coreClientConfig.clientConfigCreateWithPost(
         values
       );
@@ -46,7 +51,7 @@ const ClientConfigPage: React.FC = () => {
   }, [clientConfigForm]);
 
   useEffect(() => {
-    getClientConfig();
+    // getClientConfig();
   }, [getClientConfig]);
 
   return (
