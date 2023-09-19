@@ -73,7 +73,7 @@ const ClientConfigPage: React.FC = () => {
           <Form.Item label="平台版本" name="version">
             <Input placeholder="请输入平台版本" />
           </Form.Item>
-          <Form.Item label="发布日期" name="deployTimeJs">
+          <Form.Item label="发布日期" name="deployTimeDayJs">
             <DatePicker showTime placeholder="请输入请发布日期" />
           </Form.Item>
           <Form.Item label="平台官网" name="siteUrl">

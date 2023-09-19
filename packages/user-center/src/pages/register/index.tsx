@@ -90,7 +90,7 @@ const RegisterPage: React.FC = () => {
         }}
       >
         <div className="register-panel-header">
-          <img alt="" className="logo" src={clientConfig.siteUrl} />
+          <img alt="" className="logo" src={clientConfig.logo} />
           <div>{clientConfig.name}</div>
         </div>
         <div className="register-panel-body">
