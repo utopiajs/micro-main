@@ -5,27 +5,33 @@ import { TitleLabel } from '@utopia/core-component';
 import {
   formItemEditLayout,
   formTailLayout,
-  isApiSuccess,
   useSiteToken
 } from '@utopia/micro-main-utils';
-import { Button, Form, Input, message } from 'antd';
+import type { ClientConfig } from '@utopia/micro-types';
+import { Button, DatePicker, Form, Input, message } from 'antd';
+import dayjs from 'dayjs';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 const ClientConfigPage: React.FC = () => {
   const { initialState } = useModel('@@initialState');
-  const [initialValues, setInitialValues] = useState(
-    initialState?.clientConfig ?? {}
-  );
+  const [initialValues] = useState<
+    ClientConfig & {
+      deployTimeDayJs?: dayjs.Dayjs;
+    }
+  >(initialState?.clientConfig ?? {});
   const [clientConfigForm] = Form.useForm();
   const [messageApi, messageContextHolder] = message.useMessage();
 
   const {
-    token: { paddingXS }
+    token: { marginXS, paddingXS }
   } = useSiteToken();
 
   const handleFinish = useCallback(
     async (values) => {
+      // hack deployTime
+      values.deployTime = values.deployTimeDayJs.valueOf();
+      delete values.deployTimeDayJs;
       // values.deployTime = values.deployTime.format('YYYY-MM-DD HH:mm:ss');
       const { errorCode } = await coreClientConfig.clientConfigCreateWithPost(
         values
@@ -41,18 +47,8 @@ const ClientConfigPage: React.FC = () => {
     clientConfigForm.setFieldsValue(initialValues);
   }, [initialValues, clientConfigForm]);
 
-  const getClientConfig = useCallback(async () => {
-    const { errorCode, data } =
-      await coreClientConfig.clientConfigInfoWithGet();
-    if (isApiSuccess(errorCode)) {
-      setInitialValues(data);
-      clientConfigForm.setFieldsValue(data);
-    }
-  }, [clientConfigForm]);
-
-  useEffect(() => {
-    // getClientConfig();
-  }, [getClientConfig]);
+  // hack deployTime
+  initialValues.deployTimeDayJs = dayjs(initialValues.deployTime);
 
   return (
     <div style={{ padding: paddingXS }}>
@@ -77,8 +73,8 @@ const ClientConfigPage: React.FC = () => {
           <Form.Item label="平台版本" name="version">
             <Input placeholder="请输入平台版本" />
           </Form.Item>
-          <Form.Item label="发布日期" name="deployTime">
-            <Input placeholder="请输入请发布日期" />
+          <Form.Item label="发布日期" name="deployTimeJs">
+            <DatePicker showTime placeholder="请输入请发布日期" />
           </Form.Item>
           <Form.Item label="平台官网" name="siteUrl">
             <Input placeholder="请输入平台官网" />
@@ -94,7 +90,11 @@ const ClientConfigPage: React.FC = () => {
             />
           </Form.Item>
           <Form.Item {...formTailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ marginRight: marginXS }}
+            >
               保存
             </Button>
             <Button onClick={handleReset}>重置</Button>
