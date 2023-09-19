@@ -117,7 +117,7 @@ const LoginPage = () => {
               href={`${ROUTE_REGISTER_PATH}?redirectUrl=${redirectUrl}`}
               style={{ float: 'right', paddingRight: 0 }}
             >
-              登陆
+              注册
             </Button>
           </Form.Item>
         </Form>
