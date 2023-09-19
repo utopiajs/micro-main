@@ -31,7 +31,7 @@ export class RoleMappingModules extends HttpClient {
     },
     params: RequestParams = { showErrorMessage: true, showSuccessMessage: false, showApiLoadingStatus: true }
   ) =>
-    this.request<ResponseCommonType<void>, Error>({
+    this.request<ResponseCommonType<any>, any>({
       url: `/api/micro-main/v1/role-mapping/module`,
       method: 'POST',
       data: data,
