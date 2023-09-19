@@ -1,8 +1,9 @@
 // 注册页面
 import { formItemLayout, formTailLayout } from '@/constants';
+import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreUserApi } from '@/services';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { history } from '@umijs/max';
+import { history, useModel } from '@umijs/max';
 import {
   commonRules,
   getQueryParams,
@@ -10,6 +11,7 @@ import {
   ROUTE_LOGIN_PATH,
   useSiteToken
 } from '@utopia/micro-main-utils';
+import type { QiankunStateFromMasterProps } from '@utopia/micro-types';
 import { Button, Form, Input, message } from 'antd';
 import React, { useCallback } from 'react';
 import Styles from './index.less';
@@ -21,6 +23,10 @@ const userFieldsMapping = {
 const { redirectUrl = '/' } = getQueryParams();
 
 const RegisterPage: React.FC = () => {
+  const { qiankunGlobalState }: QiankunStateFromMasterProps =
+    useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
+  const { clientConfig } = qiankunGlobalState;
+
   const [messageApi, messageContextHolder] = message.useMessage();
   const {
     token: { colorBgContainer, padding }
@@ -84,12 +90,8 @@ const RegisterPage: React.FC = () => {
         }}
       >
         <div className="register-panel-header">
-          <img
-            alt=""
-            className="logo"
-            src="http://qiniu-cdn.utopiajs.space/avatar/avatar-default.png"
-          />
-          <div>Utopia Space</div>
+          <img alt="" className="logo" src={clientConfig.siteUrl} />
+          <div>{clientConfig.name}</div>
         </div>
         <div className="register-panel-body">
           <Form
