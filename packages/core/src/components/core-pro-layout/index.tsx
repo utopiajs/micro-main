@@ -31,13 +31,21 @@ type MenuItemProps = MenuDataItem & {
   onClick: () => void;
 };
 
+function updateCssVariables(variables: { [key: string]: string }) {
+  const root = document.documentElement;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(variables)) {
+    root.style.setProperty(key, value);
+  }
+}
+
 const CoreProLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [menuSelectedKeys, setMenuSelectedKeys] = useState<string[]>([]); // 菜单选择 keys，受控，主要适配外部链接
   const { qiankunGlobalState } = useModel('@@qiankunStateForSlave');
 
   const {
-    token: { colorPrimary, controlItemBgActive, colorBgElevated }
+    token: { colorPrimary, controlItemBgActive, colorBgElevated, colorText }
   } = useSiteToken();
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,20 +59,10 @@ const CoreProLayout: React.FC = () => {
   const headerContentJSX = useMemo(() => <HeaderRightContent />, []);
 
   const handleIframeLink = useCallback((menu) => {
-    setMenuSelectedKeys([menu.key]);
     if (menu.target === '_blank') {
       window.open(menu.path, '_blank');
     } else {
       history.push(`/micro-main-core/iframe/${encodeURIComponent(menu.path)}`);
-    }
-  }, []);
-
-  const handlePageChange = useCallback((_location) => {
-    const selectedKey = _location.pathname;
-    if (!selectedKey.startsWith('/micro-main-core/iframe/')) {
-      setMenuSelectedKeys([selectedKey]);
-    } else {
-      setMenuSelectedKeys([]);
     }
   }, []);
 
@@ -112,10 +110,19 @@ const CoreProLayout: React.FC = () => {
     menuActionRef.current?.reload();
   }, [menuConfigUserTree]);
 
+  useEffect(() => {
+    updateCssVariables({
+      '--micro-core-primary-color': colorPrimary,
+      '--micro-core-color-text': colorText
+    });
+  }, [colorPrimary, colorText]);
   return (
     <ProLayout
       title={clientConfig.name}
       layout="mix"
+      // splitMenus
+      headerRender={undefined} // undefined || false
+      menuRender={undefined} // undefined || false
       siderWidth={208}
       logo={clientConfig.logo}
       pure={isProLayoutWithPureModel()}
@@ -124,8 +131,6 @@ const CoreProLayout: React.FC = () => {
         e.preventDefault();
         navigate('/');
       }}
-      selectedKeys={menuSelectedKeys}
-      onPageChange={handlePageChange}
       rightContentRender={() => headerContentJSX}
       menuItemRender={menuItemRender}
       collapsedButtonRender={false}

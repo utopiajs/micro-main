@@ -10,16 +10,7 @@ import { useEffect } from 'react';
 import './index.less';
 
 const PREFERS_LS_KEY = 'micro-main:user-prefers';
-const DEFAULT_PRIMARY_COLOR = '#1677EF';
 
-function updateCssVariables(variables: { [key: string]: string }) {
-  const root = document.documentElement;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [key, value] of Object.entries(variables)) {
-    root.style.setProperty(key, value);
-  }
-}
 export default function Layout() {
   const { qiankunGlobalState } = useModel('@@qiankunStateForSlave');
   const { siteAntdThemeConfig } =
@@ -34,11 +25,6 @@ export default function Layout() {
       qiankunGlobalState?.siteThemeConfig?.theme || userPrefers.theme || 'light'
     );
   }, [setPrefersColor, qiankunGlobalState]);
-
-  updateCssVariables({
-    '--micro-core-primary-color':
-      siteAntdThemeConfig.token?.colorPrimary || DEFAULT_PRIMARY_COLOR
-  });
 
   return (
     <ConfigProvider theme={siteAntdThemeConfig}>
