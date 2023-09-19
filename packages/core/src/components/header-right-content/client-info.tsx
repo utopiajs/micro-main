@@ -1,6 +1,10 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { CoreModal } from '@utopia/core-component';
-import { formItemLargeLayout, useSiteToken } from '@utopia/micro-main-utils';
+import {
+  formateTime,
+  formItemLargeLayout,
+  useSiteToken
+} from '@utopia/micro-main-utils';
 import type { IInitialState } from '@utopia/micro-types';
 import { Col, Form, Typography } from 'antd';
 import React, { useCallback, useState } from 'react';
@@ -76,7 +80,7 @@ const ClientInfo: React.FC<IProps> = (props) => {
               <Form.Item label="平台版本">{version}</Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="发布日期">{deployTime}</Form.Item>
+              <Form.Item label="发布日期">{formateTime(deployTime)}</Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="平台官网">
