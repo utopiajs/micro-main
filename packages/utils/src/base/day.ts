@@ -3,10 +3,10 @@
 import dayjs from 'dayjs';
 
 function formateTime(
-  timestamp: number,
+  timestamp?: number,
   { template = 'YYYY-MM-DD HH:mm:ss' }: { template?: string } = {}
 ): string {
-  return timestamp ? dayjs(timestamp).format(template) : '--';
+  return dayjs(timestamp).isValid() ? dayjs(timestamp).format(template) : '--';
 }
 
 export { formateTime };
