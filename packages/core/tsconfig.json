@@ -1,6 +1,7 @@
 {
   "extends": "./src/.umi/tsconfig.json",
   "compilerOptions": {
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "moduleResolution": "node"
   }
 }
