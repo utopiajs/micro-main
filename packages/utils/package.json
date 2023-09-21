@@ -27,7 +27,8 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "father": "^4.1.6"
+    "father": "^4.1.6",
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

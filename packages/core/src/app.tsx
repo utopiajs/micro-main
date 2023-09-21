@@ -3,15 +3,15 @@ import { coreClientConfig, coreMenuApi, coreUserApi } from '@/services';
 import type { AntdConfig, RuntimeAntdConfig } from '@umijs/max';
 import { history, useModel } from '@umijs/max';
 import {
+  convertArrayFromTree,
+  getQueryParams,
+  isApiSuccess,
   PublishSubscribe,
   ROUTE_CORE_IFRAME_SRC,
   ROUTE_CORE_NOT_FOUND,
   ROUTE_LOGIN_PATH,
   ROUTE_REGISTER_PATH,
-  _Cookies,
-  convertArrayFromTree,
-  getQueryParams,
-  isApiSuccess
+  _Cookies
 } from '@utopia/micro-main-utils';
 import type {
   IInitialState,
@@ -133,7 +133,9 @@ export const useQiankunStateForSlave = (): QiankunStateFromMasterProps => {
       currentUser:
         initialModelState?.currentUser ??
         DEFAULT_QIANKUN_GLOBAL_STATE.currentUser,
-        clientConfig: initialModelState?.clientConfig ?? DEFAULT_QIANKUN_GLOBAL_STATE.clientConfig,
+      clientConfig:
+        initialModelState?.clientConfig ??
+        DEFAULT_QIANKUN_GLOBAL_STATE.clientConfig,
       siteThemeConfig:
         initialModelState?.siteThemeConfig ??
         DEFAULT_QIANKUN_GLOBAL_STATE.siteThemeConfig,
