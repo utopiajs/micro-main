@@ -126,6 +126,7 @@ export interface User {
 export interface BingImg {
   startdate?: string;
   fullstartdate?: string;
+  headline?: string;
   enddate?: string;
   url?: string;
   urlbase?: string;

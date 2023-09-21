@@ -1,7 +1,11 @@
 // login page
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreAuthApi, coreCommonsApi } from '@/services';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  EnvironmentOutlined,
+  LockOutlined,
+  UserOutlined
+} from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import {
   getQueryParams,
@@ -10,13 +14,13 @@ import {
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { BingImg, QiankunStateFromMasterProps } from '@utopia/micro-types';
-import { Button, Form, Input, Typography } from 'antd';
+import { Button, Form, Input, Tooltip, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
 
 const { Title, Text } = Typography;
 const { redirectUrl = '/' } = getQueryParams();
-const bingImgInfoCacheKey = 'utopia-uc-bing-img-cache';
+const bingImgInfoCacheKey = 'utopEnvironmentOutlinedia-uc-bing-img-cache';
 
 const getCurrentDate = () => {
   const currentDate = new Date();
@@ -31,7 +35,14 @@ const LoginPage = () => {
     useModel('@@qiankunStateFromMaster') || qiankunStateFromMaster;
   const { clientConfig } = qiankunGlobalState;
   const {
-    token: { colorBgContainer, padding, boxShadow, fontSizeSM, marginXS }
+    token: {
+      colorBgContainer,
+      padding,
+      boxShadow,
+      colorTextSecondary,
+      fontSizeSM,
+      marginXS
+    }
   } = useSiteToken();
 
   useEffect(() => {
@@ -69,6 +80,14 @@ const LoginPage = () => {
     }
   }, []);
 
+  const bingImageDescriptionReactNode = (
+    <div>
+      <div>{bingImgInfo.headline}</div>
+      <div style={{ color: colorTextSecondary, fontSize: fontSizeSM }}>
+        {bingImgInfo.copyright}
+      </div>
+    </div>
+  );
   return (
     <div className={styles['login-page-content']}>
       <div
@@ -136,6 +155,20 @@ const LoginPage = () => {
             : 'https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg'
         }
       />
+      {bingImgInfo.url ? (
+        <div
+          className="bing-image-description"
+          style={{ backgroundColor: colorBgContainer }}
+        >
+          <Tooltip
+            title={bingImageDescriptionReactNode}
+            trigger="click"
+            placement="left"
+          >
+            <EnvironmentOutlined />
+          </Tooltip>
+        </div>
+      ) : null}
     </div>
   );
 };
