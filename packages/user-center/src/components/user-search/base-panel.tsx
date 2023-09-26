@@ -1,5 +1,5 @@
 // 用户搜索基础面板
-import { CoreTable } from '@/components';
+import { CoreTable } from '@utopia/core-component';
 import type {
   CoreTableProps,
   CreateDataSourceType

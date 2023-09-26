@@ -1,4 +1,4 @@
-import { TitleLabel } from '@/components';
+import { TitleLabel } from '@utopia/core-component';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { EditOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';

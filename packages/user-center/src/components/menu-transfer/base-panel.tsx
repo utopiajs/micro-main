@@ -21,7 +21,7 @@ import {
   useRef,
   useState
 } from 'react';
-import CoreTree from '../core-tree';
+import { CoreTree } from '@utopia/core-component';
 
 import './index.less';
 
