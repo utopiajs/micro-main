@@ -42,7 +42,7 @@ export default defineConfig({
   npmClient: 'npm',
   proxy: {
     '/user-center/': {
-      target: 'http://localhost:54321',
+      target: 'http://localhost:9001',
       changeOrigin: true
     },
     '/api/micro-main/v1': {
