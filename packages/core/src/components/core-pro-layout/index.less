@@ -5,8 +5,9 @@
         position: fixed;
         .ant-menu-inline {
           .ant-menu-item {
-            width: 100%;
+            margin-inline: 0;
             border-radius: 0;
+            width: 100%;
             &::after {
               position: absolute;
               top: 0;
@@ -78,9 +79,16 @@
             border-radius: 0;
           }
         }
-        &-submenu-url {
-          margin-inline: 4px !important;
-          margin-block: 4px !important;
+        &-submenu {
+          &-url {
+            margin-inline: 4px !important;
+            margin-block: 4px !important;
+          }
+          &-title {
+            width: 100%;
+            margin-inline: 0;
+            border-radius: 0;
+          }
         }
       }
     }
