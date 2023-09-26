@@ -1,8 +1,8 @@
-import { CoreTable } from '@/components';
+import { CoreTable } from '@utopia/core-component';
 import type {
   CoreTableProps,
   CreateDataSourceType
-} from '@/components/core-table';
+} from '@utopia/core-component/es/components/core-table';
 import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
 import { coreAuthManageApi } from '@/services';
 import {

@@ -1,5 +1,5 @@
 // api 数据权限搜索
-import { CoreModal } from '@/components';
+import { CoreModal } from '@utopia/core-component';
 import type { ModalProps } from 'antd';
 import { forwardRef } from 'react';
 import type {

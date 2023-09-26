@@ -1,6 +1,6 @@
 // 功能菜单赛选穿梭框
 
-import { CoreModal } from '@/components';
+import { CoreModal } from '@utopia/core-component';
 import type { ModalProps } from 'antd';
 import { forwardRef } from 'react';
 import type {
