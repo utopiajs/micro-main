@@ -14,7 +14,7 @@ import {
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { BingImg, QiankunStateFromMasterProps } from '@utopia/micro-types';
-import { Button, Form, Input, Tooltip, Typography } from 'antd';
+import { Button, Form, Input, Popover, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
 
@@ -81,7 +81,7 @@ const LoginPage = () => {
   }, []);
 
   const bingImageDescriptionReactNode = (
-    <div>
+    <div style={{ maxWidth: '400px' }}>
       <div>{bingImgInfo.headline}</div>
       <div style={{ color: colorTextSecondary, fontSize: fontSizeSM }}>
         {bingImgInfo.copyright}
@@ -160,13 +160,13 @@ const LoginPage = () => {
           className="bing-image-description"
           style={{ backgroundColor: colorBgContainer }}
         >
-          <Tooltip
-            title={bingImageDescriptionReactNode}
+          <Popover
+            content={bingImageDescriptionReactNode}
             trigger="click"
             placement="left"
           >
             <EnvironmentOutlined />
-          </Tooltip>
+          </Popover>
         </div>
       ) : null}
     </div>
