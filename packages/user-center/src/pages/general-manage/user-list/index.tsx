@@ -1,10 +1,10 @@
 // 用户管理
-import { CoreTable } from '@/components';
+import { CoreTable } from '@utopia/core-component';
 import type {
   CoreTableProps,
   CoreTableRef,
   CreateDataSourceType
-} from '@/components/core-table';
+} from '@utopia/core-component/es/components/core-table';
 import { coreUserApi } from '@/services';
 import {
   ArrowLeftOutlined,

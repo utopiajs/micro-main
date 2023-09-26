@@ -1,5 +1,5 @@
 /** 偏好设置 */
-import { TitleLabel } from '@/components';
+import { TitleLabel } from '@utopia/core-component';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreUserApi } from '@/services';
 import { QuestionCircleOutlined } from '@ant-design/icons';

@@ -1,5 +1,5 @@
 // route config
-import { CoreTree } from '@/components';
+import { CoreTree } from '@utopia/core-component';
 import { formItemEditLayout, formTailLayout } from '@/constants';
 import qiankunStateFromMaster from '@/mock/qiankunStateFromMaster';
 import { coreMenuApi } from '@/services';

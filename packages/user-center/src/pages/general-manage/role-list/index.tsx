@@ -1,10 +1,10 @@
 // 角色管理
 import {
   AuthApiSearch,
-  CoreTable,
   MenuTransfer,
   UserSearch
 } from '@/components';
+import { CoreTable } from '@utopia/core-component';
 import type {
   RecordType as AuthApiSearchRecordType,
   RefAuthApiSearchBaseProps
@@ -13,7 +13,7 @@ import type {
   CoreTableProps,
   CoreTableRef,
   CreateDataSourceType
-} from '@/components/core-table';
+} from '@utopia/core-component/es/components/core-table';
 import type { RefMenuTransferBaseProps } from '@/components/menu-transfer/base-panel';
 import type {
   RecordType as UserSearchRecordType,
