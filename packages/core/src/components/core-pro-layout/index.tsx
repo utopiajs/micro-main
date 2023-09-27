@@ -152,7 +152,6 @@ const CoreProLayout: React.FC = () => {
         sider: {
           colorTextMenuSelected: colorPrimary,
           colorBgMenuItemSelected: controlItemBgActive,
-          colorBgMenuItemHover: colorPrimary,
           colorMenuBackground: colorBgElevated,
           paddingBlockLayoutMenu: 0,
           paddingInlineLayoutMenu: 0
