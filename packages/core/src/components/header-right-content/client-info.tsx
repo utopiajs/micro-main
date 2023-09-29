@@ -90,7 +90,11 @@ const ClientInfo: React.FC<IProps> = (props) => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="联系我们">{contact}</Form.Item>
+              <Form.Item label="联系我们">
+                <Typography.Link target="_blank" href={`mailto:${contact}`} copyable>
+                  {contact}
+                </Typography.Link>
+              </Form.Item>
             </Col>
           </Form>
         </div>
