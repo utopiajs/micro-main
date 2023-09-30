@@ -5,7 +5,7 @@ export default defineConfig({
     strategy: 'normal'
   },
   monorepoRedirect: {},
-  publicPath: '/user-center/', //https://github.com/umijs/qiankun/issues/1953
+  publicPath: '/user-center-entry/', //https://github.com/umijs/qiankun/issues/1953
   base: '/user-center/',
   routes: [
     { path: '/base-info', component: 'base-info' },
