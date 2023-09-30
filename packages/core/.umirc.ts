@@ -41,6 +41,9 @@ export default defineConfig({
   request: {},
   npmClient: 'npm',
   proxy: {
+    '/user-center-entry/': {
+      target: 'http://localhost:9001/'
+    },
     '/api/micro-main/v1': {
       target: 'http://localhost:3000/'
     }
