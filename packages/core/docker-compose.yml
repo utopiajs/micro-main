@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  micro-main-core:
+    image: registry.cn-hangzhou.aliyuncs.com/utopia-space/micro-main-core
+    container_name: micro-main-core
+    volumes:
+      - /usr/etc/utopia-space/micro-main-core/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - '9000:80'
+
+networks:
+  default:
+    external: true
+    name: utopia-space-network
