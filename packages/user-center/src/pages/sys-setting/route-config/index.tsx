@@ -304,14 +304,14 @@ const RouteConfig: React.FC = () => {
               name="showHeader"
               valuePropName="checked"
             >
-              <Switch disabled />
+              <Switch />
             </Form.Item>
             <Form.Item
               label="展示侧边栏"
               name="showSidebar"
               valuePropName="checked"
             >
-              <Switch disabled />
+              <Switch />
             </Form.Item>
             <Form.Item
               label="新窗口打开"

@@ -10,10 +10,12 @@ import {
   useOutlet
 } from '@umijs/max';
 import {
+  findItemInTree,
   ROUTE_LOGIN_PATH,
   ROUTE_REGISTER_PATH,
   useSiteToken
 } from '@utopia/micro-main-utils';
+import type { MenuOrigin } from '@utopia/micro-types';
 import React, {
   useCallback,
   useEffect,
@@ -100,6 +102,25 @@ const CoreProLayout: React.FC = () => {
     },
     [location.pathname, handleIframeLink]
   );
+  const showSiderAndHeader = useCallback((): {
+    headerRender: undefined | false;
+    menuRender: undefined | false;
+  } => {
+    const currentMenuItem = findItemInTree<MenuOrigin>(
+      menuConfigUserTree,
+      (item: MenuOrigin) => item.url === location.pathname
+    );
+    if (currentMenuItem) {
+      return {
+        headerRender: currentMenuItem.showHeader ? undefined : false,
+        menuRender: currentMenuItem.showSidebar ? undefined : false
+      };
+    }
+    return {
+      headerRender: undefined,
+      menuRender: undefined
+    };
+  }, [location, menuConfigUserTree]);
 
   const isProLayoutWithPureModel = useCallback(() => {
     // login & register page
@@ -116,13 +137,12 @@ const CoreProLayout: React.FC = () => {
       '--micro-core-color-text': colorText
     });
   }, [colorPrimary, colorText]);
+
   return (
     <ProLayout
       title={clientConfig.name}
       layout="mix"
       // splitMenus
-      headerRender={undefined} // undefined || false
-      menuRender={undefined} // undefined || false
       siderWidth={208}
       logo={clientConfig.logo}
       pure={isProLayoutWithPureModel()}
@@ -161,6 +181,7 @@ const CoreProLayout: React.FC = () => {
           paddingInlinePageContainerContent: 0
         }
       }}
+      {...showSiderAndHeader()}
     >
       <OutletWrap>{outlet}</OutletWrap>
     </ProLayout>
