@@ -16,6 +16,7 @@ import {
   useSiteToken
 } from '@utopia/micro-main-utils';
 import type { MenuOrigin } from '@utopia/micro-types';
+import classNames from 'classnames';
 import React, {
   useCallback,
   useEffect,
@@ -137,7 +138,14 @@ const CoreProLayout: React.FC = () => {
       '--micro-core-color-text': colorText
     });
   }, [colorPrimary, colorText]);
-
+  const siderAndHeaderProps = showSiderAndHeader();
+  const proLayoutClassNames = classNames([
+    Styles['micro-main-core-layout'],
+    {
+      'micro-main-core-layout-no-header':
+        siderAndHeaderProps.headerRender === false
+    }
+  ]);
   return (
     <ProLayout
       title={clientConfig.name}
@@ -159,7 +167,7 @@ const CoreProLayout: React.FC = () => {
       links={[
         <MenuCollapseButton collapsed={collapsed} onCollapse={setCollapsed} />
       ]}
-      className={Styles['micro-main-core-layout']}
+      className={proLayoutClassNames}
       actionRef={menuActionRef}
       menu={{
         locale: false,
@@ -181,7 +189,7 @@ const CoreProLayout: React.FC = () => {
           paddingInlinePageContainerContent: 0
         }
       }}
-      {...showSiderAndHeader()}
+      {...siderAndHeaderProps}
     >
       <OutletWrap>{outlet}</OutletWrap>
     </ProLayout>
