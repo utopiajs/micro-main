@@ -58,6 +58,27 @@ function convertArrayFromTree(
 }
 
 /**
+ * 判断树形结构中是否包含某项
+ */
+function findItemInTree(tree, condition, ...rest) {
+  const { childrenKey = 'children' } = rest[0] ?? {};
+  for (let i = 0; i < tree.length; i += 1) {
+    const node = tree[i];
+    if (condition(node)) {
+      return node;
+    }
+    if (tree[childrenKey]) {
+      const foundItem = findItemInTree(tree.children, condition, ...rest);
+      if (foundItem) {
+        return foundItem;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * 页面缺省字段填充
  * @param value 字段原始值
  * @param fillText 填充默认值
@@ -97,5 +118,6 @@ export {
   isUrl,
   removeEmptyFields,
   convertArrayFromTree,
+  findItemInTree,
   renderDefaultField
 };
