@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  micro-sub-user-center:
+    image: registry.cn-hangzhou.aliyuncs.com/utopia-space/micro-sub-user-center
+    container_name: micro-sub-user-center
+
+networks:
+  default:
+    external: true
+    name: utopia-space-network
