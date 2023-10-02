@@ -60,15 +60,15 @@ function convertArrayFromTree(
 /**
  * 判断树形结构中是否包含某项
  */
-function findItemInTree(tree, condition, ...rest) {
+function findItemInTree<T>(tree, condition, ...rest): T | null {
   const { childrenKey = 'children' } = rest[0] ?? {};
   for (let i = 0; i < tree.length; i += 1) {
-    const node = tree[i];
+    const node: T = tree[i];
     if (condition(node)) {
       return node;
     }
     if (tree[childrenKey]) {
-      const foundItem = findItemInTree(tree.children, condition, ...rest);
+      const foundItem = findItemInTree<T>(tree.children, condition, ...rest);
       if (foundItem) {
         return foundItem;
       }
