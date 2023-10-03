@@ -1,11 +1,11 @@
 // 用户搜索基础面板
+import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
+import { coreUserApi } from '@/services';
 import { CoreTable } from '@utopia/core-component';
 import type {
   CoreTableProps,
   CreateDataSourceType
-} from '@/components/core-table';
-import { COMPONENT_CLASSNAME_PREFIX } from '@/constants/component';
-import { coreUserApi } from '@/services';
+} from '@utopia/core-component/es/components/core-table';
 import {
   cloneDeep,
   formateTime,
