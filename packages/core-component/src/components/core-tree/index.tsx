@@ -24,6 +24,7 @@ const CoreTree: React.FC<CoreTreeProps> = (props) => {
     headerRender,
     onSearch,
     titleRender,
+    fieldNames,
     ...restProps
   } = props;
   const {
@@ -47,9 +48,9 @@ const CoreTree: React.FC<CoreTreeProps> = (props) => {
         );
       }
 
-      return nodeData.name;
+      return nodeData[fieldNames?.title ?? 'name'];
     },
-    [titleRender, searchValue, colorErrorText]
+    [titleRender, searchValue, colorErrorText, fieldNames]
   );
 
   return (
@@ -72,6 +73,7 @@ const CoreTree: React.FC<CoreTreeProps> = (props) => {
           selectedKeys={selectedKeys}
           blockNode
           titleRender={treeNodeRender}
+          fieldNames={fieldNames}
           {...restProps}
         />
       </div>
