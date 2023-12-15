@@ -109,6 +109,13 @@ const isUrl = (path: string | undefined): boolean => {
   }
 };
 
+/**
+ * Get the raw type string of a value, e.g， [object Object].
+ */
+const getRawType = (value) => {
+  return Object.prototype.toString.call(value).slice(8, -1);
+};
+
 export {
   isDev,
   getQueryParams,
@@ -116,6 +123,7 @@ export {
   _Cookies,
   uuidv4,
   isUrl,
+  getRawType,
   removeEmptyFields,
   convertArrayFromTree,
   findItemInTree,

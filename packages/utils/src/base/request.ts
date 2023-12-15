@@ -1,4 +1,3 @@
-import { PUB_SUB_TYPES } from '../constants';
 import { message as _message } from 'antd';
 import axios, {
   type AxiosInstance,
@@ -6,8 +5,9 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig
 } from 'axios';
+import { PUB_SUB_TYPES } from '../constants';
 import { getToken } from './auth';
-import { _Cookies } from './common';
+import { getRawType, _Cookies } from './common';
 
 interface IRawResponseData {
   /** 接口内部错误码，反应接口具体错误信息，'0000000000' 表示响应成功 */
@@ -23,6 +23,8 @@ export interface RestRequestConfig {
   showSuccessMessage?: boolean;
   /** 是否显示 api loading */
   showApiLoadingStatus?: boolean;
+  /** 下载文件名称 */
+  downloadFileName?: string;
 }
 export interface FullRequestParams
   extends AxiosRequestConfig,
@@ -37,6 +39,9 @@ export type RequestParams = Omit<
 >;
 
 type TUpdateApiLoadingStatus = 'increase' | 'decrease';
+type TResponse = Omit<AxiosResponse, 'config'> & {
+  config: InternalAxiosRequestConfig & RestRequestConfig;
+};
 const defaultAxiosConfig: Pick<
   AxiosRequestConfig,
   'timeout' | 'validateStatus'
@@ -93,11 +98,7 @@ class HttpClient {
     );
     // handle response data
     this.instance.interceptors.response.use(
-      (
-        response: Omit<AxiosResponse, 'config'> & {
-          config: InternalAxiosRequestConfig & RestRequestConfig;
-        }
-      ) => {
+      (response: TResponse) => {
         if (response.config.showApiLoadingStatus) {
           // remove global loading
           handleUpdateApiLoadingStatus('decrease');
@@ -123,7 +124,37 @@ class HttpClient {
     const { showErrorMessage } = requestParams;
     return this.instance
       .request(requestParams)
-      .then((response) => response.data)
+      .then((response: TResponse) => {
+        const {
+          data: responseData,
+          headers,
+          config: { downloadFileName }
+        } = response;
+        const responseDataTypeIsStream = ['ArrayBuffer', 'Uint8Array'].includes(
+          getRawType(responseData)
+        );
+
+        if (responseDataTypeIsStream) {
+          // 针对于一些流文件
+          const resultBlob = new Blob([responseData], {
+            type: headers['content-type']
+          });
+          const fileUrl = URL.createObjectURL(resultBlob);
+
+          const downloadElement = document.createElement('a');
+          document.body.appendChild(downloadElement);
+          downloadElement.href = fileUrl;
+          downloadElement.download =
+            downloadFileName ||
+            headers['content-disposition']?.split('=')[1] ||
+            `文件导出${new Date().getTime()}.json`; // 如果服务器设置了下载文件名称
+          downloadElement.click();
+
+          window.URL.revokeObjectURL(fileUrl);
+          return {};
+        }
+        return response.data;
+      })
       .catch((error) => {
         if (showErrorMessage) {
           _message.error(error?.message || DEFAULT_ERROR_MESSAGE);
