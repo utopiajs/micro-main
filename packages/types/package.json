@@ -1,5 +1,6 @@
 {
   "name": "@utopia/micro-types",
+  "private": true,
   "version": "0.0.0",
   "description": "> TODO: description",
   "homepage": "https://github.com/utopiajs/micro-main#readme",
