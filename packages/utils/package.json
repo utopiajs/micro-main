@@ -18,7 +18,6 @@
     "tsc:check": "tsc -p . --noEmit --strict"
   },
   "dependencies": {
-    "@utopia/micro-types": "^0.0.0",
     "antd": "^5.4.2",
     "axios": "^1.3.4",
     "dayjs": "^1.11.9",

@@ -1,7 +1,7 @@
 // 根据全局 initialState，获取 antd Provider Config themm 配置
 import { type IInitialState } from '@utopia/micro-types';
 import { useEffect, useRef, useState } from 'react';
-import { getAntdConfigProviderTheme } from '../base/site-theme';
+import { getAntdConfigProviderTheme } from '@/utils';
 
 const useAntdProviderConfigTheme = (initialState: IInitialState) => {
   const [siteAntdThemeConfig, setSiteAntdThemeConfig] = useState(
