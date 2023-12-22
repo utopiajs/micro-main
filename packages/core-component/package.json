@@ -1,6 +1,7 @@
 {
   "name": "@utopia/core-component",
   "version": "0.0.1",
+  "private": true,
   "description": "",
   "keywords": [],
   "license": "MIT",
