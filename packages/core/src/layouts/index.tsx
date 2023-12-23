@@ -1,9 +1,7 @@
 import { CoreProLayout } from '@/components';
+import { useAntdProviderConfigTheme } from '@/hooks';
 import { useModel } from '@umijs/max';
-import {
-  useAntdProviderConfigTheme,
-  usePrefersColor
-} from '@utopia/micro-main-utils';
+import { usePrefersColor } from '@utopia/micro-main-utils';
 import type { User } from '@utopia/micro-types';
 import { ConfigProvider } from 'antd';
 import { useEffect } from 'react';
